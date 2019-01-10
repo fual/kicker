@@ -81,21 +81,24 @@
 			echo "<p>" . $test['tournament_name'] ."</p>";
 			echo "<p>" . $test['team_name_short'] ."</p>";
 		}*/
-		$teams = $db->query("select * from teams");
+		$sth = $db->prepare("select * from teams");
+		$sth->execute();
+		$teams = $sth->fetchAll();
+		$sth = $db->prepare("select count(team_name_short) from teams where tournament_id = 1");
+		$sth->execute();
+		$team_quantity = $sth->fetch()[0];
+		var_dump($team_quantity);
 		echo '<table>';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>Команда</th>';
-		foreach ($teams as $team)
-			echo '<th сolspan="2">' . $team['team_name_short'] . '</th>';
+		for ($i = 0; $i < $team_quantity; $i++)
+			echo '<th сolspan="2">' . $teams[$i]['team_name_short'] . '</th>';
 		echo '<th>Очки</th>';
 		echo '<th>Игры</th>';
 		echo '<th>Осталось</th>';
 		echo '</tr>';
-		$sth = $db->prepare("select * from teams");
-		$sth->execute();
-		$teams = $sth->fetchAll();
-		for ($i = 0; $i < 8; $i++) {
+		for ($i = 0; $i < $team_quantity; $i++) {
 			echo '<tr>';
 			echo '<td>' . $teams[$i]['team_name_short'] . '</td>';
 			echo '</tr>';
