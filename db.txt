@@ -1,0 +1,93 @@
+tournaments
+tournament_id, tournament_name
+
+create table tournaments (tournament_id integer primary key autoincrement, tournament_name text);
+insert into tournaments values (NULL, 'mos2');
+
+
+
+matches
+match_id, tournament_id, team_id1, team_id2, sets_won1, sets_won2, points1, points2
+
+create table matches (match_id integer primary key autoincrement, tournament_id references tournaments(tournament_id), team_id1 references teams(team_id), team_id2 references teams(team_id), sets_won1 integer, sets_won2 integer, points_1 integer, points_2 integer);
+insert into matches values
+(NULL, 1, 7, 6, 1, 4, 0, 2),
+(NULL, 1, 5, 8, 2, 1, 2, 0),
+(NULL, 1, 6, 3, 0, 3, 0, 2),
+(NULL, 1, 4, 1, 3, 1, 2, 0),
+(NULL, 1, 3, 7, 2, 0, 2, 0),
+(NULL, 1, 5, 4, 1, 1, 1, 1),
+(NULL, 1, 1, 6, 4, 0, 2, 0),
+(NULL, 1, 8, 7, 3, 2, 2, 0),
+(NULL, 1, 3, 8, 2, 2, 1, 1),
+(NULL, 1, 6, 5, 4, 1, 2, 0),
+(NULL, 1, 6, 8, 2, 1, 2, 0),
+(NULL, 1, 7, 2, 1, 4, 0, 2),
+(NULL, 1, 1, 5, 2, 2, 1, 1),
+(NULL, 1, 8, 2, 1, 3, 0, 2),
+(NULL, 1, 7, 4, 0, 3, 0, 2),
+(NULL, 1, 3, 2, 2, 4, 0, 2),
+(NULL, 1, 3, 4, 3, 1, 2, 0),
+(NULL, 1, 5, 7, 1, 2, 0, 2),
+(NULL, 1, 7, 1, 1, 3, 0, 2),
+(NULL, 1, 1, 2, 1, 2, 0, 2),
+(NULL, 1, 5, 3, 1, 1, 1, 1),
+(NULL, 1, 4, 6, 1, 0, 2, 0),
+(NULL, 1, 2, 5, 1, 2, 0, 2),
+(NULL, 1, 1, 3, 3, 0, 2, 0),
+(NULL, 1, 4, 8, 5, 0, 2, 0),
+(NULL, 1, 2, 6, 5, 1, 2, 0),
+(NULL, 1, 2, 4, 1, 2, 0, 2),
+(NULL, 1, 7, 3, 2, 3, 0, 2),
+(NULL, 1, 6, 7, 3, 1, 2, 0),
+(NULL, 1, 2, 7, 5, 1, 2, 0),
+(NULL, 1, 1, 8, 5, 0, 2, 0),
+(NULL, 1, 3, 1, 0, 2, 0, 2),
+(NULL, 1, 4, 7, 4, 1, 2, 0),
+(NULL, 1, 3, 6, 3, 0, 2, 0),
+(NULL, 1, 5, 8, 2, 1, 2, 0),
+(NULL, 1, 1, 4, 2, 0, 2, 0),
+(NULL, 1, 4, 5, 1, 4, 0, 2),
+(NULL, 1, 5, 2, 2, 4, 0, 2),
+(NULL, 1, 1, 7, 4, 0, 2, 0),
+(NULL, 1, 6, 1, 1, 1, 1, 1),
+(NULL, 1, 7, 5, 1, 4, 0, 2),
+(NULL, 1, 6, 2, 2, 2, 1, 1),
+(NULL, 1, 2, 1, 2, 3, 0, 2),
+(NULL, 1, 3, 5, 3, 2, 2, 0),
+(NULL, 1, 6, 5, 0, 5, 0, 2),
+(NULL, 1, 2, 8, 5, 0, 2, 0),
+(NULL, 1, 4, 8, 2, 0, 2, 0),
+(NULL, 1, 6, 4, 2, 3, 0, 2),
+(NULL, 1, 1, 5, 3, 1, 2, 0),
+(NULL, 1, 4, 2, 1, 3, 0, 2),
+(NULL, 1, 2, 3, 2, 2, 1, 1),
+(NULL, 1, 4, 3, 1, 3, 0, 2),
+(NULL, 1, 8, 1, 0, 6, 0, 2),
+(NULL, 1, 8, 3, 0, 6, 0, 2),
+(NULL, 1, 8, 6, 0, 6, 0, 2),
+(NULL, 1, 8, 7, 0, 6, 0, 2);
+
+players
+player_id, team, player_first_name, player_second_name
+
+
+
+sets
+match_id, player_ids1, player_ids2, scored1, scored2, games_won1, games_won2
+
+
+
+teams
+team_id, tournament_id, team_name
+
+create table teams (team_id integer primary key autoincrement, tournament_id references tournaments(tournament_id), team_name_short text, team_name_long text);
+insert into teams values 
+(NULL, 1, 'BSB', 'Dead Rabbits'),
+(NULL, 1, 'GR', "Guns'n'Roses"),
+(NULL, 1, 'DUD2', 'Drunk United 2'),
+(NULL, 1, 'FP', 'Faux Pass'),
+(NULL, 1, 'FRB', 'Fireball'),
+(NULL, 1, 'RBT2', 'Работяги 2'),
+(NULL, 1, 'ZBS', 'Забей'),
+(NULL, 1, 'XYZ', 'Научный подход');
