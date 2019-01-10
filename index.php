@@ -81,26 +81,56 @@
 			echo "<p>" . $test['tournament_name'] ."</p>";
 			echo "<p>" . $test['team_name_short'] ."</p>";
 		}*/
-		$sth = $db->prepare("select * from teams");
+		$division = "mos2";
+		$sth = $db->prepare("select * from teams ");
 		$sth->execute();
 		$teams = $sth->fetchAll();
-		$sth = $db->prepare("select count(team_name_short) from teams where tournament_id = 1");
-		$sth->execute();
-		$team_quantity = $sth->fetch()[0];
-		var_dump($team_quantity);
+		$sth = $db->prepare("select count(tms.team_name_short) from teams as tms inner join tournaments as trn on trn.tournament_id = tms.tournament_id where trn.tournament_name = ?");
+		$sth->execute(array($division));
+		$teams_quantity = $sth->fetch()[0];
 		echo '<table>';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>Команда</th>';
-		for ($i = 0; $i < $team_quantity; $i++)
+		for ($i = 0; $i < $teams_quantity; $i++)
 			echo '<th сolspan="2">' . $teams[$i]['team_name_short'] . '</th>';
 		echo '<th>Очки</th>';
 		echo '<th>Игры</th>';
 		echo '<th>Осталось</th>';
 		echo '</tr>';
-		for ($i = 0; $i < $team_quantity; $i++) {
+		// $sth = $db->prepare("select t.team_name_short, t.team_name_short, m.sets_won1, m.sets_won2 from matches as m inner join teams as t on m.team_id1 = t.team_id and m.team_id2 = t.team_id inner join tournaments as trn on m.tournament_id = trn.tournament_id t.tournament_ = ");
+		$sth = $db->prepare("
+			select 
+			ft.team_name_short as home_team, 
+			st.team_name_short as away_team,
+			m.sets_won1 as home_sets_won,
+			m.sets_won2 as away_sets_won
+			from matches as m 
+			inner join teams as ft on m.team_id1 = ft.team_id
+			inner join teams as st on m.team_id2 = st.team_id");
+		$sth->execute();
+		$results = $sth->fetchAll();
+		var_dump($results);
+		$cols = $teams_quantity + 4;
+		for ($i = 0; $i < $teams_quantity; $i++) {
+			$home_team = $teams[$i]['team_name_short'];
 			echo '<tr>';
-			echo '<td>' . $teams[$i]['team_name_short'] . '</td>';
+			for ($j = 0; $j < $cols; $j++)
+			{
+				switch ($j)
+				{
+					case 0:
+						echo '<td>' . $home_team . '</td>';
+						break ;
+					case ($i + 1):
+						echo '<td style="background-color:gray;"></td>';
+						break ;
+					default:
+						echo '<td></td>';
+						break ;
+				}
+				
+			}
 			echo '</tr>';
 		}
 	?>
