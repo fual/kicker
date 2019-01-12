@@ -4,12 +4,12 @@ season_id, season_name
 create table seasons (season_id integer primary key autoincrement, season_name text);
 insert into seasons values (NULL, 1, 2018);
 
+
 tournaments
 tournament_id, tournament_name
 
 create table tournaments (tournament_id integer primary key autoincrement, tournament_name text, tournament_description text);
 insert into tournaments values (NULL, 'mos2', 'Москва - 2 дивизион');
-
 
 
 matches
@@ -74,14 +74,25 @@ insert into matches values
 (NULL, 1, 1, 8, 6, 0, 6, 0, 2),
 (NULL, 1, 1, 8, 7, 0, 6, 0, 2);
 
+update matches set team_id1 = 8, team_id2 = 4 where match_id = 47;
+update matches set team_id1 = 8, team_id2 = 5 where match_id = 35;
+update matches set team_id1 = 7, team_id2 = 8 where match_id = 56;
+update matches set team_id1 = 5, team_id2 = 6 where match_id = 45;
+update matches set team_id1 = 5, team_id2 = 1 where match_id = 49;
+
+update matches set points_1 = 0, points_2 = 2 where match_id = 47;
+update matches set points_1 = 0, points_2 = 2 where match_id = 35;
+update matches set points_1 = 2, points_2 = 0 where match_id = 56;
+update matches set points_1 = 2, points_2 = 0 where match_id = 45;
+update matches set points_1 = 0, points_2 = 2 where match_id = 49;
+
+
 players
 player_id, team, player_first_name, player_second_name
 
 
-
 sets
 match_id, player_ids1, player_ids2, scored1, scored2, games_won1, games_won2
-
 
 
 teams
@@ -97,3 +108,4 @@ insert into teams values
 (NULL, 1, 1, 'RBT2', 'Работяги 2'),
 (NULL, 1, 1, 'ZBS', 'Забей'),
 (NULL, 1, 1, 'XYZ', 'Научный подход');
+
