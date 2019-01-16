@@ -69,6 +69,8 @@ function print_result_table($division, $season) {
 	$sth->bindValue(':r', $tournament['rounds'], PDO::PARAM_INT);
 	$sth->execute();
 	$standings = $sth->fetchAll();
+	var_dump($standings);
+	exit;
 	$sth = $db->prepare("
 			select
 			m.match_id as match_id,
@@ -123,11 +125,7 @@ function print_result_table($division, $season) {
 					break ;
 				default:
 					$away_team = $standings[$j - 1]['name'];
-					$mr = find_match_results($home_team, $away_team, $results);
-					foreach ($mr as $r)
-					{
-						echo '<td>' .  $r . '</td>';
-					}
+					echo '<td>' . find_match_results($home_team, $away_team, $results) . '</td>';
 					break ;
 			}
 		}
@@ -136,20 +134,19 @@ function print_result_table($division, $season) {
 }
 /* find match results in 2-dimensional array */
 function find_match_results($home_team, $away_team, $results) {
-	$res = [];
+	$res = " ";
 	foreach ($results as $result)
 		if ($result['home_team'] == $home_team && $result['away_team'] == $away_team)
 		{
-			$r = '<a href="match?id=' . $result['match_id'] . '">';
-			$r .= $result['home_score'] . ':' . $result['away_score'];
-			$r .= '</a>' . " ";
+			$res .= '<a href="match?id=' . $result['match_id'] . '">';
+			$res .= $result['home_score'] . ':' . $result['away_score'];
+			$res .= '</a>' . " ";
 		}
 		else if ($result['away_team'] == $home_team && $result['home_team'] == $away_team)
 		{
-			$r = '<a href="match?id=' . $result['match_id'] . '">';
-			$r .= $result['away_score'] . ':' . $result['home_score'];
-			$r .= '</a>' . " ";
+			$res .= '<a href="match?id=' . $result['match_id'] . '">';
+			$res .= $result['away_score'] . ':' . $result['home_score'];
+			$res .= '</a>' . " ";
 		}
-		array_push($res, $r);
 	return ($res);
 }
