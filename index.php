@@ -6,9 +6,12 @@
 <body>
 	<?php
 		require_once 'autoload.php';
+		include 'input.php';
 		/* match results */
-		// print_result_table("mos2", "2018");
-		// print_result_table("mos1", "2018");
+		// print_table("select * from teams where tournament_id = 3");
+		// print_table("select * from matches where tournament_id = 2");
+		print_result_table("mos2", "2018");
+		print_result_table("mos1", "2018");
 		print_result_table("mos3", "2018");
 		// print_table("select * from teams");
 		// print_table("select * from tournaments");
@@ -28,8 +31,6 @@
 		// 		echo $k . ' => ' . $v . '<br>';
 		// 	echo '<br>';
 		// }
-		print_table("select * from teams where tournament_id = 3");
-		// print_table("select * from matches where tournament_id = 2");
 	?>
 </body>
 </html>
