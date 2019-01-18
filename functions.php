@@ -90,7 +90,7 @@ function print_result_table($division, $season) {
 	$cols = $tournament['teams_quantity'] + 4;
 	if (count($standings) < $tournament['teams_quantity'])
 	{
-		$sth = $db->prepare("select team_name_short as name from teams where tournament_id = :tournament_id");
+		$sth = $db->prepare("select team_name_short as name from teams where tournament_id = :tournament_id order by name");
 		$sth->bindValue(':tournament_id', $tournament['tournament_id'], PDO::PARAM_INT);
 		$sth->execute();
 		$teams = $sth->fetchAll();
