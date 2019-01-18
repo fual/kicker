@@ -5,7 +5,7 @@
 </head>
 <body>
 	<?php
-		require_once 'autoload.php';
+		require_once 'bootstrap.php';
 		include 'input.php';
 		/* match results */
 		// print_table("select * from teams where tournament_id = 3");
