@@ -76,7 +76,7 @@
 									<tr <?php if ($i >= 2 && $j != 1) echo "class='table-info'" ?>>
 										<td>
 											<?php for ($z = 0; $z <= (($i <= 1 || $i == 4) ? 1 : 0); $z++): ?>
-												<select class="form-control my-1">
+												<select class="form-control my-1" readonly>
 													<?php foreach ($team1 as $member): ?>
 													<option value="<?php echo $member?>"><?php echo $member?></option>
 													<?php endforeach; ?>
@@ -85,14 +85,16 @@
 										</td>
 										<td>
 											<div class="form-inline justify-content-around text-center flex-nowrap">
-												<select class="form-control">
+												<select class="form-control" data-team="a">
+													<option value="0">0</option>
 													<option value="1">1</option>
 													<option value="2">2</option>
 													<option value="3">3</option>
 													<option value="4">4</option>
 												</select>
 												<span class="mx-2">:</span>
-												<select class="form-control">
+												<select class="form-control" data-team="b">
+													<option value="0">0</option>
 													<option value="1">1</option>
 													<option value="2">2</option>
 													<option value="3">3</option>
@@ -162,8 +164,24 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	$("[id*='Timeout']").click(function() {
-		if ($(this).hasClass("table-info") && $(this).parents("table").find("[id*='Timeout2']").hasClass())
+		if (($(this).attr("id") == "team1Timeout1"
+				&& $("#team1Timeout2").hasClass("table-info"))
+			||
+			($(this).attr("id") == "team2Timeout1"
+				&& $("#team2Timeout2").hasClass("table-info"))
+			||
+ 			($(this).attr("id") == "team1Timeout2"
+ 				&& !$("#team1Timeout1").hasClass("table-info"))
+ 			||
+ 			($(this).attr("id") == "team2Timeout2"
+ 				&& !$("#team2Timeout1").hasClass("table-info")))
+			return ;
 		$(this).toggleClass("table-info");
+	});
+	$("[data-team]").change(function() {
+		$opponent = $(this).attr("data-team") == "a" ? $(this).parent().find("[data-team='b']") : $(this).parent().find("[data-team='a']");
+		if ($(this).val() != 4)
+			$opponent.val("4");
 	});
 </script>
 </html>
