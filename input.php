@@ -76,7 +76,7 @@
 				</table>			
 			</div>
 			<div class="col-lg-6">
-				<table class="table text-center">
+				<table class="table text-center" id="matchTable">
 					<thead class="thead-dark">
 						<tr>
 							<th colspan="3">Element's scores</th>
@@ -108,8 +108,8 @@
 											<?php endfor; ?>
 										</td>
 										<td>
-											<div class="form-inline justify-content-around text-center flex-nowrap">
-												<select class="form-control" data-team="a">
+											<div class="form-inline justify-content-around text-center flex-nowrap" data-match-id="<?php echo $j * 5 + $i + 1; ?>">
+												<select class="form-control">
 													<option value="0">0</option>
 													<option value="1">1</option>
 													<option value="2">2</option>
@@ -117,7 +117,7 @@
 													<option value="4">4</option>
 												</select>
 												<span class="mx-2">:</span>
-												<select class="form-control" data-team="b">
+												<select class="form-control">
 													<option value="0">0</option>
 													<option value="1">1</option>
 													<option value="2">2</option>
@@ -191,11 +191,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	$(function() {
-		updateTeamNames();
+		updateTeamOptions();
 		updateTeamTags();
-		$("#tournament").change(updateTeamNames);
+		matchTableSelectInit();
+		$("#tournament").change(function() {
+			updateTeamOptions();
+			updateTeamTags();
+		});
 		$("#teamNameA select, #teamNameB select").change(updateTeamTags);
-		function updateTeamNames() {
+		/* updateTeamOptions: manage team names select options on tournament change */
+		function updateTeamOptions() {
 			var tournament = $("#tournament").val();
 			$("#teamNameA option, #teamNameB option").removeAttr("style");
 			$("#teamNameA select [data-tournament!=" + tournament + "], #teamNameB select [data-tournament!=" + tournament + "]").hide();
@@ -204,87 +209,100 @@
 			$optionB = $("#teamNameB select option:not([style]):eq(1)");
 			$("#teamNameB select").val($optionB.val());
 		}
+		/* updateTeamTags: update team tags across page on teams selection */
 		function updateTeamTags() {
 			$("[data-team='A']").html($("#teamNameA select").val());
 			$("[data-team='B']").html($("#teamNameB select").val());
 		}
 		var matches = {
+			lastScored: [[0, 0]],
 			currentCap: 4,
-			lastScored: [0, 0],
-			currentMatch: "D1",
+			currentMatchId: 0,
+			currentMatchTitle: "D1",
 			D1: 0,
 			D2: 0,
 			S1: 0,
 			S2: 0,
 			D3: 0,
 		};
-		var event = "click";
+		var action = "click";
 		var timer;
-		$("[data-goal]").on("touchstart mousedown", function(event) {
+		$("[data-goal]").on("touchstart mousedown", function(e) {
 			// Mouse right click
-			if (event.button == 2)
+			if (e.button == 2)
 				return ;
 			timer = setTimeout(function() {
-				event = "hold";
+				action = "hold";
 			}, 400);
 		});
-		$("[data-goal]").on("touchend mouseup", function(event) {
+		$("[data-goal]").on("touchend mouseup", function(e) {
 			// Mouse right click
-			if (event.button == 2)
+			if (e.button == 2)
 				return ;
 			clearTimeout(timer);
 			setScore($(this));
 		});
+		/* setScore: toggles score after touch/mouse event in goalTable */
 		function setScore($obj) {
-			var team = !$obj.prev().length ? 0 : 1;
+			var team = $("[data-goal='" + $obj.attr("data-goal") + "']").index($obj);
+			team = team == 2 ? 0 : team == 3 ? 1 : team;
 			var goal = +$obj.attr("data-goal");
-			if (event == "click")
+			if (action == "click")
 				setScoreTeam(team, goal);
-			else if (event == "hold")
+			else if (action == "hold")
 				eraseScore(team, goal);
-			event = "click";
+			action = "click";
 		}
+		/* setScoreTeam: sets the score in goalTable for the given team */
 		function setScoreTeam(team, goal) {
-			var $teamGoal = $("#goalTable [data-goal=" + goal + "]:eq(" + team + ")");
-			var $oppositeGoal = $("#goalTable [data-goal=" + goal + "]:eq(" + +!team + ")");
-			if (goal > matches.currentCap || matches[matches.currentMatch] >= 4  || goal < matches.lastScored[team] || $teamGoal.text() == matches.currentMatch || (goal == matches.currentCap && $oppositeGoal.text()))
+			var $teamGoal = $("[data-goal=" + goal + "]:eq(" + team + ")");
+			var $oppositeGoal = $("[data-goal=" + goal + "]:eq(" + +!team + ")");
+			if (goal > matches.currentCap || matches.currentMatchId > 9 || goal < matches.lastScored[matches.currentMatchId][team] || $teamGoal.text() == matches.currentMatchTitle || (goal == matches.currentCap && $oppositeGoal.text()))
 					return ;
-			$teamGoal.text($teamGoal.text() ? $teamGoal.text() + ", " + matches.currentMatch : matches.currentMatch);
-			matches[matches.currentMatch]++;
-			matches.lastScored[team] = goal;
-			if (goal != matches.currentCap && matches[matches.currentMatch] % 2 != 0) {
-				$("#goalTable [data-goal=" + matches.currentCap + "]:eq(" + +!team + ")").text(matches.currentMatch);
-				matches[matches.currentMatch]++;
-				matches.lastScored[+!team] = matches.currentCap;
+			$teamGoal.text($teamGoal.text() ? $teamGoal.text() + ", " + matches.currentMatchTitle : matches.currentMatchTitle);
+			matches[matches.currentMatchTitle]++;
+			matches.lastScored.push([0, 0]);
+			matches.lastScored[matches.currentMatchId + 1][team] = goal;
+			if (goal != matches.currentCap && matches[matches.currentMatchTitle] % 2 != 0) {
+				$("[data-goal=" + matches.currentCap + "]:eq(" + +!team + ")").text(matches.currentMatchTitle);
+				matches[matches.currentMatchTitle]++;
+				matches.lastScored[matches.currentMatchId + 1][+!team] = matches.currentCap;
 			}
 			updateTwenty();
 			nextMatch();
 		}
+		/* nextMatch: updates (increases) matches object (currentCap, currentMatchid, currentMatchTitle) */
 		function nextMatch() {
-			if (matches[matches.currentMatch] % 2 == 0) {
-				matches.currentCap += 4;
+			console.log(matches);
+			if (matches[matches.currentMatchTitle] % 2 == 0) {
 				var flag = 0;
 				for (key in matches) {
 					if (flag) {
-						matches.currentMatch = key;
+						matches.currentMatchTitle = key;
 						flag = 0;
 						break ;
 					}
-					if (key == matches.currentMatch)
+					if (key == matches.currentMatchTitle)
 						flag = 1;
 				}
 				if (flag == 1)
-					matches.currentMatch = "D1";
+					matches.currentMatchTitle = "D1";
+				matches.currentCap += 4;
+				matches.currentMatchId++;
+				updateMatchTable();
 			}
 		}
+		/* eraseScore: erases last input in goalTable */
 		function eraseScore(team, goal) {
-			if (matches.lastScored[team] != goal)
+			console.log(matches);
+			if (matches.lastScored[matches.lastScored.length - 1][team] != goal)
 				return ;
-			var $teamGoal = $("#goalTable [data-goal=" + goal + "]:eq(" + team + ")");
-			var $oppositeGoal = $("#goalTable [data-goal=" + matches.lastScored[+!team] + "]:eq(" + +!team + ")");
-			matches.currentMatch = $teamGoal.text().slice(-2);
-			matches[matches.currentMatch] -= $oppositeGoal.text() ? 2 : 1;
+			var $teamGoal = $("[data-goal=" + goal + "]:eq(" + team + ")");
+			var $oppositeGoal = $("[data-goal=" + matches.lastScored[matches.lastScored.length - 1][+!team] + "]:eq(" + +!team + ")");
+			matches.currentMatchTitle = $teamGoal.text().slice(-2);
+			matches[matches.currentMatchTitle] -= $oppositeGoal.text() ? 2 : 1;
 			matches.currentCap -= $oppositeGoal.text() ? 4 : 0;
+			matches.currentMatchId -= $oppositeGoal.text() ? 1 : 0;
 			if ($teamGoal.text().length > 2)
 				$teamGoal.text( $teamGoal.text().slice(0, -4) );
 			else
@@ -293,16 +311,46 @@
 				$oppositeGoal.text( $oppositeGoal.text().slice(0, -4) );
 			else
 				$oppositeGoal.empty();
-			matches.lastScored[team] = +$("#goalTable [data-goal]" + (team ? ":last-child" : ":first-child") + ":not(:empty)").last().parent().attr("data-goal");
-			matches.lastScored[+!team] = +$("#goalTable [data-goal]" + (+!team ? ":last-child" : ":first-child") + ":not(:empty)").last().parent().attr("data-goal");
-			// if NaN set to 0
-			matches.lastScored[team] = matches.lastScored[team] ? matches.lastScored[team] : 0;
-			matches.lastScored[+!team] = matches.lastScored[+!team] ? matches.lastScored[+!team] : 0;
+			matches.lastScored.pop();
+			lockPrevSelect();
 			updateTwenty();
 		}
+		/* updateTwenty: updates [data-goal='20'] in goalTable after each input to keep them in sync */
 		function updateTwenty() {
-			$("[data-goal='20']:eq(3)").text($("[data-goal='20']:eq(0)").text());
-			$("[data-goal='20']:eq(4)").text($("[data-goal='20']:eq(1)").text());
+			$("[data-goal='20']:eq(2)").text($("[data-goal='20']:eq(0)").text());
+			$("[data-goal='20']:eq(3)").text($("[data-goal='20']:eq(1)").text());
+		}
+		/* updateMatchTable: updates score in matchTable after goalTable input */
+		function updateMatchTable() {
+			var scoreA = matches.lastScored[matches.currentMatchId][0] - matches.lastScored[matches.currentMatchId - 1][0];
+			var scoreB = matches.lastScored[matches.currentMatchId][1] -  matches.lastScored[matches.currentMatchId - 1][1];
+			$("[data-match-id='" + matches.currentMatchId + "'] select:eq(0)").val(scoreA);
+			$("[data-match-id='" + matches.currentMatchId + "'] select:eq(1)").val(scoreB);
+			unlockNextSelect();
+		}
+		/* matchTableSelectInit: disables all but first 2 selects in matchTable */
+		function matchTableSelectInit() {
+			$("[data-match-id]:not(:eq(0)) select").prop("disabled", true);
+		}
+		/* unlockNextSelect: unlocks next match in matchTable and appends valid score options to it (based on previous match result) */
+		function unlockNextSelect() {
+			var $teamASelect = $("[data-match-id] select:disabled:eq(0)");
+			var $teamBSelect = $("[data-match-id] select:disabled:eq(1)");
+			var teamAGoalsMax = matches.currentCap - matches.lastScored[matches.currentMatchId][0];
+			var teamBGoalsMax = matches.currentCap - matches.lastScored[matches.currentMatchId][1];
+			$teamASelect.empty();
+			for (var i = 0; i <= teamAGoalsMax; i++)
+				$teamASelect.append("<option value='" + i + "'>" + i + "</option>");
+			$teamBSelect.empty();
+			for (var i = 0; i <= teamBGoalsMax; i++)
+				$teamBSelect.append("<option value='" + i + "'>" + i + "</option>");
+			$("[data-match-id] select:disabled:eq(0), [data-match-id] select:disabled:eq(1)").prop("disabled", false);
+		}
+		/* lockPrevSelect: disables last 2 not disabled selects and sets previous select values to 0 */
+		function lockPrevSelect() {
+			$("[data-match-id] select:not(:disabled):eq(-1), [data-match-id] select:not(:disabled):eq(-2)").prop("disabled", true);
+			$("[data-match-id] select:not(:disabled):eq(-1)").val(0);
+			$("[data-match-id] select:not(:disabled):eq(-2)").val(0);
 		}
 		$("[id*='Timeout']").click(function() {
 			if (($(this).attr("id") == "team1Timeout1"
