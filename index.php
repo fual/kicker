@@ -6,7 +6,6 @@
 <body>
 	<?php
 		require_once 'bootstrap.php';
-		include 'input.php';
 		/* match results */
 		// print_table("select * from teams where tournament_id = 3");
 		// print_table("select * from matches where tournament_id = 2");
