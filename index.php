@@ -2,10 +2,10 @@
 	require_once __DIR__ . "/inc/bootstrap.php";
 	require_once __DIR__ . "/inc/layout/head.php";
 	$db->query("update teams set team_name_long = 'ЗАБЕЙ' where team_id = 29");
-	$sth = $db->prepare("select tournament_id as id, tournament_description as name from tournaments where id in (4, 5) order by tournament_name");
+	$sth = $db->prepare("select tournament_id as id, tournament_description as name from tournaments where id in (1, 2) order by tournament_name");
 	$sth->execute();
 	$tournaments = $sth->fetchAll();
-	$sth = $db->prepare("select tournament_id as division, team_name_long as name, team_id as id from teams where division in (4, 5) order by name");
+	$sth = $db->prepare("select tournament_id as division, team_name_long as name, team_id as id from teams where division in (1, 2) order by name");
 	$sth->execute();
 	$teams = $sth->fetchAll();
 ?>
@@ -62,11 +62,12 @@
 	    	</div>
     	</form>
   		<h2 class="mt-4 mb-3">Первый дивизион</h2>
-    	<?php print_result_table(4, "2019"); ?>
+    	<?php print_result_table(1, "2019"); ?>
   		<h2 class="mt-4 mb-3">Второй дивизион</h2>
-    	<?php print_result_table(5, "2019"); ?>
+    	<?php print_result_table(2, "2019"); ?>
     	<p class="small mt-5">Если результат какого-либо матча отображен неверно, свяжитесь с <a href="http://vk.com/aantropov">нами</a>.</p>
     	<p class="small mt-5">Upcoming updates: редактирование счета, расписание предстоящих игр с площадками, рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
+    	<p class="small mt-5">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
   	</div>
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
