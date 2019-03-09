@@ -67,7 +67,7 @@
     	<?php print_result_table(2, "2019"); ?>
     	<p class="small mt-5">Если результат какого-либо матча отображен неверно, свяжитесь с <a href="http://vk.com/aantropov">нами</a>.</p>
     	<p class="small mt-5">Upcoming updates: редактирование счета, расписание предстоящих игр с площадками, рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
-    	<p class="small mt-5">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
+    	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
   	</div>
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
