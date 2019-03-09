@@ -11,11 +11,11 @@
 ?>
 <body class="pt-3">
 <main role="main" class="container">
-  	<div class="starter-template pt-0">
+  	<div class="starter-template pt-0 text-center">
     	<h2 class="mb-3">Добавить результат</h2>
     	<form method="post" action="">
     		<div class="form-row">
-    			<div class="col">
+    			<div class="col-md my-1 my-md-0">
 		    		<select class="custom-select" id="inputTournament" name="division" required>
 		    		    <option selected>Дивизион...</option>
 		    		    <?php foreach ($tournaments as $tournament): ?>
@@ -25,7 +25,7 @@
 		    		    <?php endforeach; ?>
 		    		</select>
 		    	</div>
-    			<div class="col">
+    			<div class="col-md my-1 my-md-0">
 		    		<select class="custom-select" id="inputTeam1" name="team1" required>
 		    		    <option selected>Команда 1...</option>
 		    		    <?php foreach ($teams as $team): ?>
@@ -35,7 +35,7 @@
 		    		    <?php endforeach; ?>
 		    		</select>
 		    	</div>
-    			<div class="col">
+    			<div class="col-md my-1 my-md-0">
 		    		<select class="custom-select" id="inputTeam2" name="team2" required>
 		    		    <option selected>Команда 2...</option>
 		    		    <?php foreach ($teams as $team): ?>
@@ -62,34 +62,16 @@
 	    	</div>
     	</form>
   		<h2 class="mt-4 mb-3">Первый дивизион</h2>
-    	<?php print_result_table(1, "2019"); ?>
+  		<div class="table-responsive">
+	    	<?php print_result_table(1, "2019"); ?>
+	    </div>
   		<h2 class="mt-4 mb-3">Второй дивизион</h2>
-    	<?php print_result_table(2, "2019"); ?>
+  		<div class="table-responsive">
+    		<?php print_result_table(2, "2019"); ?>
+	    </div>
     	<p class="small mt-5">Если результат какого-либо матча отображен неверно, свяжитесь с <a href="http://vk.com/aantropov">нами</a>.</p>
     	<p class="small mt-5">Upcoming updates: редактирование счета, расписание предстоящих игр с площадками, рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
   	</div>
 </main>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-	$(function() {
-		$("#inputTournament").change(function() {
-			updateTeamOptions();
-		});
-		/* updateTeamOptions: manage team names select options on tournament change */
-		function updateTeamOptions() {
-			var tournament = $("#inputTournament").val();
-			$("#inputTeam1 option, #inputTeam2 option").removeAttr("style");
-			$("#inputTeam1 [data-tournament!=" + tournament + "], #inputTeam2 [data-tournament!=" + tournament + "]").hide();
-		}
-		$("form").submit(function() {
-			var data = $(this).serialize();
-			$.ajax({
-				type: "POST",
-				url: "procedures/addResult.php",
-				data: data
-			});
-		});
-	});
-</script>
 <?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
