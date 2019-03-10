@@ -1,7 +1,6 @@
 <?php
 	require_once __DIR__ . "/inc/bootstrap.php";
 	require_once __DIR__ . "/inc/layout/head.php";
-	$db->query("update teams set team_name_long = 'ЗАБЕЙ' where team_id = 29");
 	$sth = $db->prepare("select tournament_id as id, tournament_description as name from tournaments where id in (1, 2) order by tournament_name");
 	$sth->execute();
 	$tournaments = $sth->fetchAll();
@@ -12,41 +11,88 @@
 <body class="pt-3">
 <main role="main" class="container">
   	<div class="starter-template pt-0 text-center">
+    	<?php if (isset($_GET['result'])): ?>
+    		<?php if ($_GET['result'] == "success"): ?>
+	    		<p class="bg-success text-white mt-3" id="result">
+    			Результат успешно добавлен
+    		<?php elseif ($_GET['result'] == "error"): ?>
+	    		<p class="bg-danger text-white mt-3" id="result">
+    			<?php if ($_GET['code'] == "1"): ?>
+    			К сожалению, нельзя добавить более двух матчей с участием этих команд.
+    			<?php elseif ($_GET['code'] == "2"): ?>
+    			Пожалуйста, проверьте правильность введенных данных.
+	    		<?php else: ?>
+	    		К сожалению, возникли проблемы с содинением. Пожалуйста, попробуйте позже.
+	    		<?php endif; ?>
+	    	<?php endif; ?>
+    		</p>
+    	<?php endif; ?>
     	<h2 class="mb-3">Добавить результат</h2>
-    	<form method="post" action="">
-    		<div class="form-row">
-    			<div class="col-md my-1 my-md-0">
-		    		<select class="custom-select" id="inputTournament" name="division" required>
-		    		    <option selected>Дивизион...</option>
-		    		    <?php foreach ($tournaments as $tournament): ?>
-		    		    <option value="<?php echo $tournament['id']; ?>">
-		    		    	<?php echo $tournament['name']; ?>
-		    		    </option>
-		    		    <?php endforeach; ?>
+    	<form method="post" action="" id="addResult">
+    		<div class="mb-2">
+    			<label class="sr-only" for="inputTournament">Выберите дивизион</label>
+	    		<select class="custom-select" id="inputTournament" name="division" required>
+	    		    <option selected>Дивизион...</option>
+	    		    <?php foreach ($tournaments as $tournament): ?>
+	    		    <option value="<?php echo $tournament['id']; ?>">
+	    		    	<?php echo $tournament['name']; ?>
+	    		    </option>
+	    		    <?php endforeach; ?>
+	    		</select>
+	    	</div>
+	    	<div class="form-row" id="firstDiv" style="display:none;">
+    			<div class="col-md my-1">
+		    		<select class="custom-select" id="inputTeam11" name="team11" required>
+		    		    <option value="0" selected>Команда 1...</option>
+		    			<?php foreach ($teams as $team): ?>
+		    				<?php if ($team['division'] == "1") {
+		    					echo "<option value='" . $team['id'] . "' data-tournament='" . $team['division'] . "'>" 
+		    								. $team['name'] . "</option>";
+		    				}
+			    			?>
+		    			<?php endforeach; ?>
 		    		</select>
 		    	</div>
-    			<div class="col-md my-1 my-md-0">
-		    		<select class="custom-select" id="inputTeam1" name="team1" required>
-		    		    <option selected>Команда 1...</option>
-		    		    <?php foreach ($teams as $team): ?>
-		    		    	<option value="<?php echo $team['id']; ?>" data-tournament="<?php echo $team['division']; ?>">
-		    		    		<?php echo $team['name']; ?>
-		    		    	</option>
-		    		    <?php endforeach; ?>
-		    		</select>
-		    	</div>
-    			<div class="col-md my-1 my-md-0">
-		    		<select class="custom-select" id="inputTeam2" name="team2" required>
-		    		    <option selected>Команда 2...</option>
-		    		    <?php foreach ($teams as $team): ?>
-		    		    	<option value="<?php echo $team['id']; ?>" data-tournament="<?php echo $team['division']; ?>">
-		    		    		<?php echo $team['name']; ?>
-		    		    	</option>
-		    		    <?php endforeach; ?>
+    			<div class="col-md my-1">
+		    		<select class="custom-select" id="inputTeam12" name="team12" required>
+		    		    <option value="0" selected>Команда 2...</option>
+	        			<?php foreach ($teams as $team): ?>
+	        				<?php if ($team['division'] == "1") {
+	        					echo "<option value='" . $team['id'] . "' data-tournament='" . $team['division'] . "'>" 
+	        								. $team['name'] . "</option>";
+	        				}
+	    	    			?>
+	        			<?php endforeach; ?>
 		    		</select>
 		    	</div>
 		    </div>
-		    <div class="form-row mt-2">
+		    <div class="form-row" id="secondDiv" style="display:none;">
+    			<div class="col-md my-1">
+		    		<select class="custom-select" id="inputTeam21" name="team21" required>
+		    		    <option value="0" selected>Команда 1...</option>
+            			<?php foreach ($teams as $team): ?>
+            				<?php if ($team['division'] == "2") {
+            					echo "<option value='" . $team['id'] . "' data-tournament='" . $team['division'] . "'>" 
+            								. $team['name'] . "</option>";
+            				}
+        	    			?>
+            			<?php endforeach; ?>
+		    		</select>
+		    	</div>
+    			<div class="col-md my-1">
+		    		<select class="custom-select" id="inputTeam22" name="team22" required>
+		    		    <option value="0" selected>Команда 2...</option>
+	        			<?php foreach ($teams as $team): ?>
+	        				<?php if ($team['division'] == "2") {
+	        					echo "<option value='" . $team['id'] . "' data-tournament='" . $team['division'] . "'>" 
+	        								. $team['name'] . "</option>";
+	        				}
+	    	    			?>
+	        			<?php endforeach; ?>
+		    		</select>
+		    	</div>
+	    	</div>
+		    <div class="form-row mt-2" id="score" style="display:none;">
 	    		<div class="col">
 		    		<input type="number" class="form-control" id="inputScore1" placeholder="Счет команды 1" name="score1" required>
 		    	</div>
@@ -57,7 +103,7 @@
 		    		<input type="number" class="form-control" id="inputScore2" placeholder="Счет команды 2" name="score2" required>
 		    	</div>
 		    	<div class="col-auto ml-2">
-		    		<button type="submit" class="btn btn-success">Отправить</button>
+		    		<button type="submit" class="btn btn-success" disabled="true">Отправить</button>
 		    	</div>
 	    	</div>
     	</form>
@@ -74,4 +120,5 @@
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
   	</div>
 </main>
+<div class="loading-icon"></div>
 <?php require_once __DIR__ . "/inc/layout/footer.php"; ?>

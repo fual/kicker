@@ -2,23 +2,63 @@
 <script src="inc/libs/bootstrap/js/bootstrap.min.js"></script>
 <script>
 	$(function() {
-		$("#inputTournament").change(function() {
-			updateTeamOptions();
-		});
-		/* updateTeamOptions: manage team names select options on tournament change */
-		var $options = $("#inputTeam1 options");
-		function updateTeamOptions() {
-			var tournament = $("#inputTournament").val();
-			$("#inputTeam1 option, #inputTeam2 option").removeAttr("style");
-			$("#inputTeam1 [data-tournament!=" + tournament + "], #inputTeam2 [data-tournament!=" + tournament + "]").hide();
+		if ($("#result").is(":visible")) {
+			setTimeout(function() {
+				$("#result").slideToggle();
+			}, 3000);
 		}
-		$("form").submit(function() {
+		$(document).on({
+			ajaxStart: function() { $('body').addClass('loading'); },
+			ajaxStop: function() { $('body').removeClass('loading'); }
+		});
+		$("#addResult select, #addResult input").change(function() {
+			if (isValid($("#inputTournament").val()))
+				$(".btn").attr("disabled", false);
+			else
+				$(".btn").attr("disabled", true);
+		});
+		function isValid(inpTourn) {
+			switch (inpTourn) {
+				case "1":
+					if ($("#inputTeam11").val() == "0" || $("#inputTeam12").val() == "0" || $("#inputTeam11").val() == $("#inputTeam12").val() || !$("#inputScore1").val().length || !$("#inputScore2").val().length || (+$("#inputScore1").val() + +$("#inputScore2").val()) > 79 || (+$("#inputScore1").val() + +$("#inputScore2").val()) < 40 || (+$("#inputScore1").val() != 40 && +$("#inputScore2").val() != 40))
+						return (0);
+					break ;
+				case "2":
+					if ($("#inputTeam21").val() == "0" || $("#inputTeam22").val() == "0" || $("#inputTeam21").val() == $("#inputTeam22").val() || !$("#inputScore1").val().length || !$("#inputScore2").val().length || (+$("#inputScore1").val() + +$("#inputScore2").val()) > 79 || (+$("#inputScore1").val() + +$("#inputScore2").val()) < 40 || (+$("#inputScore1").val() != 40 && +$("#inputScore2").val() != 40))
+						return (0);
+					break ;
+			}
+			return (1);
+		}
+		$("#addResult").submit(function() {
 			var data = $(this).serialize();
+			$(".btn").attr("disabled", true);
 			$.ajax({
 				type: "POST",
 				url: "procedures/addResult.php",
 				data: data
+			}).done(function(data) {
+				if (data == "success")
+					window.location = "/?result=success";
+				else
+					window.location = "/?result=error&code=" + data;
+			}).fail(function() {		
+				window.location = "/?result=error&code=3";
 			});
+			return false;
+		});
+		$("#inputTournament").change(function() {
+			$("#score, #firstDiv, #secondDiv").hide();
+			$("#inputTeam11, #inputTeam12, #inputTeam21, #inputTeam22").each(function() {
+				$(this).val($(this).find("option:first").val());
+			});
+			if ($(this).val() != "Дивизион...") {
+				if ($(this).val() == "1")
+					$("#firstDiv").show();
+				else
+					$("#secondDiv").show();
+				$("#score").show();
+			}
 		});
 	});
 </script>
