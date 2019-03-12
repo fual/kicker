@@ -39,9 +39,10 @@
 		    	</div>
 	    	</div>
     	</form>
-    	<form method="post" action="" class="text-left mt-5" id="deleteResult">
+    	<form method="post" action="" class="mt-5 d-flex" id="deleteResult">
     		<input type="hidden" name="id" value="<?php echo $match_id; ?>">
-	    	<button type="submit" class="btn btn-danger">Удалить матч</button>
+    		<a href="/" class="btn btn-primary">Назад</a>
+	    	<button type="submit" class="btn btn-danger ml-auto">Удалить матч</button>
 	    </form>
   	</div>
 </main>
