@@ -13,8 +13,14 @@
   	<div class="starter-template pt-0 text-center">
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
-	    		<p class="bg-success text-white mt-3" id="result">
+    			<p class="bg-success text-white mt-3" id="result">
+    			<?php if (isset($_GET['code']) && $_GET['code'] == "1"): ?>
+    			Результат успешно изменен
+    			<?php elseif (isset($_GET['code']) && $_GET['code'] == "2"): ?>
+    			Матч успешно удален
+				<?php else: ?>
     			Результат успешно добавлен
+	    		<?php endif; ?>
     		<?php elseif ($_GET['result'] == "error"): ?>
 	    		<p class="bg-danger text-white mt-3" id="result">
     			<?php if ($_GET['code'] == "1"): ?>
@@ -22,7 +28,7 @@
     			<?php elseif ($_GET['code'] == "2"): ?>
     			Пожалуйста, проверьте правильность введенных данных.
 	    		<?php else: ?>
-	    		К сожалению, возникли проблемы с содинением. Пожалуйста, попробуйте позже.
+	    		К сожалению, возникли проблемы с соединением. Пожалуйста, попробуйте позже.
 	    		<?php endif; ?>
 	    	<?php endif; ?>
     		</p>
@@ -82,7 +88,8 @@
     		<?php print_result_table(2, "2019"); ?>
 	    </div>
     	<p class="small mt-5">Если результат какого-либо матча отображен неверно, свяжитесь с <a href="http://vk.com/aantropov">нами</a>.</p>
-    	<p class="small mt-5">Upcoming updates: редактирование счета, расписание предстоящих игр с площадками, рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
+    	<p class="small mt-5">Recently released: редактирование и удаление счта.</p>
+    	<p class="small mt-5">Upcoming updates: расписание предстоящих игр с площадками, рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
   	</div>
 </main>

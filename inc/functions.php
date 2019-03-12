@@ -215,20 +215,20 @@ function find_match_results($home_team, $away_team, $results, $tournament) {
 	foreach ($results as $result)
 		if ($result['home_team'] == $home_team && $result['away_team'] == $away_team)
 		{
-			// if ($result['away_score'] != "t" || $result['home_score'] != "t")
-			// 	$res .= '<a href="match?id=' . $result['match_id'] . '">';
+			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['home_score'] . ':' . $result['away_score'];
-			// if ($result['away_score'] != "t" || $result['home_score'] != "t")
-			// 	$res .= '</a>';
+			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+				$res .= '</a>';
 			$res .= " ";
 		}
 		else if ($result['away_team'] == $home_team && $result['home_team'] == $away_team)
 		{
-			// if ($result['away_score'] != "t" || $result['home_score'] != "t")
-			// 	$res .= '<a href="match?id=' . $result['match_id'] . '">';
+			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['away_score'] . ':' . $result['home_score'];
-			// if ($result['away_score'] != "t" || $result['home_score'] != "t")
-			// 	$res .= '</a>';
+			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+				$res .= '</a>';
 			$res .= " ";
 		}
 	if (!(strlen($res) - 1))
