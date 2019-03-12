@@ -88,8 +88,8 @@
     		<?php print_result_table(2, "2019"); ?>
 	    </div>
     	<p class="small mt-5">Если результат какого-либо матча отображен неверно, свяжитесь с <a href="http://vk.com/aantropov">нами</a>.</p>
-    	<p class="small mt-5">Recently released: редактирование и удаление счта.</p>
-    	<p class="small mt-5">Upcoming updates: расписание предстоящих игр с площадками, рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
+    	<p class="small mt-5">Recently released: редактирование и удаление счета.</p>
+    	<p class="small mt-3">Upcoming updates: расписание предстоящих игр с площадками, рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
   	</div>
 </main>
