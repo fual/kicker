@@ -55,6 +55,7 @@ $(function() {
 			url: "procedures/addResult.php",
 			data: data
 		}).done(function(data) {
+			console.log(data);
 			if (data == "success")
 				window.location = "/?result=success";
 			else

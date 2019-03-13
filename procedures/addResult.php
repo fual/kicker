@@ -2,12 +2,16 @@
 require __DIR__ . '/../inc/bootstrap.php';
 try {
 	$division = filter_var($_POST['division'], FILTER_SANITIZE_NUMBER_INT);
-	$teamid11 = filter_var($_POST['team11'], FILTER_SANITIZE_NUMBER_INT);
-	$teamid12 = filter_var($_POST['team12'], FILTER_SANITIZE_NUMBER_INT);
-	$teamid21 = filter_var($_POST['team21'], FILTER_SANITIZE_NUMBER_INT);
-	$teamid22 = filter_var($_POST['team22'], FILTER_SANITIZE_NUMBER_INT);
-	$teamid1 = $teamid11 != 0 ? $teamid11 : $teamid21;
-	$teamid2 = $teamid12 != 0 ? $teamid12 : $teamid22;
+	if (isset($_POST['team11'])) {
+		$teamid11 = filter_var($_POST['team11'], FILTER_SANITIZE_NUMBER_INT);
+		$teamid12 = filter_var($_POST['team12'], FILTER_SANITIZE_NUMBER_INT);
+	}
+	if (isset($_POST['team21'])) {
+		$teamid21 = filter_var($_POST['team21'], FILTER_SANITIZE_NUMBER_INT);
+		$teamid22 = filter_var($_POST['team22'], FILTER_SANITIZE_NUMBER_INT);
+	}
+	$teamid1 = isset($teamid11) && $teamid11 != 0 ? $teamid11 : $teamid21;
+	$teamid2 = isset($teamid12) && $teamid12 != 0 ? $teamid12 : $teamid22;
 	$score1 = filter_var($_POST['score1'], FILTER_SANITIZE_NUMBER_INT);
 	$score2 = filter_var($_POST['score2'], FILTER_SANITIZE_NUMBER_INT);
 	$season_id = 1;
