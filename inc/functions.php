@@ -94,12 +94,13 @@ function print_result_table($division, $season) {
 	$sth->execute(array($division, $season));
 	$tournament = $sth->fetch();
 	/* teams names ordered by points scored */
-	$sql = "
-			with points_table as
+	$sql = "with points_table as
 			(select
 			ht.team_name_short as name,
 			sum(m.points_1) as points,
-			count(*) as games_played
+			count(*) as games_played,
+			sum(sets_won1) as scored,
+			sum(sets_won2) as conceded
 			from teams as ht
 			inner join matches as m on ht.team_id = m.team_id1
 			where m.tournament_id = :tournament_id and m.season_id = :season_id
@@ -108,15 +109,17 @@ function print_result_table($division, $season) {
 			select
 			at.team_name_short as name,
 			sum(m.points_2) as points,
-			count(*) as games_played
+			count(*) as games_played,
+			sum(sets_won2) as scored,
+			sum(sets_won1) as conceded
 			from teams as at
 			inner join matches as m on at.team_id = m.team_id2
 			where m.tournament_id = :tournament_id and m.season_id = :season_id
 			group by name)
-			select name, sum(points) as points, sum(games_played) as games_played, ((:qty - 1) * :r - sum(games_played)) as games_left
+			select name, sum(points) as points, sum(games_played) as games_played, sum(scored) - sum(conceded) as goal_diff, ((:qty - 1) * :r - sum(games_played)) as games_left
 			from points_table
 			group by name
-			order by points desc";
+			order by points desc, goal_diff desc";
 	$sth = $db->prepare($sql);
 	$sth->bindValue(':tournament_id', $tournament['tournament_id'], PDO::PARAM_INT);
 	$sth->bindValue(':season_id', $tournament['season_id'], PDO::PARAM_INT);
@@ -142,7 +145,7 @@ function print_result_table($division, $season) {
 	$sth->bindValue(':season_id', $tournament['season_id'], PDO::PARAM_INT);
 	$sth->execute();
 	$results = $sth->fetchAll();
-	$cols = $tournament['teams_quantity'] + 4;
+	$cols = $tournament['teams_quantity'] + 5;
 	if (count($standings) < $tournament['teams_quantity'])
 	{
 		$sth = $db->prepare("select team_name_short as name from teams where tournament_id = :tournament_id order by name");
@@ -158,6 +161,7 @@ function print_result_table($division, $season) {
 			if (!$double)
 			{
 				$team['points'] = '0';
+				$team['goal_diff'] = '0';
 				$team['games_played'] = '0';
 				$team['games_left'] = ''.($tournament['teams_quantity'] - 1) * $tournament['rounds'];
 				array_push($standings, $team);
@@ -171,6 +175,7 @@ function print_result_table($division, $season) {
 	for ($i = 0; $i < $tournament['teams_quantity']; $i++)
 		echo '<th сolspan="2">' . $standings[$i]['name'] . '</th>';
 	echo '<th>Очки</th>';
+	echo '<th>+/-</th>';
 	echo '<th>Игры</th>';
 	echo '<th>Осталось</th>';
 	echo '</tr>';
@@ -189,8 +194,11 @@ function print_result_table($division, $season) {
 				case ($i + 1):
 					echo '<td class="bg-dark"></td>';
 					break ;
-				case ($cols - 3):
+				case ($cols - 4):
 					echo '<td>' . $standings[$i]['points'] . '</td>';
+					break ;
+				case ($cols - 3):
+					echo '<td>' . $standings[$i]['goal_diff'] . '</td>';
 					break ;
 				case ($cols - 2):
 					echo '<td>' . $standings[$i]['games_played'] . '</td>';
