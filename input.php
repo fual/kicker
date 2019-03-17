@@ -14,10 +14,12 @@
 <main role="main" class="container">
   	<div class="starter-template pt-0">
 		<h2>Добавить результат</h2>
-		<h4 class="mb-4">
+		<?php if (isset($tournament_id)): ?>
+		<h4>
 			<?php echo $tournament_id == 1 ? "Первый дивизион" : "Второй дивизион"; ?>
 		</h4>
-		<form method="post" action="" id="addResult">
+		<?php endif; ?>
+		<form method="post" action="" id="addResult" class="mt-4">
 			<?php if (!isset($tournament_id)): ?>
 	    		<div class="mb-2">
 	    			<label class="sr-only" for="inputTournament">Выберите дивизион</label>
