@@ -57,3 +57,20 @@ body.loading .loading-icon {
   display: block;
   overflow: hidden;   
 }
+.table td, .table th {
+  text-align: center;
+  vertical-align: middle;
+}
+#schedule .form-control {
+  display: none;
+}
+#schedule .show {
+  display: block;
+}
+.schedule-place, .schedule-date {
+  display: none;
+  cursor: pointer;
+}
+.schedule-place.show, .schedule-date.show {
+  display: block;
+}

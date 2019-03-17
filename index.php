@@ -9,11 +9,11 @@
     		<?php if ($_GET['result'] == "success"): ?>
     			<p class="bg-success text-white mt-3" id="result">
     			<?php if (isset($_GET['code']) && $_GET['code'] == "1"): ?>
-    			Результат успешно изменен
+    			Результат успешно изменен.
     			<?php elseif (isset($_GET['code']) && $_GET['code'] == "2"): ?>
-    			Матч успешно удален
+    			Матч успешно удален.
 				<?php else: ?>
-    			Результат успешно добавлен
+    			Результат успешно добавлен.
 	    		<?php endif; ?>
     		<?php elseif ($_GET['result'] == "error"): ?>
 	    		<p class="bg-danger text-white mt-3" id="result">

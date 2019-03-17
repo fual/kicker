@@ -104,4 +104,31 @@ $(function() {
 		});
 		return false;
 	});
+	$("#schedule .form-control").change(function() {
+		var data = $(this).serialize() + "&id=" + $(this).attr("data-schedule");
+		$.ajax({
+			type: "POST",
+			url: "procedures/updateSchedule.php",
+			data: data
+		}).done(function(data) {
+			if (data == "success")
+				window.location = "/schedule.php?result=success&code=1";
+			else
+				window.location = "/schedule.php?result=error&code=3";
+		}).fail(function() {		
+			window.location = "/schedule.php?result=error&code=3";
+		});
+	});
+	$(".schedule-place, .schedule-date").click(function() {
+		$(this).removeClass("show").siblings().addClass("show");
+		if ($(this).hasClass("schedule-date")) {
+			var data = "date=0&id=" + $(this).siblings(".form-control").attr("data-schedule");
+			console.log(data);
+			$.ajax({
+				type: "POST",
+				url: "procedures/updateSchedule.php",
+				data: data
+			});
+		}
+	});
 });

@@ -220,3 +220,11 @@ id, login, password
 create table users (id integer primary key autoincrement, login text, password text);
 insert into users values
 (NULL, 'admin', 'admin');
+
+create table schedule (id integer primary key autoincrement, season_id references seasons(season_id), tournament_id references tournaments(tournament_id), tour integer, team_id1 references teams(team_id), team_id2 references teams(team_id), date_start text, date_end text, place_id references places(place_id), date text);
+insert into schedule values 
+(NULL, 1, 1, 1, 4, 8, '4.03', '10.03', NULL, NULL);
+
+create table places (place_id integer primary key autoincrement, name text);
+insert into places values
+(NULL, "FC Pub");
