@@ -104,8 +104,25 @@ $(function() {
 		});
 		return false;
 	});
-	$("#schedule .form-control").change(function() {
-		var data = $(this).serialize() + "&id=" + $(this).attr("data-schedule");
+	$("[data-action='scheduleEdit']").click(function() {
+		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time").hide();
+		$(this).parents("tr").addClass("mobile-edit").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit']")
+			.show();
+		$(this).hide();
+	});
+	$("[data-action='scheduleQuit']").click(function() {
+		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time, [data-action='scheduleEdit']").show();
+		$(this).parents("tr").removeClass("mobile-edit").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit']")
+			.hide();
+		$(this).hide();
+	});
+	$("[data-action='scheduleClear']").click(function() {
+		$(this).parents("tr").find("input.form-control:not([type='hidden'])").val("");
+		$(this).parents("tr").find("select").val("0");
+	});
+	$("[data-action='scheduleSubmit']").click(function() {
+		var data = $(this).parents("tr").find(".form-control").serialize();
+		console.log(data);
 		$.ajax({
 			type: "POST",
 			url: "procedures/updateSchedule.php",
@@ -118,17 +135,6 @@ $(function() {
 		}).fail(function() {		
 			window.location = "/schedule.php?result=error&code=3";
 		});
-	});
-	$(".schedule-place, .schedule-date").click(function() {
-		$(this).removeClass("show").siblings().addClass("show");
-		if ($(this).hasClass("schedule-date")) {
-			var data = "date=0&id=" + $(this).siblings(".form-control").attr("data-schedule");
-			console.log(data);
-			$.ajax({
-				type: "POST",
-				url: "procedures/updateSchedule.php",
-				data: data
-			});
-		}
+		return false;
 	});
 });

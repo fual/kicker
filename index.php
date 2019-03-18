@@ -2,12 +2,12 @@
 	require_once __DIR__ . "/inc/bootstrap.php";
 	require_once __DIR__ . "/inc/layout/head.php";
 ?>
-<body class="pt-3">
+<body>
 <main role="main" class="container">
-  	<div class="starter-template pt-0 text-center">
+  	<div class="starter-template text-center">
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
-    			<p class="bg-success text-white mt-3" id="result">
+    			<p class="bg-success text-white mt-3 result" id="result">
     			<?php if (isset($_GET['code']) && $_GET['code'] == "1"): ?>
     			Результат успешно изменен.
     			<?php elseif (isset($_GET['code']) && $_GET['code'] == "2"): ?>
@@ -16,7 +16,7 @@
     			Результат успешно добавлен.
 	    		<?php endif; ?>
     		<?php elseif ($_GET['result'] == "error"): ?>
-	    		<p class="bg-danger text-white mt-3" id="result">
+	    		<p class="bg-danger text-white mt-3 result" id="result">
     			<?php if ($_GET['code'] == "1"): ?>
     			К сожалению, нельзя добавить более двух матчей с участием этих команд.
     			<?php elseif ($_GET['code'] == "2"): ?>
@@ -27,6 +27,13 @@
 	    	<?php endif; ?>
     		</p>
     	<?php endif; ?>
+        <div class="d-flex align-items-center mt-4 mb-3 flex-column flex-md-row">
+            <h2 class="text-left">Ближайшие игры</h2>
+            <a href="schedule.php" class="btn btn-primary mr-auto mr-md-0 ml-md-auto">Расписание</a>
+        </div>
+        <div class="table-responsive">
+            <?php include __DIR__ . "/inc/layout/templates/next_games.php"; ?>
+        </div>
     	<div class="d-flex align-items-center mt-4 mb-3">
 	  		<h2 class="text-left">Первый дивизион</h2>
 	  		<a href="input.php?tournament=1" class="btn btn-success ml-auto">+ счет</a>
