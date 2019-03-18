@@ -61,7 +61,7 @@
 						<input type="date" class="form-control" name="date" id="date"<?php if (isset($game['date'])) echo " value='" . $game['date'] . "'";?>>
 	  					<span class="schedule-date">
 	  						<?php if (isset($game['date'])): ?>
-	  							<?php echo $game['date']; ?>
+	  							<?php echo date_format(date_create($game['date']), "j.m"); ?>
   							<?php else: ?>
   								-
   							<?php endif; ?>

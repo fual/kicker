@@ -41,7 +41,7 @@
 				<td class="d-none d-md-table-cell"><?php echo $next['tour']; ?></td>
 				<td><?php echo $next['team_name1'] . " - " . $next['team_name2']; ?></td>
 				<td><?php echo $next['place']; ?></td>
-				<td><?php echo $next['date']; ?></td>
+				<td><?php echo date_format(date_create($next['date']), "j.m"); ?></td>
 				<td><?php echo $next['time']; ?></td>
 			</tr>
 		<?php endforeach; ?>
