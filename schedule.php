@@ -22,7 +22,7 @@
 	);
 	$sth->execute();
 	$schedule = $sth->fetchAll();
-	$sth = $db->prepare("select * from places");
+	$sth = $db->prepare("select * from places order by name");
 	$sth->execute();
 	$places = $sth->fetchAll();
 	// var_dump($schedule);

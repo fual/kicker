@@ -26,8 +26,8 @@
 <table class="table table-sm text-center">
 	<thead class="thead-light">
 		<tr>
-			<th class="d-none d-md-table-cell">Див.</th>
-			<th class="d-none d-md-table-cell">Тур</th>
+			<th>Див.</th>
+			<th>Тур</th>
 			<th>Команды</th>
 			<th>Место</th>
 			<th>Дата</th>
