@@ -37,7 +37,7 @@
 	<tbody>
 		<?php foreach ($next_games as $next): ?>
 			<tr>
-				<td><?php echo ($next['tournament_id'] == "1" ? "П" : "В"); ?></td>
+				<td title="<?php echo ($next['tournament_id'] == "1" ? "Первый" : "Второй"); ?>"><?php echo ($next['tournament_id'] == "1" ? "П" : "В"); ?></td>
 				<td><?php echo $next['tour']; ?></td>
 				<td><?php echo $next['team_name1'] . " - " . $next['team_name2']; ?></td>
 				<td><?php echo $next['place']; ?></td>

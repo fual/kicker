@@ -47,6 +47,7 @@
     	<?php endif; ?>
 		<h2 class="text-center mt-4 mb-3">Расписание</h2>
     	<?php include __DIR__ . "/inc/layout/templates/schedule_table.php"; ?>
+    	<p class="small mt-4">Заполните все поля, чтобы игра появилась на главной странице. Игры доступны для редактирования 3 дня со дня указанного в столбце "Дата".</p>
   	</div>
 </main>
 <div class="loading-icon"></div>
