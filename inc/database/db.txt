@@ -220,3 +220,52 @@ id, login, password
 create table users (id integer primary key autoincrement, login text, password text);
 insert into users values
 (NULL, 'admin', 'admin');
+
+create table schedule (id integer primary key autoincrement, season_id references seasons(season_id), tournament_id references tournaments(tournament_id), tour integer, team_id1 references teams(team_id), team_id2 references teams(team_id), date_start text, date_end text, place_id references places(place_id), date text, time text);
+insert into schedule values 
+(NULL, 1, 1, 1, 4, 8, '4.03', '10.03', NULL, NULL, NULL),
+(NULL, 1, 1, 1, 1, 3, '4.03', '10.03', NULL, NULL, NULL),
+(NULL, 1, 1, 1, 11, 13, '4.03', '10.03', NULL, NULL, NULL),
+(NULL, 1, 1, 2, 12, 1, '11.03', '17.03', NULL, NULL, NULL),
+(NULL, 1, 1, 2, 3, 11, '11.03', '17.03', NULL, NULL, NULL),
+(NULL, 1, 1, 2, 13, 12, '11.03', '17.03', NULL, NULL, NULL),
+(NULL, 1, 1, 3, 1, 4, '18.03', '24.03', NULL, NULL, NULL),
+(NULL, 1, 1, 3, 8, 3, '18.03', '24.03', NULL, NULL, NULL),
+(NULL, 1, 1, 3, 12, 11, '18.03', '24.03', NULL, NULL, NULL),
+(NULL, 1, 1, 4, 4, 13, '25.03', '31.03', NULL, NULL, NULL),
+(NULL, 1, 1, 4, 11, 1, '25.03', '31.03', NULL, NULL, NULL),
+(NULL, 1, 1, 4, 3, 12, '25.03', '31.03', NULL, NULL, NULL),
+(NULL, 1, 1, 5, 3, 4, '1.04', '7.04', NULL, NULL, NULL),
+(NULL, 1, 1, 5, 13, 8, '1.04', '7.04', NULL, NULL, NULL),
+(NULL, 1, 1, 5, 12, 1, '1.04', '7.04', NULL, NULL, NULL),
+(NULL, 1, 1, 6, 4, 11, '8.04', '14.04', NULL, NULL, NULL),
+(NULL, 1, 1, 6, 8, 12, '8.04', '14.04', NULL, NULL, NULL),
+(NULL, 1, 1, 6, 13, 3, '8.04', '14.04', NULL, NULL, NULL),
+(NULL, 1, 1, 7, 12, 4, '15.04', '21.04', NULL, NULL, NULL),
+(NULL, 1, 1, 7, 1, 13, '15.04', '21.04', NULL, NULL, NULL),
+(NULL, 1, 1, 7, 11, 8, '15.04', '21.04', NULL, NULL, NULL);
+insert into schedule values
+(NULL, 1, 2, 1, 10, 9, '4.03', '10.03', NULL, NULL, NULL),
+(NULL, 1, 2, 1, 2, 7, '4.03', '10.03', NULL, NULL, NULL),
+(NULL, 1, 2, 1, 5, 6, '4.03', '10.03', NULL, NULL, NULL),
+(NULL, 1, 2, 2, 9, 2, '11.03', '17.03', NULL, NULL, NULL),
+(NULL, 1, 2, 2, 7, 5, '11.03', '17.03', NULL, NULL, NULL),
+(NULL, 1, 2, 2, 6, 10, '11.03', '17.03', NULL, NULL, NULL),
+(NULL, 1, 2, 3, 10, 2, '18.03', '24.03', NULL, NULL, NULL),
+(NULL, 1, 2, 3, 9, 5, '18.03', '24.03', NULL, NULL, NULL),
+(NULL, 1, 2, 3, 7, 6, '18.03', '24.03', NULL, NULL, NULL),
+(NULL, 1, 2, 4, 5, 10, '25.03', '31.03', NULL, NULL, NULL),
+(NULL, 1, 2, 4, 9, 7, '25.03', '31.03', NULL, NULL, NULL),
+(NULL, 1, 2, 4, 6, 2, '25.03', '31.03', NULL, NULL, NULL),
+(NULL, 1, 2, 5, 7, 10, '1.04', '7.04', NULL, NULL, NULL),
+(NULL, 1, 2, 5, 2, 5, '1.04', '7.04', NULL, NULL, NULL),
+(NULL, 1, 2, 5, 6, 9, '1.04', '7.04', NULL, NULL, NULL);
+
+create table places (place_id integer primary key autoincrement, name text);
+insert into places values
+(NULL, "FC Pub"),
+(NULL, "Джон Донн"),
+(NULL, "Свои"),
+(NULL, "Папа Вейдер"),
+(NULL, "Антон Палыч"),
+(NULL, "Pivzavod 77");

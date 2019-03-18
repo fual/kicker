@@ -104,4 +104,37 @@ $(function() {
 		});
 		return false;
 	});
+	$("[data-action='scheduleEdit']").click(function() {
+		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time").hide();
+		$(this).parents("tr").addClass("mobile-edit").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit']")
+			.show();
+		$(this).hide();
+	});
+	$("[data-action='scheduleQuit']").click(function() {
+		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time, [data-action='scheduleEdit']").show();
+		$(this).parents("tr").removeClass("mobile-edit").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit']")
+			.hide();
+		$(this).hide();
+	});
+	$("[data-action='scheduleClear']").click(function() {
+		$(this).parents("tr").find("input.form-control:not([type='hidden'])").val("");
+		$(this).parents("tr").find("select").val("0");
+	});
+	$("[data-action='scheduleSubmit']").click(function() {
+		var data = $(this).parents("tr").find(".form-control").serialize();
+		console.log(data);
+		$.ajax({
+			type: "POST",
+			url: "procedures/updateSchedule.php",
+			data: data
+		}).done(function(data) {
+			if (data == "success")
+				window.location = "/schedule.php?result=success&code=1";
+			else
+				window.location = "/schedule.php?result=error&code=3";
+		}).fail(function() {		
+			window.location = "/schedule.php?result=error&code=3";
+		});
+		return false;
+	});
 });
