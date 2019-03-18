@@ -61,6 +61,7 @@ body.loading .loading-icon {
 .table td, .table th {
   text-align: center;
   vertical-align: middle;
+  font-size: 12px;
 }
 #schedule .form-control {
   display: none;
@@ -75,9 +76,8 @@ body.loading .loading-icon {
 [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit'] {
   display: none;
 }
-@media (max-width: 575px) {
-  .mobile-edit {
-    display: flex;
-    flex-direction: column;
+@media (min-width: 576px) {
+  .table td, .table th {
+    font-size: 1rem;
   }
 }

@@ -1,3 +1,18 @@
+<ul class="list-unstyled list-inline mt-4 small">
+	<li class="list-inline-item">Легенда:</li>
+	<li class="list-inline-item">
+		<i class="fas fa-edit"></i> - редактировать,
+	</li>
+	<li class="list-inline-item">
+		<i class="fas fa-eraser"></i> - очистить,
+	</li>
+	<li class="list-inline-item">
+		<i class="fas fa-save"></i> - сохранить,
+	</li>
+	<li class="list-inline-item">
+		<i class="fas fa-times"></i> - вернуться.
+	</li>
+</ul>
 <div class="table-responsive">
   	<table class="table table-hover text-center table-sm" id="schedule">
   		<thead class="thead-dark">
@@ -82,18 +97,3 @@
 		</tbody>
 	</table>
 </div>
-<ul class="list-unstyled mt-4 small">
-	<li>Легенда:</li>
-	<li>
-		<i class="fas fa-edit"></i> - редактировать
-	</li>
-	<li>
-		<i class="fas fa-eraser"></i> - очистить
-	</li>
-	<li>
-		<i class="fas fa-save"></i> - сохранить
-	</li>
-	<li>
-		<i class="fas fa-times"></i> - вернуться
-	</li>
-</ul>
