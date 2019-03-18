@@ -106,13 +106,13 @@ $(function() {
 	});
 	$("[data-action='scheduleEdit']").click(function() {
 		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time").hide();
-		$(this).parents("tr").addClass("mobile-edit").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit']")
+		$(this).parents("tr").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit']")
 			.show();
 		$(this).hide();
 	});
 	$("[data-action='scheduleQuit']").click(function() {
 		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time, [data-action='scheduleEdit']").show();
-		$(this).parents("tr").removeClass("mobile-edit").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit']")
+		$(this).parents("tr").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit']")
 			.hide();
 		$(this).hide();
 	});
