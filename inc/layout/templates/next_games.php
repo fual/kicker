@@ -26,7 +26,7 @@
 <table class="table table-sm text-center">
 	<thead class="thead-light">
 		<tr>
-			<th class="d-none d-md-table-cell">Дивизион</th>
+			<th class="d-none d-md-table-cell">Див.</th>
 			<th class="d-none d-md-table-cell">Тур</th>
 			<th>Команды</th>
 			<th>Место</th>
@@ -37,8 +37,8 @@
 	<tbody>
 		<?php foreach ($next_games as $next): ?>
 			<tr>
-				<td class="d-none d-md-table-cell"><?php echo ($next['tournament_id'] == "1" ? "Первый" : "Второй"); ?></td>
-				<td class="d-none d-md-table-cell"><?php echo $next['tour']; ?></td>
+				<td><?php echo ($next['tournament_id'] == "1" ? "П" : "В"); ?></td>
+				<td><?php echo $next['tour']; ?></td>
 				<td><?php echo $next['team_name1'] . " - " . $next['team_name2']; ?></td>
 				<td><?php echo $next['place']; ?></td>
 				<td><?php echo date_format(date_create($next['date']), "j.m"); ?></td>

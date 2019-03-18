@@ -36,7 +36,7 @@
 		  			</tr>
 		  		<?php endif; ?>
 		  		<tr>
-		  			<td><?php echo ($game['tournament_id'] == "1" ? "<span class='d-md-none'>1</span><span class='d-none d-md-inline'>Первый</span>" : "<span class='d-md-none'>2</span><span class='d-none d-md-inline'>Второй</span>"); ?></td>
+		  			<td><?php echo ($game['tournament_id'] == "1" ? "П" : "В"); ?></td>
 		  			<td><?php echo $game['team_name1']; ?> - <?php echo $game['team_name2']; ?></td>
 		  			<td>
 						<select class="form-control" name="place" id="place">
