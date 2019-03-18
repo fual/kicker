@@ -17,7 +17,7 @@
 		from schedule as s
 		inner join teams as ht on ht.team_id = s.team_id1
 		inner join teams as at on at.team_id = s.team_id2
-		where date is NULL or date >= date('now', '-2 day')
+		where date is NULL or date >= date('now', '-2 day') or place_id is NULL or time is NULL
 		order by tour"
 	);
 	$sth->execute();
