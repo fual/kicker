@@ -64,10 +64,10 @@
 	  	</div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="#secondDivTeamsPane" id="secondDivTeamsTab" data-toggle="tab">Команды</a>
+                <a class="nav-link active" href="#secondDivTeamsPane" id="secondDivTeamsTab" data-toggle="tab" role="tab">Команды</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#secondDivPlayersPane" id="secondDivPlayersTab" data-toggle="tab">Игроки</a>
+                <a class="nav-link" href="#secondDivPlayersPane" id="secondDivPlayersTab" data-toggle="tab" role="tab">Игроки</a>
             </li>
         </ul>
         <div class="tab-content mt-3">
