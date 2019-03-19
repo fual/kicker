@@ -1,4 +1,15 @@
-<ul class="list-unstyled list-inline mt-4 small">
+<div class="d-flex mt-3 align-items-center">
+	<label for="teamFilter" class="col-form-label">Фильтр по команде:</label>
+	<select class="form-control w-50 ml-4" id="teamFilter" name="search">
+		<option value="0">Команда ...</option>
+		<?php foreach ($teams as $team): ?>
+			<option value="<?php echo $team['name']; ?>"<?php if (isset($_GET['search']) && $_GET['search'] == $team['name']) echo " selected"; ?>>
+				<?php echo $team['name']; ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
+</div>
+<ul class="list-unstyled list-inline mt-3 small">
 	<li class="list-inline-item">Легенда:</li>
 	<li class="list-inline-item">
 		<i class="fas fa-edit"></i> - редактировать,

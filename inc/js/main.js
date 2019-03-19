@@ -137,4 +137,8 @@ $(function() {
 		});
 		return false;
 	});
+	$("#teamFilter").change(function() {
+		var data = $(this).serialize();
+		window.location = "/schedule?" + data;
+	});
 });
