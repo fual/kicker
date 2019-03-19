@@ -20,7 +20,6 @@
 	);
 	$sth->execute();
 	$next_games = $sth->fetchAll();
-	date_default_timezone_set("Europe/Moscow");
 	// var_dump($next_games);
 ?>
 <?php if (sizeof($next_games)): ?>
