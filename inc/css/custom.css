@@ -63,7 +63,7 @@ body.loading .loading-icon {
   vertical-align: middle;
   font-size: 12px;
 }
-#schedule .form-control {
+#schedule .form-control, #schedule .custom-select:not(#teamFilter) {
   display: none;
 }
 .result {

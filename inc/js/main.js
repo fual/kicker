@@ -106,13 +106,13 @@ $(function() {
 	});
 	$("[data-action='scheduleEdit']").click(function() {
 		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time").hide();
-		$(this).parents("tr").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit']")
+		$(this).parents("tr").find(".custom-select:not(#teamFilter), .form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit']")
 			.show();
 		$(this).hide();
 	});
 	$("[data-action='scheduleQuit']").click(function() {
 		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time, [data-action='scheduleEdit']").show();
-		$(this).parents("tr").find(".form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit']")
+		$(this).parents("tr").find(".custom-select:not(#teamFilter), .form-control:not([type='hidden']), [data-action='scheduleClear'], [data-action='scheduleSubmit']")
 			.hide();
 		$(this).hide();
 	});
@@ -121,7 +121,7 @@ $(function() {
 		$(this).parents("tr").find("select").val("0");
 	});
 	$("[data-action='scheduleSubmit']").click(function() {
-		var data = $(this).parents("tr").find(".form-control").serialize();
+		var data = $(this).parents("tr").find(".form-control, .custom-select:not(#teamFilter)").serialize();
 		console.log(data);
 		$.ajax({
 			type: "POST",
