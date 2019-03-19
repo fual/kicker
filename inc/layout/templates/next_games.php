@@ -23,8 +23,8 @@
 	// var_dump($next_games);
 ?>
 <?php if (sizeof($next_games)): ?>
-<table class="table table-sm text-center">
-	<thead class="thead-light">
+<table class="table table-sm table-striped table-hover text-center">
+	<thead class="thead-dark">
 		<tr>
 			<th>Див.</th>
 			<th>Тур</th>
@@ -36,7 +36,7 @@
 	</thead>
 	<tbody>
 		<?php foreach ($next_games as $next): ?>
-			<tr>
+			<tr<?php if (date_format(date_create($next['date']), "j.m") == date_format(date_create("now"), "j.m")) echo " class='bg-warning font-italic'"; ?>>
 				<td title="<?php echo ($next['tournament_id'] == "1" ? "Первый" : "Второй"); ?>"><?php echo ($next['tournament_id'] == "1" ? "П" : "В"); ?></td>
 				<td><?php echo $next['tour']; ?></td>
 				<td><?php echo $next['team_name1'] . " - " . $next['team_name2']; ?></td>
