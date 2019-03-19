@@ -38,16 +38,50 @@
 	  		<h2 class="text-left">Первый дивизион</h2>
 	  		<a href="input.php?tournament=1" class="btn btn-success ml-auto">+ счет</a>
 	  	</div>
-  		<div class="table-responsive">
-	    	<?php print_result_table(1, "2019"); ?>
-	    </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#firstDivTeamsPane" id="firstDivTeamsTab" data-toggle="tab">Команды</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#firstDivPlayersPane" id="firstDivPlayersTab" data-toggle="tab">Игроки</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="firstDivTeamsPane">
+                <div class="table-responsive">
+                    <?php print_result_table(1, "2019"); ?>
+                </div>
+            </div>
+            <div class="tab-pane fade text-left" id="firstDivPlayersPane">
+                <a href="https://docs.google.com/spreadsheets/d/12B7z0SSQUAEJmSx2ii32x3yHc_WXdUwaBib8Qwleg_s/edit#gid=0">
+                    Google Docs <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
   		<div class="d-flex align-items-center mt-4 mb-3">
 	  		<h2 class="text-left">Второй дивизион</h2>
 	  		<a href="input.php?tournament=2" class="btn btn-success ml-auto">+ счет</a>
 	  	</div>
-  		<div class="table-responsive">
-    		<?php print_result_table(2, "2019"); ?>
-	    </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#secondDivTeamsPane" id="secondDivTeamsTab" data-toggle="tab">Команды</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#secondDivPlayersPane" id="secondDivPlayersTab" data-toggle="tab">Игроки</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="secondDivTeamsPane">
+          		<div class="table-responsive">
+            		<?php print_result_table(2, "2019"); ?>
+        	    </div>
+            </div>
+            <div class="tab-pane fade text-left" id="secondDivPlayersPane">
+                <a href="https://docs.google.com/spreadsheets/d/12B7z0SSQUAEJmSx2ii32x3yHc_WXdUwaBib8Qwleg_s/edit#gid=888149235">
+                    Google Docs <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
     	<p class="small mt-5">Нажмите на счет, чтобы отредактировать. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
     	<p class="small mt-5">Recently released: выделение сегодняшних игр, фильтр расписания, расписание предстоящих игр с площадками, редактирование и удаление счета, +/-.</p>
     	<p class="small mt-3">Upcoming updates: рейтинг игроков, заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
