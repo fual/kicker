@@ -56,22 +56,18 @@
 <body>
 <main role="main" class="container">
   	<div class="starter-template text-left">
-  		<a href="/" class="btn btn-primary">Назад</a>
+  		<a href="/" class="btn btn-primary mt-4">Назад</a>
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
-    			<p class="bg-success text-white mt-3 result" id="result">
-    			<?php if (isset($_GET['code']) && $_GET['code'] == "1"): ?>
+			<div class="alert alert-success mt-3 result" id="result">
     			Расписание успешно изменено.
-	    		<?php endif; ?>
     		<?php elseif ($_GET['result'] == "error"): ?>
-	    		<p class="bg-danger text-white mt-3 result" id="result">
-    			<?php if ($_GET['code'] == "3"): ?>
+    		<div class="alert alert-danger mt-3 result" id="result">
 	    		К сожалению, возникли проблемы с соединением. Пожалуйста, попробуйте позже.
-	    		<?php endif; ?>
 	    	<?php endif; ?>
-    		</p>
+    		</div>
     	<?php endif; ?>
-		<h2 class="text-center mt-4 mb-3">Расписание</h2>
+		<h2 class="text-center mt-3 mb-3">Расписание</h2>
     	<?php include __DIR__ . "/inc/layout/templates/schedule_table.php"; ?>
     	<p class="small mt-4">Заполните все поля, чтобы игра появилась на главной странице. Игры доступны для редактирования 3 дня со дня указанного в столбце "Дата".</p>
   	</div>

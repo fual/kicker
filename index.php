@@ -7,7 +7,7 @@
   	<div class="starter-template text-center">
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
-    			<p class="bg-success text-white mt-3 result" id="result">
+    			<div class="alert alert-success mt-3 result" id="result">
     			<?php if (isset($_GET['code']) && $_GET['code'] == "1"): ?>
     			Результат успешно изменен.
     			<?php elseif (isset($_GET['code']) && $_GET['code'] == "2"): ?>
@@ -16,7 +16,7 @@
     			Результат успешно добавлен.
 	    		<?php endif; ?>
     		<?php elseif ($_GET['result'] == "error"): ?>
-	    		<p class="bg-danger text-white mt-3 result" id="result">
+	    		<div class="alert alert-danger mt-3 result" id="result">
     			<?php if ($_GET['code'] == "1"): ?>
     			К сожалению, нельзя добавить более двух матчей с участием этих команд.
     			<?php elseif ($_GET['code'] == "2"): ?>
@@ -25,7 +25,7 @@
 	    		К сожалению, возникли проблемы с соединением. Пожалуйста, попробуйте позже.
 	    		<?php endif; ?>
 	    	<?php endif; ?>
-    		</p>
+    		</div>
     	<?php endif; ?>
         <div class="d-flex align-items-center mt-4 mb-3 flex-column flex-md-row">
             <h2 class="text-left">Ближайшие игры</h2>

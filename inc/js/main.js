@@ -129,11 +129,11 @@ $(function() {
 			data: data
 		}).done(function(data) {
 			if (data == "success")
-				window.location = "/schedule.php?result=success&code=1";
+				window.location = "/schedule.php?result=success";
 			else
-				window.location = "/schedule.php?result=error&code=3";
+				window.location = "/schedule.php?result=error";
 		}).fail(function() {		
-			window.location = "/schedule.php?result=error&code=3";
+			window.location = "/schedule.php?result=error";
 		});
 		return false;
 	});
