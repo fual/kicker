@@ -15,11 +15,12 @@
 		inner join teams as ht on ht.team_id = s.team_id1
 		inner join teams as at on at.team_id = s.team_id2
 		inner join places as p on s.place_id = p.place_id
-		where date is not NULL and date >= date() and time is not NULL and place is not NULL
+		where date is not NULL and date >= date(datetime(), 'localtime') and time is not NULL and place is not NULL
 		order by date, time"
 	);
 	$sth->execute();
 	$next_games = $sth->fetchAll();
+	date_default_timezone_set("Europe/Moscow");
 	// var_dump($next_games);
 ?>
 <?php if (sizeof($next_games)): ?>
