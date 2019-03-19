@@ -19,7 +19,7 @@
 			from schedule as s
 			inner join teams as ht on ht.team_id = s.team_id1
 			inner join teams as at on at.team_id = s.team_id2
-			where (date is NULL or date >= date('now', '-2 day') or place_id is NULL or time is NULL) and (team_name1 == :team or team_name2 == :team)
+			where (date is NULL or date >= date(datetime('now', '-1 day'), 'localtime') or place_id is NULL or time is NULL) and (team_name1 == :team or team_name2 == :team)
 			order by tour"
 		);
 		$sth->bindValue(":team", $team, PDO::PARAM_STR);
@@ -40,7 +40,7 @@
 			from schedule as s
 			inner join teams as ht on ht.team_id = s.team_id1
 			inner join teams as at on at.team_id = s.team_id2
-			where date is NULL or date >= date('now', '-2 day') or place_id is NULL or time is NULL
+			where date is NULL or date >= date(datetime('now', '-1 day'), 'localtime') or place_id is NULL or time is NULL
 			order by tour"
 		);
 	$sth->execute();
@@ -51,7 +51,7 @@
 	$sth = $db->prepare("select team_name_short as name from teams order by team_name_short");
 	$sth->execute();
 	$teams = $sth->fetchAll();
-	// var_dump($teams);
+	// var_dump($schedule);
 ?>
 <body>
 <main role="main" class="container">
@@ -69,7 +69,7 @@
     	<?php endif; ?>
 		<h2 class="text-center mt-3 mb-3">Расписание</h2>
     	<?php include __DIR__ . "/inc/layout/templates/schedule_table.php"; ?>
-    	<p class="small mt-4">Заполните все поля, чтобы игра появилась на главной странице. Игры доступны для редактирования 3 дня со дня указанного в столбце "Дата".</p>
+    	<p class="small mt-4">Заполните все поля, чтобы игра появилась на главной странице. Игры доступны для редактирования 1 день со дня указанного в столбце "Дата".</p>
   	</div>
 </main>
 <div class="loading-icon"></div>
