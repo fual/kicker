@@ -139,6 +139,6 @@ $(function() {
 	});
 	$("#teamFilter").change(function() {
 		var data = $(this).serialize();
-		window.location = "/schedule?" + data;
+		window.location = "/schedule.php?" + data;
 	});
 });
