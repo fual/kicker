@@ -76,6 +76,16 @@ body.loading .loading-icon {
 [data-action='scheduleClear'], [data-action='scheduleSubmit'], [data-action='scheduleQuit'] {
   display: none;
 }
+#fillLineup {
+  table-layout: fixed;
+}
+#fillLineup th {
+  width: 50%;
+}
+#addResult .form-control {
+  display: inline-block;
+  width: auto;
+}
 @media (min-width: 576px) {
   .table td, .table th {
     font-size: 1rem;

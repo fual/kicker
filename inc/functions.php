@@ -247,3 +247,9 @@ function find_match_results($home_team, $away_team, $results, $tournament) {
 	}
 	return ($res);
 }
+/* find player by id */
+function find_player_name_by_id($player_id, $players_query) {
+	foreach ($players_query as $player)
+		if ($player['id'] == $player_id)
+			return ($player['first_name'] . " " . $player['second_name']);
+}

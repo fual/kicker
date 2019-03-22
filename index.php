@@ -17,11 +17,7 @@
 	    		<?php endif; ?>
     		<?php elseif ($_GET['result'] == "error"): ?>
 	    		<div class="alert alert-danger mt-3 result" id="result">
-    			<?php if ($_GET['code'] == "1"): ?>
-    			К сожалению, нельзя добавить более двух матчей с участием этих команд.
-    			<?php elseif ($_GET['code'] == "2"): ?>
-    			Пожалуйста, проверьте правильность введенных данных.
-	    		<?php else: ?>
+    			<?php if ($_GET['code'] == "3"): ?>
 	    		К сожалению, возникли проблемы с соединением. Пожалуйста, попробуйте позже.
 	    		<?php endif; ?>
 	    	<?php endif; ?>

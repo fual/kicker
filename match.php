@@ -6,8 +6,8 @@
 			m.match_id as match_id,
 			m.season_id as season_id,
 			m.tournament_id as tournament_id,
-			ht.team_name_short as home_team,
-			at.team_name_short as away_team,
+			ht.team_name_long as home_team,
+			at.team_name_long as away_team,
 			m.sets_won1 as home_score,
 			m.sets_won2 as away_score
 			from matches as m
@@ -16,34 +16,66 @@
 			where match_id = ?");
 	$sth->execute(array($match_id));
 	$match = $sth->fetch();
+	$sth = $db->prepare("select * from games where match_id = :id");
+	$sth->bindValue(":id", $match_id, PDO::PARAM_INT);
+	$sth->execute();
+	$games = $sth->fetchAll();
+	$sth = $db->prepare("select player_id as id, first_name, second_name from players");
+	$sth->execute();
+	$players = $sth->fetchAll();
 ?>
 <body class="pt-5">
 <main role="main" class="container">
   	<div class="starter-template pt-0">
     	<h2><?php echo $match['home_team'] . " vs " . $match['away_team']; ?></h2>
-    	<p>Match ID <?php echo $match_id; ?></p>
-    	<form method="post" action="" id="editResult">
-    		<input type="hidden" name="id" value="<?php echo $match_id; ?>">
-		    <div class="form-row mt-2" id="score">
-	    		<div class="col">
-		    		<input type="number" class="form-control" id="inputScore1" placeholder="Счет команды 1" name="score1" value="<?php echo $match['home_score']; ?>" required>
-		    	</div>
-		    	<div class="col-auto d-flex align-items-center">
-		    		<span class="mx-1">:</span>
-		    	</div>
-		    	<div class="col">
-		    		<input type="number" class="form-control" id="inputScore2" placeholder="Счет команды 2" name="score2" value="<?php echo $match['away_score']; ?>" required>
-		    	</div>
-		    	<div class="col-auto ml-2">
-		    		<button type="submit" class="btn btn-success" disabled="true">Отправить</button>
-		    	</div>
-	    	</div>
-    	</form>
-    	<form method="post" action="" class="mt-5 d-flex" id="deleteResult">
-    		<input type="hidden" name="id" value="<?php echo $match_id; ?>">
-    		<a href="/" class="btn btn-primary">Назад</a>
-	    	<button type="submit" class="btn btn-danger ml-auto">Удалить матч</button>
-	    </form>
+    	<h4><?php echo $match['tournament_id'] == 1 ? "Первый дивизион" : "Второй дивизион"; ?></h4>
+    	<table class="table table-striped table-sm mt-3">
+    		<thead class="thead-dark">
+    			<th colspan="2"><?php echo $match['home_team'] ?></th>
+    			<th colspan="2"><?php echo $match['away_team']; ?></th>
+    		</thead>
+    		<tbody>
+    			<?php if (sizeof($games)): ?>
+    				<?php foreach ($games as $game): ?>
+    					<tr>
+					   		<td class="text-left">
+					   			<?php
+					   				echo find_player_name_by_id($game['player_id11'], $players);
+					   				if ($game['player_id12'])
+					   					echo "<br>" . find_player_name_by_id($game['player_id12'], $players);
+				   				?>
+				   			</td>
+					   		<td>
+					   			<?php echo $game['score1']; ?>
+					   		</td>
+					   		<td>
+					   			<?php echo $game['score2']; ?>
+					   		</td>
+					   		<td class="text-right">
+					   			<?php
+					   				echo find_player_name_by_id($game['player_id21'], $players);
+					   				if ($game['player_id22'])
+					   					echo "<br>" . find_player_name_by_id($game['player_id22'], $players);
+				   				?>
+					   		</td>
+    					</tr>
+    				<?php endforeach; ?>
+    			<?php endif; ?>	
+			   	<tr>
+			   		<td></td>
+			   		<td class="py-4">
+						<output id="t1score" class="lead"><?php echo $match['home_score']; ?></output>
+					</td>
+			   		<td class="py-4">
+			   			<output id="t2score" class="lead"><?php echo $match['away_score']; ?></output>
+			   		</td>
+			   		<td></td>
+			   	</tr>
+    		</tbody>
+    	</table>
+    	<div class="text-left">
+			<a href="/" class="btn btn-primary">Назад</a>
+		</div>
   	</div>
 </main>
 <div class="loading-icon"></div>
