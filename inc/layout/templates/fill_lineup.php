@@ -21,7 +21,7 @@
 		    			<?php foreach ($players as $player): ?>
 		    				<?php if ($player['team_id'] == ($i == 1 ? $team1_id : $team2_id)): ?>
 		    				<option value="<?php echo $player['id']; ?>">
-		    					<?php echo $player['first_name'] . " " . $player['second_name']; ?>
+		    					<?php echo $player['second_name'] . " " . $player['first_name']; ?>
 	    					</option>
 		    				<?php endif; ?>
 		    			<?php endforeach; ?>

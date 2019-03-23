@@ -199,19 +199,7 @@ $(function() {
 		return (1);
 	}
 	$("#addResult").submit(function() {
-		var data = $(this).serialize();
 		$(".btn").attr("disabled", true);
-		$.ajax({
-			type: "POST",
-			url: "procedures/addResult.php",
-			data: data
-		}).done(function(data) {
-			if (data == "success")
-				window.location = "/?result=success&code=1";
-		}).fail(function() {		
-			window.location = "/?result=error&code=3";
-		});
-		return false;
 	});
 	$("[data-action='scheduleEdit']").click(function() {
 		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time").hide();

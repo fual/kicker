@@ -44,7 +44,7 @@ try {
 	$t2d3p1 = filter_var($_POST['t2d3p1'], FILTER_SANITIZE_NUMBER_INT);
 	$t2d3p2 = filter_var($_POST['t2d3p2'], FILTER_SANITIZE_NUMBER_INT);
 	// rating
-	$sth = $db->prepare("select player_id, rating from rosters where player_id in (:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10, :p11, :p12, :p13, :p14, :p15, :p16)");
+	$sth = $db->prepare("select id, rating from rosters where id in (:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10, :p11, :p12, :p13, :p14, :p15, :p16)");
 	$sth->bindValue(':p1', $t1d1p1, PDO::PARAM_INT);
 	$sth->bindValue(':p2', $t1d1p2, PDO::PARAM_INT);
 	$sth->bindValue(':p3', $t2d1p1, PDO::PARAM_INT);
@@ -65,7 +65,7 @@ try {
 	$results = $sth->fetchAll();
 	$ratings = [];
 	foreach ($results as $result) {
-		$ratings[$result['player_id']] = +$result['rating'];
+		$ratings[$result['id']] = +$result['rating'];
 	}
 	// Round 1
 	// D1
@@ -271,12 +271,12 @@ try {
 	$ratings[$t2d3p2] += $r2t2d3 > $r2t1d3 ? $rating_diff : -$rating_diff;
 	// update ratings
 	foreach ($ratings as $id => $rating) {
-		$sth = $db->prepare("update rosters set rating = :rating where player_id = :id");
+		$sth = $db->prepare("update rosters set rating = :rating where id = :id");
 		$sth->bindValue(":rating", $rating, PDO::PARAM_INT);
 		$sth->bindValue(":id", $id, PDO::PARAM_INT);
 		$sth->execute();
 	}
-	echo "success";
+	header("Location: /?result=success&code=1");
 } catch (Exception $e) {
-	echo $e;
+	header("Location: /?result=error&code=3");
 }

@@ -232,7 +232,8 @@ insert into players values
 (NULL, "Василий", "Разенков"),
 (NULL, "Артур", "Махмутов"),
 (NULL, "Милад", "Резаи"),
-(NULL, "Софья", "Минакова");
+(NULL, "Софья", "Минакова"),
+(NULL, "Евгения", "Долгун");
 
 
 rosters
@@ -332,11 +333,14 @@ insert into rosters values
 (NULL, 1, 2, 10, 84, 1000),
 (NULL, 1, 2, 10, 85, 1000),
 (NULL, 1, 2, 10, 86, 1000),
-(NULL, 1, 2, 10, 87, 1000);
+(NULL, 1, 2, 10, 87, 1000),
+(NULL, 1, 2, 9, 25, 1000),
+(NULL, 1, 2, 10, 88, 1000);
 
 games
 game_id, match_id, player_id11, player_id12, player_id21, player_id22, scored1, scored2
 create table games (game_id integer primary key, match_id references matches(match_id), player_id11 references players(player_id), player_id12 references players(player_id), player_id21 references players(player_id), player_id22 references players(player_id), score1 integer, score2 integer);
+
 
 teams
 team_id, season_id, tournament_id, team_name

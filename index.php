@@ -5,6 +5,9 @@
 <body>
 <main role="main" class="container">
   	<div class="starter-template text-center">
+        <!--<div class="alert alert-warning">
+            В данный момент разворачивается большой патч. Пожалуйста, не вносите новые данные в течение часа - они будут утерены.
+        </div>-->
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
     			<div class="alert alert-success mt-3 result" id="result">
@@ -36,10 +39,10 @@
 	  	</div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="#firstDivTeamsPane" id="firstDivTeamsTab" data-toggle="tab">Команды</a>
+                <a class="nav-link active" href="#firstDivTeamsPane" id="firstDivTeamsTab" data-toggle="tab" role="tab">Команды</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#firstDivPlayersPane" id="firstDivPlayersTab" data-toggle="tab">Игроки</a>
+                <a class="nav-link" href="#firstDivPlayersPane" id="firstDivPlayersTab" data-toggle="tab" role="tab">Игроки</a>
             </li>
         </ul>
         <div class="tab-content mt-3">
@@ -49,9 +52,9 @@
                 </div>
             </div>
             <div class="tab-pane fade text-left" id="firstDivPlayersPane">
-                <a href="https://docs.google.com/spreadsheets/d/12B7z0SSQUAEJmSx2ii32x3yHc_WXdUwaBib8Qwleg_s/edit#gid=0">
-                    Google Docs <i class="fas fa-external-link-alt"></i>
-                </a>
+                <div class="table-responsive">
+                    <?php print_ratings(1, 1); ?>
+                </div>
             </div>
         </div>
   		<div class="d-flex align-items-center mt-4 mb-3">
@@ -73,9 +76,9 @@
         	    </div>
             </div>
             <div class="tab-pane fade text-left" id="secondDivPlayersPane">
-                <a href="https://docs.google.com/spreadsheets/d/12B7z0SSQUAEJmSx2ii32x3yHc_WXdUwaBib8Qwleg_s/edit#gid=888149235">
-                    Google Docs <i class="fas fa-external-link-alt"></i>
-                </a>
+                <div class="table-responsive">
+                    <?php print_ratings(2, 1); ?>
+                </div>
             </div>
         </div>
     	<p class="small mt-5">Нажмите на счет, чтобы отредактировать. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>

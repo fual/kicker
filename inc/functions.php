@@ -251,5 +251,116 @@ function find_match_results($home_team, $away_team, $results, $tournament) {
 function find_player_name_by_id($player_id, $players_query) {
 	foreach ($players_query as $player)
 		if ($player['id'] == $player_id)
-			return ($player['first_name'] . " " . $player['second_name']);
+			return ($player['second_name'] . " " . $player['first_name']);
+}
+
+function print_ratings($division, $season) {
+	global $db;
+	$sth = $db->prepare("
+		with player as (
+		select 
+		player_id11 as id,
+		count(*) as played,
+		sum(score1) as scored,
+		sum(score2) as conceded
+		from games
+		group by id
+		union all
+		select
+		player_id12 as id,
+		count(*) as played,
+		sum(score1) as scored,
+		sum(score2) as conceded
+		from games
+		where player_id12 is not null
+		group by id
+		union all
+		select player_id21 as id,
+		count(*) as played,
+		sum(score2) as scored,
+		sum(score1) as conceded
+		from games
+		group by id
+		union all
+		select
+		player_id22 as id,
+		count(*) as played,
+		sum(score2) as scored,
+		sum(score1) as conceded
+		from games
+		where id is not null
+		group by id
+		),
+		participation as (
+			with lineups as (
+				select * from rosters
+				inner join games on rosters.id = games.player_id11
+				union all
+				select * from rosters
+				inner join games on rosters.id = games.player_id12
+				union all
+				select * from rosters
+				inner join games on rosters.id = games.player_id21
+				union all
+				select * from rosters
+				inner join games on rosters.id = games.player_id22
+			),
+			team_matches as (
+				with tm as (
+				select team_id1 as team_id, count(*) as count_matches from matches
+				group by team_id1
+				union all
+				select team_id2 as team_id, count(*) as count_matches from matches
+				group by team_id2
+				)
+				select team_id, sum(count_matches) as team_matches from tm group by team_id
+			)
+			select id, team_matches.team_id, count(distinct(lineups.match_id)) as participated, team_matches from lineups
+			inner join team_matches on lineups.team_id = team_matches.team_id
+			where tournament_id = :t and season_id = :s 
+			group by id
+		)
+		select player.id, rosters.tournament_id as tournament, sum(player.played) as played, sum(player.scored) as scored, sum(player.conceded) as conceded, sum(player.scored) - sum(player.conceded) as diff, second_name as name, rosters.rating as rating, team_name_short as team, participated, team_matches from player
+		inner join rosters on rosters.id = player.id
+		inner join players on players.player_id = rosters.player_id
+		inner join teams on rosters.team_id = teams.team_id
+		inner join participation on participation.id = player.id
+		where rosters.tournament_id = :t and rosters.season_id = :s
+		group by player.id
+		order by rating desc, diff desc, played desc;
+	");
+	$sth->bindValue(":t", $division, PDO::PARAM_INT);
+	$sth->bindValue(":s", $season, PDO::PARAM_INT);
+	$sth->execute();
+	$players = $sth->fetchAll();
+	echo "<table class='table table-sm table-striped table-hover table-ratings'>";
+	echo "<thead class='thead-dark'>";
+	echo "<tr>";
+	echo "<th>Игрок</th>";
+	echo "<th>Команда</th>";
+	echo "<th>Партий</th>";
+	echo "<th>Забито</th>";
+	echo "<th>Пропущено</th>";
+	echo "<th>Разница</th>";
+	echo "<th>Участие в играх</th>";
+	echo "<th>Рейтинг</th>";
+	echo "<th>Процент участия</th>";
+	echo "</tr>";
+	echo "</thead>";
+	echo "<tbody>";
+	foreach ($players as $player) {
+		echo "<tr>";
+		echo "<td class='text-left'>" . $player['name'] . "</td>";
+		echo "<td>" . $player['team'] . "</td>";
+		echo "<td>" . $player['played'] . "</td>";
+		echo "<td>" . $player['scored'] . "</td>";
+		echo "<td>" . $player['conceded'] . "</td>";
+		echo "<td>" . $player['diff'] . "</td>";
+		echo "<td>" . $player['participated'] . "</td>";
+		echo "<td>" . $player['rating'] . "</td>";
+		echo "<td>" . round($player['participated'] / $player['team_matches'] * 100) . "%</td>";
+		echo "</tr>";
+	}
+	echo "</tbody>";
+	echo "</table>";
 }

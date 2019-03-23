@@ -20,7 +20,7 @@
 	$sth->bindValue(":id", $match_id, PDO::PARAM_INT);
 	$sth->execute();
 	$games = $sth->fetchAll();
-	$sth = $db->prepare("select player_id as id, first_name, second_name from players");
+	$sth = $db->prepare("select id, first_name, second_name from rosters inner join players on rosters.player_id = players.player_id");
 	$sth->execute();
 	$players = $sth->fetchAll();
 ?>
@@ -29,7 +29,7 @@
   	<div class="starter-template pt-0">
     	<h2><?php echo $match['home_team'] . " vs " . $match['away_team']; ?></h2>
     	<h4><?php echo $match['tournament_id'] == 1 ? "Первый дивизион" : "Второй дивизион"; ?></h4>
-    	<table class="table table-striped table-sm mt-3">
+    	<table class="table table-striped table-sm mt-3" id="match">
     		<thead class="thead-dark">
     			<th colspan="2"><?php echo $match['home_team'] ?></th>
     			<th colspan="2"><?php echo $match['away_team']; ?></th>
