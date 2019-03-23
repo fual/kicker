@@ -83,11 +83,21 @@ body.loading .loading-icon {
   display: inline-block;
   width: 100%;
 }
+.lineup-rules {
+  font-size: .7rem;
+}
+#addResult .form-control {
+  min-width: 40px;
+}
 @media (min-width: 576px) {
   .table td, .table th {
     font-size: 1rem;
   }
   .table-ratings td, .table-ratings th {
     font-size: .8rem;
+  }
+  .lineup-rules {
+    font-size: 80%;
+    columns: 2;
   }
 }

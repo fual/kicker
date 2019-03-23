@@ -34,7 +34,7 @@
 		</tbody>
 	</table>
 	<div class="text-left">
-		<ul class="list-unstyled small" style="columns: 2;">
+		<ul class="list-unstyled small lineup-rules">
 			<li id="d12">D1, D2 - 4 разных игрока</li>
 			<li id="sd3">S1, S2, D3 - 4 разных игрока</li>
 			<li id="min">минимум - 4 игрока</li>
