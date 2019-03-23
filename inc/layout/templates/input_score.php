@@ -127,7 +127,10 @@
 	</table>
 	<div class="form-row mt-5">
 		<div class="col-auto ml-2">
-			<button type="submit" class="btn btn-success" disabled="true">Отправить</button>
+			<button type="submit" class="btn btn-success" disabled="true">
+				<span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+				Отправить
+			</button>
 		</div>
 	</div>
 </form>

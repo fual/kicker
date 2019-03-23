@@ -199,7 +199,7 @@ $(function() {
 		return (1);
 	}
 	$("#addResult").submit(function() {
-		$(".btn").attr("disabled", true);
+		$(".btn").attr("disabled", true).find(".spinner-border").removeClass("d-none");
 	});
 	$("[data-action='scheduleEdit']").click(function() {
 		$(this).parents("tr").find(".schedule-place, .schedule-date, .schedule-time").hide();
