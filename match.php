@@ -27,6 +27,10 @@
 <body class="pt-5">
 <main role="main" class="container">
   	<div class="starter-template pt-0">
+  		<?php if (!sizeof($games)): ?>
+	    	<h2>Матч не найден</h2>
+  			<p>К сожалению, матч не найден. Пожалуйста, вернитесь на главную страницу.</p>
+  		<?php else: ?>
     	<h2><?php echo $match['home_team'] . " vs " . $match['away_team']; ?></h2>
     	<h4><?php echo $match['tournament_id'] == 1 ? "Первый дивизион" : "Второй дивизион"; ?></h4>
     	<table class="table table-striped table-sm mt-3" id="match">
@@ -73,6 +77,7 @@
 			   	</tr>
     		</tbody>
     	</table>
+	    <?php endif; ?>
     	<div class="text-left">
 			<a href="/" class="btn btn-primary">Назад</a>
 		</div>
