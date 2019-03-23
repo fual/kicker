@@ -72,7 +72,6 @@
     	<p class="small mt-4">Заполните все поля, чтобы игра появилась на главной странице. Игры доступны для редактирования 1 день со дня указанного в столбце "Дата".</p>
   	</div>
 </main>
-<div class="loading-icon"></div>
 <?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
 </body>
 </html>

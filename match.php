@@ -83,7 +83,6 @@
 		</div>
   	</div>
 </main>
-<div class="loading-icon"></div>
 <?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
 </body>
 </html>

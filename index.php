@@ -87,7 +87,6 @@
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
   	</div>
 </main>
-<div class="loading-icon"></div>
 <?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
 </body>
 </html>
