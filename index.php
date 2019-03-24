@@ -53,6 +53,15 @@
             </div>
             <div class="tab-pane fade text-left" id="firstDivPlayersPane">
                 <div class="table-responsive">
+                    <form class="d-flex mb-2 px-1" id="search1">
+                        <input type="text" name="search1" class="form-control w-75 mr-3 my-1" placeholder="Искать">
+                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-danger my-1" id="clear1">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
                     <?php print_ratings(1, 1); ?>
                 </div>
             </div>
@@ -77,6 +86,15 @@
             </div>
             <div class="tab-pane fade text-left" id="secondDivPlayersPane">
                 <div class="table-responsive">
+                    <form class="d-flex mb-2 px-1" id="search2">
+                        <input type="text" name="search2" class="form-control w-75 mr-3 my-1" placeholder="Искать">
+                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-danger my-1" id="clear2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
                     <?php print_ratings(2, 1); ?>
                 </div>
             </div>

@@ -238,4 +238,26 @@ $(function() {
 		var data = $(this).serialize();
 		window.location = "/schedule.php?" + data;
 	});
+	$("#search1, #search2").submit(function() {
+		var search_value = $(this).parent().find(".form-control").val();
+		$(this).parents(".table-responsive").find("tbody tr").removeClass("d-none");
+		if (!search_value)
+			return false;
+		$(this).parents(".table-responsive").find("tbody tr").each(function(i, v) {
+			var match = 0;
+			$(v).find("td").each(function(i,v) {
+				if (~$(v).text().toLowerCase().indexOf(search_value.toLowerCase())) {
+					match++;
+					return false;
+				}
+			});
+			if (!match)
+				$(v).addClass("d-none");
+		});
+		return false;
+	});
+	$("#clear1, #clear2").click(function() {
+		$(this).parent().find(".form-control").val("");
+		$(this).parent().submit();
+	});
 });
