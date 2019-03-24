@@ -7,6 +7,8 @@
 		<tbody>
 		    <?php
 		    	$m = ["D1", "D2", "S1", "S2", "D3"];
+		    	$j = 1;
+		    	$z = 9;
 	    		foreach ($m as $game):
 		    ?>
 	    	<tr>
@@ -16,7 +18,8 @@
 		    	<?php for ($i = 1; $i < 3; $i++): ?>
 		    	<td>
 		    		<?php for ($p = 1; $p < (strpos($game, "D") !== false ? 3 : 2); $p++): ?>
-		    		<select class="custom-select my-1" name="<?php echo "t".$i.strtolower($game)."p".$p; ?>">
+		    		<select class="custom-select my-1" name="<?php echo "t".$i.strtolower($game)."p".$p; ?>"
+		    		<?php echo "tabindex='" . ($i == 1 ? $j++ : $z++) . "'"; ?>>
 		    			<option value="0">Игрок ...</option>
 		    			<?php foreach ($players as $player): ?>
 		    				<?php if ($player['team_id'] == ($i == 1 ? $team1_id : $team2_id)): ?>
