@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-    	<p class="small mt-5">Нажмите на счет, чтобы отредактировать. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
+    	<p class="small mt-5">Нажмите на счет, чтобы просмотреть счет по сетам. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
     	<p class="small mt-5">Recently released: рейтинг игроков, подробные результаты игр, выделение сегодняшних игр, фильтр расписания, расписание предстоящих игр с площадками, +/-.</p>
     	<p class="small mt-3">Upcoming updates: заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>

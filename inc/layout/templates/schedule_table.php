@@ -36,7 +36,7 @@
   			</tr>
   		</thead>
   		<tbody>
-		  	<?php $i = 1; ?>
+		  	<?php $i = $schedule[0]['tour']; ?>
 		  	<?php foreach ($schedule as $game): ?>
 		  		<?php if ($i == $game['tour']): ?>
 		  			<tr>
