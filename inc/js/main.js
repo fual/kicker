@@ -81,11 +81,11 @@ $(function() {
 				$("[name='t2d3p2']").addClass("border-danger");
 			}
 		}
-		if (t1d12_valid && t1sd3_valid && t1_valid && !$("#hide2").is(":visible")) {
+		if (t1d12_valid && t1sd3_valid && t1_valid && !$("#hide2").is(":visible") && !$("#hideRow").hasClass("hidden")) {
 			$("#hideRow, #hide1").show();
 			$("#hide1").attr("disabled", false);
 		}
-		if (t2d12_valid && t2sd3_valid && t2_valid && !$("#hide1").is(":visible")) {
+		if (t2d12_valid && t2sd3_valid && t2_valid && !$("#hide1").is(":visible") && !$("#hideRow").hasClass("hidden")) {
 			$("#hideRow, #hide2").show();
 			$("#hide2").attr("disabled", false);
 		}
@@ -274,7 +274,7 @@ $(function() {
 			if (~elemsToHide.indexOf(i))
 				$(v).css("visibility", "hidden");
 		});
-		$(this).parents("tr").hide();
+		$("#hideRow").addClass("hidden").hide();
 		return false;
 	});
 });
