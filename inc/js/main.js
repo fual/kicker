@@ -81,6 +81,14 @@ $(function() {
 				$("[name='t2d3p2']").addClass("border-danger");
 			}
 		}
+		if (t1d12_valid && t1sd3_valid && t1_valid && !$("#hide2").is(":visible")) {
+			$("#hideRow, #hide1").show();
+			$("#hide1").attr("disabled", false);
+		}
+		if (t2d12_valid && t2sd3_valid && t2_valid && !$("#hide1").is(":visible")) {
+			$("#hideRow, #hide2").show();
+			$("#hide2").attr("disabled", false);
+		}
 	});
 	function unique(arr) {
 		var obj = {};
@@ -259,5 +267,14 @@ $(function() {
 	$("#clear1, #clear2").click(function() {
 		$(this).parent().find(".form-control").val("");
 		$(this).parent().submit();
+	});
+	$("#hide1, #hide2").click(function() {
+		var elemsToHide = $(this).attr("id") == "hide1" ? [0, 1, 4, 5, 8, 10, 12, 13] : [2, 3, 6, 7, 9, 11, 14, 15];
+		$(this).parents("table").find(".custom-select").each(function(i, v) {
+			if (~elemsToHide.indexOf(i))
+				$(v).css("visibility", "hidden");
+		});
+		$(this).parents("tr").hide();
+		return false;
 	});
 });

@@ -31,6 +31,14 @@
 				<?php endfor; ?>
 			</tr>
 			<?php endforeach; ?>
+			<tr id="hideRow">
+				<td>
+					<button class="btn btn-light border-secondary" id="hide1"><i class="fas fa-eye-slash"></i></button>
+				</td>
+				<td>
+					<button class="btn btn-light border-secondary" id="hide2"><i class="fas fa-eye-slash"></i></button>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<div class="text-left">

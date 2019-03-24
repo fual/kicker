@@ -88,6 +88,9 @@ body.loading .loading-icon {
 #addResult .form-control {
   min-width: 40px;
 }
+#hideRow, #hide1, #hide2 {
+  display: none;
+}
 @media (min-width: 576px) {
   .table td, .table th {
     font-size: 1rem;
