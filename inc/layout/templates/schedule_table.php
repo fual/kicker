@@ -36,7 +36,7 @@
   			</tr>
   		</thead>
   		<tbody>
-		  	<?php $i = $schedule[0]['tour']; ?>
+		  	<?php $i = $schedule[0]['tour']; $j = 1; ?>
 		  	<?php foreach ($schedule as $game): ?>
 		  		<?php if ($i == $game['tour']): ?>
 		  			<tr>
@@ -69,7 +69,8 @@
   						</span>
 					</td>
 		  			<td>
-						<input type="date" class="form-control" name="date" id="date"<?php if (isset($game['date'])) echo " value='" . $game['date'] . "'";?>>
+						<input type="text" class="form-control" name="date" id="date<?php echo $j++;?>"
+						<?php if (isset($game['date'])) echo " value='" . $game['date'] . "'";?> autocomplete="off">
 	  					<span class="schedule-date">
 	  						<?php if (isset($game['date'])): ?>
 	  							<?php echo date_format(date_create($game['date']), "j.m"); ?>
@@ -79,7 +80,7 @@
   						</span>
 					</td>
 					<td>
-						<input type="time" class="form-control" name="time" id="time"<?php if (isset($game['time'])) echo " value='" . $game['time'] . "'";?>>
+						<input type="time" class="form-control" name="time" <?php if (isset($game['time'])) echo " value='" . $game['time'] . "'";?>>
 	  					<span class="schedule-time">
 	  						<?php if (isset($game['time'])): ?>
 	  							<?php echo $game['time']; ?>

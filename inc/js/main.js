@@ -242,6 +242,7 @@ $(function() {
 		});
 		return false;
 	});
+	$("[name='date']").datepicker($.datepicker.regional["ru"]);
 	$("#teamFilter").change(function() {
 		var data = $(this).serialize();
 		window.location = "/schedule.php?" + data;
