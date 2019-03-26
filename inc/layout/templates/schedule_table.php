@@ -69,7 +69,7 @@
   						</span>
 					</td>
 		  			<td>
-						<input type="text" class="form-control" name="date" id="date<?php echo $j++;?>"
+						<input type="date" class="form-control" name="date" id="date<?php echo $j++;?>"
 						<?php if (isset($game['date'])) echo " value='" . $game['date'] . "'";?> autocomplete="off">
 	  					<span class="schedule-date">
 	  						<?php if (isset($game['date'])): ?>
