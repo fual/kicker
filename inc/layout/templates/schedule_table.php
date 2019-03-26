@@ -50,7 +50,7 @@
 		  			<td title="<?php echo ($game['tournament_id'] == "1" ? "Первый" : "Второй"); ?>"><?php echo ($game['tournament_id'] == "1" ? "П" : "В"); ?></td>
 		  			<td><?php echo $game['team_name1']; ?> - <?php echo $game['team_name2']; ?></td>
 		  			<td>
-						<select class="custom-select" name="place" id="place">
+						<select class="custom-select" name="place">
 							<option value="0">Место ...</option>
 							<?php foreach ($places as $place): ?>
 								<option value="<?php echo $place['place_id']; ?>"<?php if ($game['place_id'] == $place['place_id']) echo " selected"; ?>>
