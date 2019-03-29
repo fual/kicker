@@ -91,6 +91,23 @@ body.loading .loading-icon {
 #hideRow, #hide1, #hide2 {
   display: none;
 }
+#t11:hover,
+#t11:focus,
+#t12:hover,
+#t12:focus,
+#t21:hover,
+#t21:focus,
+#t22:hover,
+#t22:focus {
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+  outline: none;
+  box-shadow: none;
+}
+#t11.pressed, #t12.pressed, #t21.pressed, #t22.pressed {
+  background-color: #dae0e5;
+  border-color: #d3d9df;
+}
 @media (min-width: 576px) {
   .table td, .table th {
     font-size: 1rem;

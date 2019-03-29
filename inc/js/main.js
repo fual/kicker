@@ -279,4 +279,8 @@ $(function() {
 		$("#hideRow").addClass("hidden").hide();
 		return false;
 	});
+	$("#t11, #t12, #t21, #t22").click(function() {
+		$(this).toggleClass("pressed");
+		$(this).parent().focus();
+	});
 });
