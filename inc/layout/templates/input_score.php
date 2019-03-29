@@ -112,7 +112,11 @@
 		   	</tr>
 		   	<?php endfor; ?>
 		   	<tr>
-		   		<td></td>
+		   		<td>
+		   			<span class="mr-2">T/O:</span>
+		   			<button type="button" class="btn btn-light border-secondary" id="t11" aria-pressed="false" data-toggle="button">1</button>
+		   			<button type="button" class="btn btn-light border-secondary" id="t12" aria-pressed="false" data-toggle="button">2</button>
+		   		</td>
 		   		<td class="py-4">
 		   			<input type="hidden" placeholder="0" name="t1score">
 					<output id="t1score" class="lead">0</output>
@@ -121,7 +125,11 @@
 		   			<input type="hidden" placeholder="0" name="t2score">
 		   			<output id="t2score" class="lead">0</output>
 		   		</td>
-		   		<td></td>
+		   		<td>
+		   			<span class="mr-2">T/O:</span>
+		   			<button type="button" class="btn btn-light border-secondary" id="t21" aria-pressed="false" data-toggle="button">1</button>
+		   			<button type="button" class="btn btn-light border-secondary" id="t22" aria-pressed="false" data-toggle="button">2</button>
+		   		</td>
 		   	</tr>
 		</tbody>
 	</table>

@@ -63,7 +63,6 @@ $(function() {
 			if ($.inArray("0", t1d12) < 0
 				&& checkDoubles($("[name='t1d1p1'], [name='t1d1p2'], [name='t1d2p1'], [name='t1d2p2']"))) {
 				$("#d12").addClass("text-danger");
-				console.log(2);
 			}
 			if ($.inArray("0", t2d12) < 0
 				&& checkDoubles($("[name='t2d1p1'], [name='t2d1p2'], [name='t2d2p1'], [name='t2d2p2']")))
@@ -151,9 +150,9 @@ $(function() {
 	if ($("#addResult").length) {
 		updateSum();
 		if (isScoreValid())
-			$(".btn").attr("disabled", false);
+			$(".btn[type='submit']").attr("disabled", false);
 		else
-			$(".btn").attr("disabled", true);
+			$(".btn[type='submit']").attr("disabled", true);
 		$("#addResult input[disabled]").each(function(i, v) {
 			if ($(this).val() != 0 || $(this).parents("tr").find(".form-control").not($(this)).val() != 0)
 				$(this).attr("disabled", false);
