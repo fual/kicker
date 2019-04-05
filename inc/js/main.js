@@ -232,7 +232,6 @@ $(function() {
 			url: "procedures/updateSchedule.php",
 			data: data
 		}).done(function(data) {
-			console.log(data);
 			if (data == "success")
 				window.location = "/schedule.php?result=success";
 			else
