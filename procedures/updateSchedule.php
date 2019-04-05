@@ -8,7 +8,7 @@ try {
 	$sth->bindValue(':p', $place, PDO::PARAM_INT);
 	if (isset($_POST['date']) && $_POST['date'] != "") {
 		$date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
-		$sth->bindValue(':d', $date, PDO::PARAM_STR);
+		$sth->bindValue(':d', date("o-m-d", strtotime($date)), PDO::PARAM_STR);
 	}
 	else
 		$sth->bindValue(':d', NULL, PDO::PARAM_INT);
