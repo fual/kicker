@@ -43,18 +43,36 @@
 		  			</tbody>
 		  		</table>
   			<?php else: ?>
-		  	<?php $i = $schedule[0]['tour']; $j = 1; ?>
+		  	<?php $i = -1; $j = 1; ?>
 		  	<?php foreach ($schedule as $game): ?>
-		  		<?php if ($i == $game['tour']): ?>
+		  		<?php if ($i != $game['tour']): ?>
+		  			<?php $i = $game['tour']; ?>
 		  			<tr>
 		  				<td colspan="5" class="font-italic text-left text-md-center">
-		  					<?php echo $i++; ?> тур <span class="px-3">-</span> <?php echo $game['date_start']
+		  					<?php echo $game['tour']; ?> тур <span class="px-3">-</span> <?php echo $game['date_start']
 		  					. "-" . $game['date_end']; ?>
 	  					</td>
 		  			</tr>
 		  		<?php endif; ?>
 		  		<tr>
-		  			<td title="<?php echo ($game['tournament_id'] == "1" ? "Первый" : "Второй"); ?>">
+		  			<td title="
+		  				<?php
+		  					switch ($game['tournament_id']) {
+		  						case "1":
+		  							echo "Первый";
+		  							break;
+		  						case "2":
+		  							echo "Второй";
+		  							break;
+		  						case "3":
+		  							echo "ЛКЛ";
+		  							break;
+		  						case "4":
+		  							echo "ЗКЛ";
+		  							break;
+		  					}
+		  				?>	
+		  			">
 		  				<?php
 		  					switch ($game['tournament_id']) {
 		  						case "1":
