@@ -386,6 +386,25 @@ insert into teams values
 (NULL, 2, 4, 'FFS', 'Foos Fappers'),
 (NULL, 2, 4, 'DUD2', 'Drunk United 2'),
 (NULL, 2, 4, 'FSB', 'Foosball Idols');
+insert into teams values
+(NULL, 1, 3, "SNP", "Snake Pistols"),
+(NULL, 1, 3, "KIM", "Кик Ер Им"),
+(NULL, 1, 3, "AK", "Adobe Kicker"),
+(NULL, 1, 3, "BLC", "Black Company"),
+(NULL, 1, 3, "FK", "Fux Kick"),
+(NULL, 1, 3, "GRB", "Garlando Bloom"),
+(NULL, 1, 3, "KiP", "Kicker Power"),
+(NULL, 1, 3, "MUP", "Partmedia"),
+(NULL, 1, 3, "RKT", "Rocketbank"),
+(NULL, 1, 3, "KPR", "Kicker Pirates"),
+(NULL, 1, 4, "W2W", "Win2Win"),
+(NULL, 1, 4, "OK", "Околофутбола"),
+(NULL, 1, 4, "BSF", "Bar SVOI Family"),
+(NULL, 1, 4, "MTO", "Modern Token"),
+(NULL, 1, 4, "KGK", "Kicker Golden Knights"),
+(NULL, 1, 4, "LOK", "Лок'тар Огар"),
+(NULL, 1, 4, "TpT", "TpTeam");
+
 
 users
 id, login, password
@@ -442,3 +461,5 @@ insert into places values
 (NULL, "Папа Вейдер"),
 (NULL, "Антон Палыч"),
 (NULL, "Pivzavod 77");
+
+create table events (event_id integer primary key, name text, place_id references places(place_id), date text, time text);

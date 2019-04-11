@@ -5,9 +5,9 @@
 <body>
 <main role="main" class="container">
   	<div class="starter-template text-center">
-        <!--<div class="alert alert-warning">
+        <div class="alert alert-warning">
             В данный момент разворачивается большой патч. Пожалуйста, не вносите новые данные в течение часа - они будут утерены.
-        </div>-->
+        </div>
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
     			<div class="alert alert-success mt-3 result" id="result">
@@ -26,9 +26,13 @@
 	    	<?php endif; ?>
     		</div>
     	<?php endif; ?>
-        <div class="d-flex align-items-center mt-4 mb-3 flex-column flex-md-row">
+        <div>
             <h2 class="text-left">Ближайшие игры</h2>
-            <a href="schedule.php" class="btn btn-primary mr-auto mr-md-0 ml-md-auto">Расписание</a>
+            <div class="d-flex align-items-center my-4">
+                <p class="m-0">Расписание:</p>
+                <a href="schedule.php?tournament=pro" class="ml-4">Профи</a>
+                <a href="schedule.php?tournament=amateur" class="ml-4">Любители</a>
+            </div>
         </div>
         <div class="table-responsive">
             <?php include __DIR__ . "/inc/layout/templates/next_games.php"; ?>

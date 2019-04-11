@@ -233,11 +233,11 @@ $(function() {
 			data: data
 		}).done(function(data) {
 			if (data == "success")
-				window.location = "/schedule.php?result=success";
+				window.location += "&result=success";
 			else
-				window.location = "/schedule.php?result=error";
+				window.location += "&result=error";
 		}).fail(function() {		
-			window.location = "/schedule.php?result=error";
+			window.location += "&result=error";
 		});
 		return false;
 	});
@@ -247,7 +247,12 @@ $(function() {
 	}
 	$("#teamFilter").change(function() {
 		var data = $(this).serialize();
-		window.location = "/schedule.php?" + data;
+		var s_url = window.location.search;
+		var $_GET = s_url.substr(1).split("&");
+		for (var i = 0; i < $_GET.length; i++)
+			if (~$_GET[i].indexOf("tournament")) 
+				var tournament = $_GET[i];
+		window.location = "/schedule.php?" + tournament + "&" + data;
 	});
 	$("#search1, #search2").submit(function() {
 		var search_value = $(this).parent().find(".form-control").val();

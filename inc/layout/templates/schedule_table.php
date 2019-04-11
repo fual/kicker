@@ -36,6 +36,10 @@
   			</tr>
   		</thead>
   		<tbody>
+  			<?php if (!sizeof($schedule)): ?>
+		  			</tbody>
+		  		</table>
+  			<?php else: ?>
 		  	<?php $i = $schedule[0]['tour']; $j = 1; ?>
 		  	<?php foreach ($schedule as $game): ?>
 		  		<?php if ($i == $game['tour']): ?>
@@ -47,7 +51,24 @@
 		  			</tr>
 		  		<?php endif; ?>
 		  		<tr>
-		  			<td title="<?php echo ($game['tournament_id'] == "1" ? "Первый" : "Второй"); ?>"><?php echo ($game['tournament_id'] == "1" ? "П" : "В"); ?></td>
+		  			<td title="<?php echo ($game['tournament_id'] == "1" ? "Первый" : "Второй"); ?>">
+		  				<?php
+		  					switch ($game['tournament_id']) {
+		  						case "1":
+		  							echo "П";
+		  							break;
+		  						case "2":
+		  							echo "В";
+		  							break;
+		  						case "3":
+		  							echo "Л";
+		  							break;
+		  						case "4":
+		  							echo "З";
+		  							break;
+		  					}
+		  				?>	
+	  				</td>
 		  			<td><?php echo $game['team_name1']; ?> - <?php echo $game['team_name2']; ?></td>
 		  			<td>
 						<select class="custom-select" name="place">
@@ -106,6 +127,7 @@
 					</td>
 		  		</tr>
 		  	<?php endforeach; ?>
+		  	<?php endif; ?>
 		</tbody>
 	</table>
 </div>
