@@ -242,6 +242,7 @@ $(function() {
 		return false;
 	});
 	if ($(window).width() >= 576) {
+		$.datepicker.regional["ru"]["dateFormat"] = "yy-mm-dd";
 		$("[name='date']").attr("type", "text").datepicker($.datepicker.regional["ru"]);
 	}
 	$("#teamFilter").change(function() {
