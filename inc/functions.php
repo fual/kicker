@@ -320,7 +320,7 @@ function print_ratings($division, $season) {
 			where tournament_id = :t and season_id = :s 
 			group by id
 		)
-		select player.id, rosters.tournament_id as tournament, sum(player.played) as played, sum(player.scored) as scored, sum(player.conceded) as conceded, sum(player.scored) - sum(player.conceded) as diff, second_name as name, rosters.rating as rating, team_name_short as team, participated, team_matches from player
+		select player.id, rosters.tournament_id as tournament, sum(player.played) as played, sum(player.scored) as scored, sum(player.conceded) as conceded, sum(player.scored) - sum(player.conceded) as diff, first_name as first_name, second_name as name, rosters.rating as rating, team_name_short as team, participated, team_matches from player
 		inner join rosters on rosters.id = player.id
 		inner join players on players.player_id = rosters.player_id
 		inner join teams on rosters.team_id = teams.team_id
@@ -349,6 +349,19 @@ function print_ratings($division, $season) {
 	echo "</thead>";
 	echo "<tbody>";
 	foreach ($players as $player) {
+		foreach ($players as $player1) {
+			if (strpos($player['name'], " ") || $player1['id'] == $player['id'])
+				continue ;
+			if ($player1['name'] == $player['name']) {
+				if (substr($player['first_name'], 0, 2) != substr($player1['first_name'], 0, 2)) {
+					$player['name'] .= " " . substr($player['first_name'], 0, 2) . ".";
+					$player1['name'] .= " " . substr($player1['first_name'], 0, 2) . ".";
+				} else {
+					$player['name'] .= " " . $player['first_name'];
+					$player1['name'] .= " " . $player1['first_name'];
+				}
+			}
+		}
 		echo "<tr>";
 		echo "<td class='text-left'>" . $player['name'] . "</td>";
 		echo "<td>" . $player['team'] . "</td>";
