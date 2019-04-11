@@ -175,7 +175,7 @@ $(function() {
 		if ($(this).val() > max)
 			$(this).val(max);
 		var val = $(this).val();
-		if (val != max && val != 0)
+		if (val != max)
 			$(this).parents("tr").find(".form-control").not($(this)).val(maxOp);
 		else if (val == max && $(this).parents("tr").find(".form-control").not($(this)).val() == maxOp)
 			$(this).parents("tr").find(".form-control").not($(this)).val(maxOp - 1);
