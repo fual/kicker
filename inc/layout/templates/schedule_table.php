@@ -8,6 +8,9 @@
 			</option>
 		<?php endforeach; ?>
 	</select>
+	<button class="btn btn-danger my-1 ml-3" id="clearTeamFilter">
+	    <i class="fas fa-times"></i>
+	</button>
 </div>
 <ul class="list-unstyled list-inline mt-3 small">
 	<li class="list-inline-item">Легенда:</li>

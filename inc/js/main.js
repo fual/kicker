@@ -254,6 +254,11 @@ $(function() {
 				var tournament = $_GET[i];
 		window.location = "/schedule.php?" + tournament + "&" + data;
 	});
+	$("#clearTeamFilter").click(function() {
+		if ($("#teamFilter").val() == "0")
+			return ;
+		$("#teamFilter").val("0").trigger("change");
+	});
 	$("#search1, #search2").submit(function() {
 		var search_value = $(this).parent().find(".form-control").val();
 		$(this).parents(".table-responsive").find("tbody tr").removeClass("d-none");
