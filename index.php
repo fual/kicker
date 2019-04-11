@@ -105,10 +105,9 @@
                 </div>
             </div>
         </div>
-    	<p class="small mt-5">Нажмите на счет, чтобы просмотреть счет по сетам. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
-    	<p class="small mt-5">Recently released: функция "скрыть состав" для заполнения на одном устройстве, рейтинг игроков, поиск по рейтингу, подробные результаты игр, выделение сегодняшних игр, фильтр расписания, расписание предстоящих игр с площадками, +/-.</p>
+        <p class="small mt-5">Нажмите на счет, чтобы просмотреть счет по сетам. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
     	<p class="small mt-3">Upcoming updates: заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
-    	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>.</p>
+    	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>. Обратная связь и изменения: <a href="https://vk.com/topic-58506517_42583616">vk.com</a></p>
   	</div>
 </main>
 <?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
