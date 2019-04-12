@@ -19,10 +19,10 @@
 		   			<?php echo find_player_name_by_id($_POST['t1d1p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d1p2'], $players); ?>
 	   			</td>
 		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1d1" placeholder="0"<?php if ($i == 2) echo " disabled";?>>
+		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1d1" placeholder="<?php if ($i == 2) echo 0; else echo "max 4"; ;?>"<?php if ($i == 2) echo " disabled";?>>
 		   		</td>
 		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2d1" placeholder="0"<?php if ($i == 2) echo " disabled";?>>
+		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2d1" placeholder="<?php if ($i == 2) echo 0; else echo "max 4"; ;?>"<?php if ($i == 2) echo " disabled";?>>
 		   		</td>
 		   		<td class="text-right">
 		   			<input type="hidden" name="t2d1p1" value="<?php echo $_POST['t2d1p1']; ?>">

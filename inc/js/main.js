@@ -179,8 +179,21 @@ $(function() {
 			$(this).parents("tr").find(".form-control").not($(this)).val(maxOp);
 		else if (val == max && $(this).parents("tr").find(".form-control").not($(this)).val() == maxOp)
 			$(this).parents("tr").find(".form-control").not($(this)).val(maxOp - 1);
-		$(this).parents("tbody").find("tr:eq(" + ($(this).parents("tr").index("tr") + 1) + ") .form-control")
-			.attr("disabled", false);
+		var filled = 0;
+		$(this).parents("tr").find(".form-control").each(function () {
+			if ($(this).val() != "")
+				filled++;
+		});
+		if (filled == 2) {
+			prevSum1 += +$(this).parents("tr").find(".form-control:eq(0)").val();
+			prevSum2 += +$(this).parents("tr").find(".form-control:eq(1)").val();
+			$(this).parents("tbody").find("tr:eq(" + ($(this).parents("tr").index("tr") + 1) + ") .form-control")
+				.attr("disabled", false).each(function(i) {
+					var max = !i ? prevSum1 : prevSum2;
+					console.log(max);
+					$(this).attr("placeholder", "max " + ($(this).parents("tr").index("tr") * 2 - max));
+				});
+		}
 		updateSum();
 		if (isScoreValid())
 			$(".btn").attr("disabled", false);
