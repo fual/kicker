@@ -248,10 +248,14 @@ $(function() {
 	$("#teamFilter").change(function() {
 		var data = $(this).serialize();
 		var s_url = window.location.search;
-		var $_GET = s_url.substr(1).split("&");
-		for (var i = 0; i < $_GET.length; i++)
-			if (~$_GET[i].indexOf("tournament")) 
-				var tournament = $_GET[i];
+		var tournament;
+		if (s_url) {
+			var $_GET = s_url.substr(1).split("&");
+			for (var i = 0; i < $_GET.length; i++)
+				if (~$_GET[i].indexOf("tournament")) 
+					tournament = $_GET[i];
+		} else
+			tournament="tournament=pro"
 		window.location = "/schedule.php?" + tournament + "&" + data;
 	});
 	$("#clearTeamFilter").click(function() {
