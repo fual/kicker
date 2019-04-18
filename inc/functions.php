@@ -252,7 +252,7 @@ function find_player_name_by_id($player_id, $players_query) {
 	foreach ($players_query as $player)
 		if ($player['id'] == $player_id)
 			return ($player['second_name'] . " " . $player['first_name']);
-	return ("Техническое поражение");
+	return ("Т");
 }
 
 function print_ratings($division, $season) {
@@ -334,9 +334,11 @@ function print_ratings($division, $season) {
 	$sth->bindValue(":s", $season, PDO::PARAM_INT);
 	$sth->execute();
 	$players = $sth->fetchAll();
+	$i = 1;
 	echo "<table class='table table-sm table-striped table-hover table-ratings'>";
 	echo "<thead class='thead-dark'>";
 	echo "<tr>";
+	echo "<th>№</th>";
 	echo "<th>Игрок</th>";
 	echo "<th>Команда</th>";
 	echo "<th>Партий</th>";
@@ -364,6 +366,7 @@ function print_ratings($division, $season) {
 			}
 		}
 		echo "<tr>";
+		echo "<td>" . $i++ ."</td>";
 		echo "<td class='text-left'>" . $player['name'] . "</td>";
 		echo "<td>" . $player['team'] . "</td>";
 		echo "<td>" . $player['played'] . "</td>";
