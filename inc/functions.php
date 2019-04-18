@@ -252,6 +252,7 @@ function find_player_name_by_id($player_id, $players_query) {
 	foreach ($players_query as $player)
 		if ($player['id'] == $player_id)
 			return ($player['second_name'] . " " . $player['first_name']);
+	return ("Техническое поражение");
 }
 
 function print_ratings($division, $season) {
