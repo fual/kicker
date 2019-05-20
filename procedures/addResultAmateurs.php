@@ -82,7 +82,6 @@ try {
 	foreach ($results as $result) {
 		$ratings[$result['id']] = +$result['rating'];
 	}
-	var_dump($ratings);
 	// Round 1
 	// D1
 	// G1
@@ -111,7 +110,6 @@ try {
 	$ratings[$t1d1p2] += $g1t1d1 > $g1t2d1 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d1p1] += $g1t2d1 > $g1t1d1 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d1p2] += $g1t2d1 > $g1t1d1 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// G2
 	$g2t1d1 = filter_var($_POST['g2t1d1'], FILTER_SANITIZE_NUMBER_INT);
 	$g2t1d1 = $g2t1d1 ? $g2t1d1 : "0";
@@ -138,7 +136,6 @@ try {
 	$ratings[$t1d1p2] += $g2t1d1 > $g2t2d1 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d1p1] += $g2t2d1 > $g2t1d1 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d1p2] += $g2t2d1 > $g2t1d1 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// D2
 	// G1
 	$g1t1d2 = filter_var($_POST['g1t1d2'], FILTER_SANITIZE_NUMBER_INT);
@@ -166,7 +163,6 @@ try {
 	$ratings[$t1d2p2] += $g1t1d2 > $g1t2d2 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d2p1] += $g1t2d2 > $g1t1d2 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d2p2] += $g1t2d2 > $g1t1d2 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// G2
 	$g2t1d2 = filter_var($_POST['g2t1d2'], FILTER_SANITIZE_NUMBER_INT);
 	$g2t1d2 = $g2t1d2 ? $g2t1d2 : "0";
@@ -193,7 +189,6 @@ try {
 	$ratings[$t1d2p2] += $g2t1d2 > $g2t2d2 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d2p1] += $g2t2d2 > $g2t1d2 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d2p2] += $g2t2d2 > $g2t1d2 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// S1
 	// G1
 	$g1t1s1 = filter_var($_POST['g1t1s1'], FILTER_SANITIZE_NUMBER_INT);
@@ -211,7 +206,6 @@ try {
 	$rating_diff = round(abs($g1t1s1 - $g1t2s1) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
 	$ratings[$t1s1p1] += $g1t1s1 > $g1t2s1 ? $rating_diff : -$rating_diff;
 	$ratings[$t2s1p1] += $g1t2s1 > $g1t1s1 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// G2
 	$g2t1s1 = filter_var($_POST['g2t1s1'], FILTER_SANITIZE_NUMBER_INT);
 	$g2t1s1 = $g2t1s1 ? $g2t1s1 : "0";
@@ -228,7 +222,6 @@ try {
 	$rating_diff = round(abs($g2t1s1 - $g2t2s1) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
 	$ratings[$t1s1p1] += $g2t1s1 > $g2t2s1 ? $rating_diff : -$rating_diff;
 	$ratings[$t2s1p1] += $g2t2s1 > $g2t1s1 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// S2
 	// G1
 	$g1t1s2 = filter_var($_POST['g1t1s2'], FILTER_SANITIZE_NUMBER_INT);
@@ -246,7 +239,6 @@ try {
 	$rating_diff = round(abs($g1t1s2 - $g1t2s2) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
 	$ratings[$t1s2p1] += $g1t1s2 > $g1t2s2 ? $rating_diff : -$rating_diff;
 	$ratings[$t2s2p1] += $g1t2s2 > $g1t1s2 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// G2
 	$g2t1s2 = filter_var($_POST['g2t1s2'], FILTER_SANITIZE_NUMBER_INT);
 	$g2t1s2 = $g2t1s2 ? $g2t1s2 : "0";
@@ -263,7 +255,6 @@ try {
 	$rating_diff = round(abs($g2t1s2 - $g2t2s2) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
 	$ratings[$t1s2p1] += $g2t1s2 > $g2t2s2 ? $rating_diff : -$rating_diff;
 	$ratings[$t2s2p1] += $g2t2s2 > $g2t1s2 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// D3
 	// G1
 	$g1t1d3 = filter_var($_POST['g1t1d3'], FILTER_SANITIZE_NUMBER_INT);
@@ -291,7 +282,6 @@ try {
 	$ratings[$t1d3p2] += $g1t1d3 > $g1t2d3 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d3p1] += $g1t2d3 > $g1t1d3 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d3p2] += $g1t2d3 > $g1t1d3 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// G2
 	$g2t1d3 = filter_var($_POST['g2t1d3'], FILTER_SANITIZE_NUMBER_INT);
 	$g2t1d3 = $g2t1d3 ? $g2t1d3 : "0";
@@ -318,7 +308,6 @@ try {
 	$ratings[$t1d3p2] += $g2t1d3 > $g2t2d3 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d3p1] += $g2t2d3 > $g2t1d3 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d3p2] += $g2t2d3 > $g2t1d3 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// D4
 	// G1
 	$g1t1d4 = filter_var($_POST['g1t1d4'], FILTER_SANITIZE_NUMBER_INT);
@@ -346,7 +335,6 @@ try {
 	$ratings[$t1d4p2] += $g1t1d4 > $g1t2d4 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d4p1] += $g1t2d4 > $g1t1d4 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d4p2] += $g1t2d4 > $g1t1d4 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// G2
 	$g2t1d4 = filter_var($_POST['g2t1d4'], FILTER_SANITIZE_NUMBER_INT);
 	$g2t1d4 = $g2t1d4 ? $g2t1d4 : "0";
@@ -373,7 +361,6 @@ try {
 	$ratings[$t1d4p2] += $g2t1d4 > $g2t2d4 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d4p1] += $g2t2d4 > $g2t1d4 ? $rating_diff : -$rating_diff;
 	$ratings[$t2d4p2] += $g2t2d4 > $g2t1d4 ? $rating_diff : -$rating_diff;
-	var_dump($ratings);
 	// update ratings
 	foreach ($ratings as $id => $rating) {
 		$sth = $db->prepare("update rosters set rating = :rating where id = :id");

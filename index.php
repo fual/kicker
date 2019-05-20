@@ -5,9 +5,9 @@
 <body>
 <main role="main" class="container">
   	<div class="starter-template text-center">
-        <!-- <div class="alert alert-warning">
-            В данный момент разворачивается большой патч. Пожалуйста, не вносите новые данные в течение часа - они будут утерены.
-        </div> -->
+        <div class="alert alert-warning small">
+            Добавляем сыгранные матчи и рейтинг для любителей. Не вводите сыгранные матчи любителей самостоятельно - мы добавляем их по-очереди, чтобы правильно рассчитать рейтинг. Остальные функции сайта доступны без ограничений
+        </div>
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
     			<div class="alert alert-success mt-3 result" id="result">
