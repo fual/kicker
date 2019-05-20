@@ -105,6 +105,72 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex align-items-center mt-4 mb-3">
+            <h2 class="text-left">ЛКЛ</h2>
+            <a href="input.php?tournament=3" class="btn btn-success ml-auto">+ счет</a>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#lklTeamsPane" id="lklTeamsTab" data-toggle="tab" role="tab">Команды</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#lklPlayersPane" id="lklPlayersTab" data-toggle="tab" role="tab">Игроки</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="lklTeamsPane">
+                <div class="table-responsive">
+                    <?php print_result_table(3, "2019"); ?>
+                </div>
+            </div>
+            <div class="tab-pane fade text-left" id="lklPlayersPane">
+                <div class="table-responsive">
+                    <form class="d-flex mb-2 px-1" id="search2">
+                        <input type="text" name="search2" class="form-control w-75 mr-3 my-1" placeholder="Искать">
+                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-danger my-1" id="clear2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
+                    <?php print_ratings(3, 1); ?>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mt-4 mb-3">
+            <h2 class="text-left">ЗКЛ</h2>
+            <a href="input.php?tournament=4" class="btn btn-success ml-auto">+ счет</a>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#zklTeamsPane" id="zklTeamsTab" data-toggle="tab" role="tab">Команды</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#zklPlayersPane" id="zklPlayersTab" data-toggle="tab" role="tab">Игроки</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="zklTeamsPane">
+                <div class="table-responsive">
+                    <?php print_result_table(4, "2019"); ?>
+                </div>
+            </div>
+            <div class="tab-pane fade text-left" id="zklPlayersPane">
+                <div class="table-responsive">
+                    <form class="d-flex mb-2 px-1" id="search2">
+                        <input type="text" name="search2" class="form-control w-75 mr-3 my-1" placeholder="Искать">
+                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-danger my-1" id="clear2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
+                    <?php print_ratings(4, 1); ?>
+                </div>
+            </div>
+        </div>
         <p class="small mt-5">Нажмите на счет, чтобы просмотреть счет по сетам. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
     	<p class="small mt-3">Upcoming updates: заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>. Обратная связь и изменения: <a href="https://vk.com/topic-58506517_42583616">vk.com</a></p>

@@ -7,7 +7,7 @@
 		$team2 = $_GET['team2'];
 	}
 	if (!isset($_GET['tournament'])) {
-		$sth = $db->prepare("select tournament_id as id, tournament_description as name from tournaments where id in (1, 2) order by tournament_name");
+		$sth = $db->prepare("select tournament_id as id, tournament_description as name from tournaments order by tournament_name");
 		$sth->execute();
 		$tournaments = $sth->fetchAll();
 	} else {
@@ -16,6 +16,10 @@
 		$sth->bindValue(":id", $tournament_id, PDO::PARAM_INT);
 		$sth->execute();
 		$teams = $sth->fetchAll();
+		$sth = $db->prepare("select tournament_description as name from tournaments where tournament_id = :id");
+		$sth->bindValue(":id", $tournament_id, PDO::PARAM_INT);
+		$sth->execute();
+		$tournament_name = $sth->fetch()["name"];
 	}
 	if (isset($_GET['team1']) && isset($_GET['team2'])) {
 		$team1_id = $_GET['team1'];
@@ -42,7 +46,7 @@
   	<div class="starter-template pt-0">
 		<h2>Добавить результат</h2>
 		<?php if (isset($tournament_id)): ?>
-			<h4><?php echo $tournament_id == 1 ? "Первый дивизион" : "Второй дивизион"; ?></h4>
+			<h4><?php echo $tournament_name ?></h4>
 		<?php endif; ?>
 		<?php if (isset($_GET['result']) && $_GET['result'] == "error"): ?>
 			<div class="alert alert-danger result" id="result">
@@ -55,9 +59,17 @@
 		<?php endif; ?>
 		<?php include __DIR__ . "/inc/layout/templates/choose_teams.php"; ?>
 		<?php if ($_SERVER['REQUEST_METHOD'] != "POST" && isset($team1) && isset($team2)): ?>
-	   		<?php include __DIR__ . "/inc/layout/templates/fill_lineup.php"; ?>
+			<?php if ($tournament_id == 1 || $tournament_id == 2): ?>
+	   			<?php include __DIR__ . "/inc/layout/templates/fill_lineup.php"; ?>
+	   		<?php else: ?>
+	   			<?php include __DIR__ . "/inc/layout/templates/fill_lineup_amateurs.php"; ?>
+	   		<?php endif; ?>
 		<?php elseif ($_SERVER['REQUEST_METHOD'] == "POST" && isset($team1) && isset($team2)): ?>
-	   		<?php include __DIR__ . "/inc/layout/templates/input_score.php"; ?>
+			<?php if ($tournament_id == 1 || $tournament_id == 2): ?>
+	   			<?php include __DIR__ . "/inc/layout/templates/input_score.php"; ?>
+	   		<?php else: ?>
+	   			<?php include __DIR__ . "/inc/layout/templates/input_score_amateurs.php"; ?>
+	   		<?php endif; ?>
 	   	<?php elseif ($_SERVER['REQUEST_METHOD'] == "POST"): ?>
 	   		<p>К сожалению, возникла ошибка. Свяжитесь с администратором.</p>
    		<?php endif; ?>
