@@ -32,11 +32,6 @@
 		}
 		$score1 = $game['score1'];
 		$score2 = $game['score2'];
-		$ratings = [$player11 => $rating11, $player21 => $rating21];
-		if (isset($game['player_id12'])) {
-			$ratings[$player12] = $rating12;
-			$ratings[$player22] = $rating22;
-		}
 		if (isset($player12)) {
 			$rating1 = $rating11 > $rating12 ? 
 				(2 * $rating11 + $rating12) / 3 : (2 * $rating12 + $rating11) / 3;
