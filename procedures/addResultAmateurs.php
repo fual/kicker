@@ -82,285 +82,46 @@ try {
 	foreach ($results as $result) {
 		$ratings[$result['id']] = +$result['rating'];
 	}
-	// Round 1
-	// D1
-	// G1
-	$g1t1d1 = filter_var($_POST['g1t1d1'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t1d1 = $g1t1d1 ? $g1t1d1 : "0";
-	$g1t2d1 = filter_var($_POST['g1t2d1'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t2d1 = $g1t2d1 ? $g1t2d1 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d1p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d1p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d1p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d1p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g1t1d1, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g1t2d1, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d1p1] > $ratings[$t1d1p2] 
-		? (2 * $ratings[$t1d1p1] + $ratings[$t1d1p2]) / 3
-		: (2 * $ratings[$t1d1p2] + $ratings[$t1d1p1]) / 3;
-	$r2 = $ratings[$t2d1p1] > $ratings[$t2d1p2] 
-		? (2 * $ratings[$t2d1p1] + $ratings[$t2d1p2]) / 3
-		: (2 * $ratings[$t2d1p2] + $ratings[$t2d1p1]) / 3;
-	$x = $g1t1d1 > $g1t2d1 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g1t1d1 - $g1t2d1) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d1p1] += $g1t1d1 > $g1t2d1 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d1p2] += $g1t1d1 > $g1t2d1 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d1p1] += $g1t2d1 > $g1t1d1 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d1p2] += $g1t2d1 > $g1t1d1 ? $rating_diff : -$rating_diff;
-	// G2
-	$g2t1d1 = filter_var($_POST['g2t1d1'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t1d1 = $g2t1d1 ? $g2t1d1 : "0";
-	$g2t2d1 = filter_var($_POST['g2t2d1'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t2d1 = $g2t2d1 ? $g2t2d1 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d1p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d1p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d1p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d1p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g2t1d1, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g2t2d1, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d1p1] > $ratings[$t1d1p2] 
-		? (2 * $ratings[$t1d1p1] + $ratings[$t1d1p2]) / 3
-		: (2 * $ratings[$t1d1p2] + $ratings[$t1d1p1]) / 3;
-	$r2 = $ratings[$t2d1p1] > $ratings[$t2d1p2] 
-		? (2 * $ratings[$t2d1p1] + $ratings[$t2d1p2]) / 3
-		: (2 * $ratings[$t2d1p2] + $ratings[$t2d1p1]) / 3;
-	$x = $g2t1d1 > $g2t2d1 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g2t1d1 - $g2t2d1) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d1p1] += $g2t1d1 > $g2t2d1 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d1p2] += $g2t1d1 > $g2t2d1 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d1p1] += $g2t2d1 > $g2t1d1 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d1p2] += $g2t2d1 > $g2t1d1 ? $rating_diff : -$rating_diff;
-	// D2
-	// G1
-	$g1t1d2 = filter_var($_POST['g1t1d2'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t1d2 = $g1t1d2 ? $g1t1d2 : "0";
-	$g1t2d2 = filter_var($_POST['g1t2d2'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t2d2 = $g1t2d2 ? $g1t2d2 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d2p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d2p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d2p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d2p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g1t1d2, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g1t2d2, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d2p1] > $ratings[$t1d2p2] 
-		? (2 * $ratings[$t1d2p1] + $ratings[$t1d2p2]) / 3
-		: (2 * $ratings[$t1d2p2] + $ratings[$t1d2p1]) / 3;
-	$r2 = $ratings[$t2d2p1] > $ratings[$t2d2p2] 
-		? (2 * $ratings[$t2d2p1] + $ratings[$t2d2p2]) / 3
-		: (2 * $ratings[$t2d2p2] + $ratings[$t2d2p1]) / 3;
-	$x = $g1t1d2 > $g1t2d2 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g1t1d2 - $g1t2d2) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d2p1] += $g1t1d2 > $g1t2d2 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d2p2] += $g1t1d2 > $g1t2d2 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d2p1] += $g1t2d2 > $g1t1d2 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d2p2] += $g1t2d2 > $g1t1d2 ? $rating_diff : -$rating_diff;
-	// G2
-	$g2t1d2 = filter_var($_POST['g2t1d2'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t1d2 = $g2t1d2 ? $g2t1d2 : "0";
-	$g2t2d2 = filter_var($_POST['g2t2d2'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t2d2 = $g2t2d2 ? $g2t2d2 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d2p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d2p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d2p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d2p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g2t1d2, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g2t2d2, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d2p1] > $ratings[$t1d2p2] 
-		? (2 * $ratings[$t1d2p1] + $ratings[$t1d2p2]) / 3
-		: (2 * $ratings[$t1d2p2] + $ratings[$t1d2p1]) / 3;
-	$r2 = $ratings[$t2d2p1] > $ratings[$t2d2p2] 
-		? (2 * $ratings[$t2d2p1] + $ratings[$t2d2p2]) / 3
-		: (2 * $ratings[$t2d2p2] + $ratings[$t2d2p1]) / 3;
-	$x = $g2t1d2 > $g2t2d2 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g2t1d2 - $g2t2d2) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d2p1] += $g2t1d2 > $g2t2d2 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d2p2] += $g2t1d2 > $g2t2d2 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d2p1] += $g2t2d2 > $g2t1d2 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d2p2] += $g2t2d2 > $g2t1d2 ? $rating_diff : -$rating_diff;
-	// S1
-	// G1
-	$g1t1s1 = filter_var($_POST['g1t1s1'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t1s1 = $g1t1s1 ? $g1t1s1 : "0";
-	$g1t2s1 = filter_var($_POST['g1t2s1'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t2s1 = $g1t2s1 ? $g1t2s1 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, NULL, :t2p1, NULL, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1s1p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2s1p1, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g1t1s1, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g1t2s1, PDO::PARAM_INT);
-	$sth->execute();
-	$x = $g1t1s1 > $g1t2s1 ? $ratings[$t2s1p1] - $ratings[$t1s1p1] : $ratings[$t1s1p1] - $ratings[$t2s1p1];
-	$rating_diff = round(abs($g1t1s1 - $g1t2s1) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1s1p1] += $g1t1s1 > $g1t2s1 ? $rating_diff : -$rating_diff;
-	$ratings[$t2s1p1] += $g1t2s1 > $g1t1s1 ? $rating_diff : -$rating_diff;
-	// G2
-	$g2t1s1 = filter_var($_POST['g2t1s1'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t1s1 = $g2t1s1 ? $g2t1s1 : "0";
-	$g2t2s1 = filter_var($_POST['g2t2s1'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t2s1 = $g2t2s1 ? $g2t2s1 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, NULL, :t2p1, NULL, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1s1p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2s1p1, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g2t1s1, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g2t2s1, PDO::PARAM_INT);
-	$sth->execute();
-	$x = $g2t1s1 > $g2t2s1 ? $ratings[$t2s1p1] - $ratings[$t1s1p1] : $ratings[$t1s1p1] - $ratings[$t2s1p1];
-	$rating_diff = round(abs($g2t1s1 - $g2t2s1) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1s1p1] += $g2t1s1 > $g2t2s1 ? $rating_diff : -$rating_diff;
-	$ratings[$t2s1p1] += $g2t2s1 > $g2t1s1 ? $rating_diff : -$rating_diff;
-	// S2
-	// G1
-	$g1t1s2 = filter_var($_POST['g1t1s2'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t1s2 = $g1t1s2 ? $g1t1s2 : "0";
-	$g1t2s2 = filter_var($_POST['g1t2s2'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t2s2 = $g1t2s2 ? $g1t2s2 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, NULL, :t2p1, NULL, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1s2p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2s2p1, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g1t1s2, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g1t2s2, PDO::PARAM_INT);
-	$sth->execute();
-	$x = $g1t1s2 > $g1t2s2 ? $ratings[$t2s2p1] - $ratings[$t1s2p1] : $ratings[$t1s2p1] - $ratings[$t2s2p1];
-	$rating_diff = round(abs($g1t1s2 - $g1t2s2) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1s2p1] += $g1t1s2 > $g1t2s2 ? $rating_diff : -$rating_diff;
-	$ratings[$t2s2p1] += $g1t2s2 > $g1t1s2 ? $rating_diff : -$rating_diff;
-	// G2
-	$g2t1s2 = filter_var($_POST['g2t1s2'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t1s2 = $g2t1s2 ? $g2t1s2 : "0";
-	$g2t2s2 = filter_var($_POST['g2t2s2'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t2s2 = $g2t2s2 ? $g2t2s2 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, NULL, :t2p1, NULL, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1s2p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2s2p1, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g2t1s2, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g2t2s2, PDO::PARAM_INT);
-	$sth->execute();
-	$x = $g2t1s2 > $g2t2s2 ? $ratings[$t2s2p1] - $ratings[$t1s2p1] : $ratings[$t1s2p1] - $ratings[$t2s2p1];
-	$rating_diff = round(abs($g2t1s2 - $g2t2s2) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1s2p1] += $g2t1s2 > $g2t2s2 ? $rating_diff : -$rating_diff;
-	$ratings[$t2s2p1] += $g2t2s2 > $g2t1s2 ? $rating_diff : -$rating_diff;
-	// D3
-	// G1
-	$g1t1d3 = filter_var($_POST['g1t1d3'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t1d3 = $g1t1d3 ? $g1t1d3 : "0";
-	$g1t2d3 = filter_var($_POST['g1t2d3'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t2d3 = $g1t2d3 ? $g1t2d3 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d3p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d3p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d3p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d3p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g1t1d3, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g1t2d3, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d3p1] > $ratings[$t1d3p2] 
-		? (2 * $ratings[$t1d3p1] + $ratings[$t1d3p2]) / 3
-		: (2 * $ratings[$t1d3p2] + $ratings[$t1d3p1]) / 3;
-	$r2 = $ratings[$t2d3p1] > $ratings[$t2d3p2] 
-		? (2 * $ratings[$t2d3p1] + $ratings[$t2d3p2]) / 3
-		: (2 * $ratings[$t2d3p2] + $ratings[$t2d3p1]) / 3;
-	$x = $g1t1d3 > $g1t2d3 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g1t1d3 - $g1t2d3) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d3p1] += $g1t1d3 > $g1t2d3 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d3p2] += $g1t1d3 > $g1t2d3 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d3p1] += $g1t2d3 > $g1t1d3 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d3p2] += $g1t2d3 > $g1t1d3 ? $rating_diff : -$rating_diff;
-	// G2
-	$g2t1d3 = filter_var($_POST['g2t1d3'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t1d3 = $g2t1d3 ? $g2t1d3 : "0";
-	$g2t2d3 = filter_var($_POST['g2t2d3'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t2d3 = $g2t2d3 ? $g2t2d3 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d3p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d3p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d3p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d3p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g2t1d3, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g2t2d3, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d3p1] > $ratings[$t1d3p2] 
-		? (2 * $ratings[$t1d3p1] + $ratings[$t1d3p2]) / 3
-		: (2 * $ratings[$t1d3p2] + $ratings[$t1d3p1]) / 3;
-	$r2 = $ratings[$t2d3p1] > $ratings[$t2d3p2] 
-		? (2 * $ratings[$t2d3p1] + $ratings[$t2d3p2]) / 3
-		: (2 * $ratings[$t2d3p2] + $ratings[$t2d3p1]) / 3;
-	$x = $g2t1d3 > $g2t2d3 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g2t1d3 - $g2t2d3) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d3p1] += $g2t1d3 > $g2t2d3 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d3p2] += $g2t1d3 > $g2t2d3 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d3p1] += $g2t2d3 > $g2t1d3 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d3p2] += $g2t2d3 > $g2t1d3 ? $rating_diff : -$rating_diff;
-	// D4
-	// G1
-	$g1t1d4 = filter_var($_POST['g1t1d4'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t1d4 = $g1t1d4 ? $g1t1d4 : "0";
-	$g1t2d4 = filter_var($_POST['g1t2d4'], FILTER_SANITIZE_NUMBER_INT);
-	$g1t2d4 = $g1t2d4 ? $g1t2d4 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d4p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d4p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d4p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d4p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g1t1d4, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g1t2d4, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d4p1] > $ratings[$t1d4p2] 
-		? (2 * $ratings[$t1d4p1] + $ratings[$t1d4p2]) / 3
-		: (2 * $ratings[$t1d4p2] + $ratings[$t1d4p1]) / 3;
-	$r2 = $ratings[$t2d4p1] > $ratings[$t2d4p2] 
-		? (2 * $ratings[$t2d4p1] + $ratings[$t2d4p2]) / 3
-		: (2 * $ratings[$t2d4p2] + $ratings[$t2d4p1]) / 3;
-	$x = $g1t1d4 > $g1t2d4 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g1t1d4 - $g1t2d4) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d4p1] += $g1t1d4 > $g1t2d4 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d4p2] += $g1t1d4 > $g1t2d4 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d4p1] += $g1t2d4 > $g1t1d4 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d4p2] += $g1t2d4 > $g1t1d4 ? $rating_diff : -$rating_diff;
-	// G2
-	$g2t1d4 = filter_var($_POST['g2t1d4'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t1d4 = $g2t1d4 ? $g2t1d4 : "0";
-	$g2t2d4 = filter_var($_POST['g2t2d4'], FILTER_SANITIZE_NUMBER_INT);
-	$g2t2d4 = $g2t2d4 ? $g2t2d4 : "0";
-	$sth = $db->prepare("insert into games values (NULL, :match_id, :t1p1, :t1p2, :t2p1, :t2p2, :score1, :score2)");
-	$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
-	$sth->bindValue(':t1p1', $t1d4p1, PDO::PARAM_INT);
-	$sth->bindValue(':t1p2', $t1d4p2, PDO::PARAM_INT);
-	$sth->bindValue(':t2p1', $t2d4p1, PDO::PARAM_INT);
-	$sth->bindValue(':t2p2', $t2d4p2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $g2t1d4, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $g2t2d4, PDO::PARAM_INT);
-	$sth->execute();
-	$r1 = $ratings[$t1d4p1] > $ratings[$t1d4p2] 
-		? (2 * $ratings[$t1d4p1] + $ratings[$t1d4p2]) / 3
-		: (2 * $ratings[$t1d4p2] + $ratings[$t1d4p1]) / 3;
-	$r2 = $ratings[$t2d4p1] > $ratings[$t2d4p2] 
-		? (2 * $ratings[$t2d4p1] + $ratings[$t2d4p2]) / 3
-		: (2 * $ratings[$t2d4p2] + $ratings[$t2d4p1]) / 3;
-	$x = $g2t1d4 > $g2t2d4 ? $r2 - $r1 : $r1 - $r2;
-	$rating_diff = round(abs($g2t1d4 - $g2t2d4) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
-	$ratings[$t1d4p1] += $g2t1d4 > $g2t2d4 ? $rating_diff : -$rating_diff;
-	$ratings[$t1d4p2] += $g2t1d4 > $g2t2d4 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d4p1] += $g2t2d4 > $g2t1d4 ? $rating_diff : -$rating_diff;
-	$ratings[$t2d4p2] += $g2t2d4 > $g2t1d4 ? $rating_diff : -$rating_diff;
+	$matches = ["d1", "d2", "s1", "s2", "d3", "d4"];
+	foreach ($matches as $match) {
+		for ($g = 1; $g < 3; $g++) {
+			${"g".$g."t1".$match} = filter_var($_POST["g".$g."t1".$match], FILTER_SANITIZE_NUMBER_INT);
+			${"g".$g."t1".$match} = ${"g".$g."t1".$match} ? ${"g".$g."t1".$match} : "0";
+			${"g".$g."t2".$match} = filter_var($_POST["g".$g."t2".$match], FILTER_SANITIZE_NUMBER_INT);
+			${"g".$g."t2".$match} = ${"g".$g."t2".$match} ? ${"g".$g."t2".$match} : "0";
+			$query = "insert into games values (NULL, :match_id, :t1p1, " . (strpos($match, "s") === false ? ":t1p2" : "NULL") . ", :t2p1, " . (strpos($match, "s") === false ? ":t2p2" : "NULL") . ", :score1, :score2)";
+			$sth = $db->prepare($query);
+			$sth->bindValue(':match_id', $match_id, PDO::PARAM_INT);
+			$sth->bindValue(':t1p1', ${"t1".$match."p1"}, PDO::PARAM_INT);
+			$sth->bindValue(':t2p1', ${"t2".$match."p1"}, PDO::PARAM_INT);
+			if (strpos($match, "s") === false) {
+				$sth->bindValue(':t1p2', ${"t1".$match."p2"}, PDO::PARAM_INT);
+				$sth->bindValue(':t2p2', ${"t2".$match."p2"}, PDO::PARAM_INT);
+			}
+			$sth->bindValue(':score1', ${"g".$g."t1".$match}, PDO::PARAM_INT);
+			$sth->bindValue(':score2', ${"g".$g."t2".$match}, PDO::PARAM_INT);
+			$sth->execute();
+			if (strpos($match, "s") === false) {
+				$r1 = $ratings[${"t1".$match."p1"}] > $ratings[${"t1".$match."p2"}] 
+					? (2 * $ratings[${"t1".$match."p1"}] + $ratings[${"t1".$match."p2"}]) / 3
+					: (2 * $ratings[${"t1".$match."p2"}] + $ratings[${"t1".$match."p1"}]) / 3;
+				$r2 = $ratings[${"t2".$match."p1"}] > $ratings[${"t2".$match."p2"}] 
+					? (2 * $ratings[${"t2".$match."p1"}] + $ratings[${"t2".$match."p2"}]) / 3
+					: (2 * $ratings[${"t2".$match."p2"}] + $ratings[${"t2".$match."p1"}]) / 3;
+			} else {
+				$r1 = $ratings[${"t1".$match."p1"}];
+				$r2 = $ratings[${"t2".$match."p1"}];
+			}
+			$x = ${"g".$g."t1".$match} > ${"g".$g."t2".$match} ? $r2 - $r1 : $r1 - $r2;
+			$rating_diff = round(abs(${"g".$g."t1".$match} - ${"g".$g."t2".$match}) * 6 * (1 - 1 / (pow(10, ($x / 400)) + 1)));
+			$ratings[${"t1".$match."p1"}] += ${"g".$g."t1".$match} > ${"g".$g."t2".$match} ? $rating_diff : -$rating_diff;
+			$ratings[${"t2".$match."p1"}] += ${"g".$g."t2".$match} > ${"g".$g."t1".$match} ? $rating_diff : -$rating_diff;
+			if (strpos($match, "s") === false) {
+				$ratings[${"t1".$match."p2"}] += ${"g".$g."t1".$match} > ${"g".$g."t2".$match} ? $rating_diff : -$rating_diff;
+				$ratings[${"t2".$match."p2"}] += ${"g".$g."t2".$match} > ${"g".$g."t1".$match} ? $rating_diff : -$rating_diff;
+			}
+		}
+	}
 	// update ratings
 	foreach ($ratings as $id => $rating) {
 		$sth = $db->prepare("update rosters set rating = :rating where id = :id");
