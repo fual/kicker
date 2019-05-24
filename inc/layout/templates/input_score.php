@@ -8,108 +8,38 @@
 			<th colspan="2"><?php echo $team2; ?></th>
 		</thead>
 		<tbody>
+			<?php $matches = ["d1", "d2", "s1", "s2", "d3"]; ?>
+			<?php $tabIndex = 1; ?>
 			<?php for ($i = 1; $i < 3; $i++): ?>
-			<tr>
-				<td colspan="4">D1</td>
-			</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1d1p1" value="<?php echo $_POST['t1d1p1']; ?>">
-		   			<input type="hidden" name="t1d1p2" value="<?php echo $_POST['t1d1p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1d1p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d1p2'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1d1" placeholder="<?php if ($i == 2) echo 0; else echo "max 4"; ;?>"<?php if ($i == 2) echo " disabled";?>>
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2d1" placeholder="<?php if ($i == 2) echo 0; else echo "max 4"; ;?>"<?php if ($i == 2) echo " disabled";?>>
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2d1p1" value="<?php echo $_POST['t2d1p1']; ?>">
-		   			<input type="hidden" name="t2d1p2" value="<?php echo $_POST['t2d1p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2d1p1'], $players) . "<br>" . find_player_name_by_id($_POST['t2d1p2'], $players); ?>
-	   			</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">D2</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1d2p1" value="<?php echo $_POST['t1d2p1']; ?>">
-		   			<input type="hidden" name="t1d2p2" value="<?php echo $_POST['t1d2p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1d2p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d2p2'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1d2" placeholder="0" disabled>
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2d2" placeholder="0" disabled>
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2d2p1" value="<?php echo $_POST['t2d2p1']; ?>">
-		   			<input type="hidden" name="t2d2p2" value="<?php echo $_POST['t2d2p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2d2p1'], $players) . "<br>" . find_player_name_by_id($_POST['t2d2p2'], $players); ?>
-		   		</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">S1</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1s1p1" value="<?php echo $_POST['t1s1p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1s1p1'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1s1" placeholder="0" disabled>
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2s1" placeholder="0" disabled>
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2s1p1" value="<?php echo $_POST['t2s1p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2s1p1'], $players); ?>
-	   			</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">S2</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1s2p1" value="<?php echo $_POST['t1s2p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1s2p1'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1s2" placeholder="0" disabled>
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2s2" placeholder="0" disabled>
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2s2p1" value="<?php echo $_POST['t2s2p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2s2p1'], $players); ?>
-	   			</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">D3</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1d3p1" value="<?php echo $_POST['t1d3p1']; ?>">
-		   			<input type="hidden" name="t1d3p2" value="<?php echo $_POST['t1d3p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1d3p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d3p2'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1d3" placeholder="0" disabled>
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2d3" placeholder="0" disabled>
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2d3p1" value="<?php echo $_POST['t2d3p1']; ?>">
-		   			<input type="hidden" name="t2d3p2" value="<?php echo $_POST['t2d3p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2d3p1'], $players) . "<br>" . find_player_name_by_id($_POST['t2d3p2'], $players); ?>
-		   		</td>
-		   	</tr>
+				<?php foreach ($matches as $match): ?>
+					<tr>
+						<td colspan="4"><?php echo strtoupper($match); ?></td>
+					</tr>
+				   	<tr>
+				   		<td class="text-left">
+				   			<input type="hidden" name="t1<?php echo $match; ?>p1" value="<?php echo $_POST['t1'.$match.'p1']; ?>">
+				   			<?php if (strpos($match, "s") === false): ?>
+				   				<input type="hidden" name="t1<?php echo $match; ?>p2" value="<?php echo $_POST['t1'.$match.'p2']; ?>">
+				   			<?php endif; ?>
+				   			<?php echo find_player_name_by_id($_POST['t1'.$match.'p1'], $players); ?>
+				   			<?php if (strpos($match, "s") === false) echo "<br>" . find_player_name_by_id($_POST['t1'.$match.'p2'], $players); ?>
+			   			</td>
+				   		<td>
+				   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1<?php echo $match; ?>" placeholder="<?php if ($i == 1 && $match == "d1") echo "max 4"; else echo 0; ?>"<?php if (!($i == 1 && $match == "d1")) echo " disabled";?> tabindex="<?php echo $tabIndex++; ?>">
+				   		</td>
+				   		<td>
+				   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2<?php echo $match; ?>" placeholder="<?php if ($i == 1 && $match == "d1") echo "max 4"; else echo 0; ?>"<?php if (!($i == 1 && $match == "d1")) echo " disabled";?> tabindex="<?php echo $tabIndex++; ?>">
+				   		</td>
+				   		<td class="text-right">
+				   			<input type="hidden" name="t2<?php echo $match; ?>p1" value="<?php echo $_POST['t2'.$match.'p1']; ?>">
+				   			<?php if (strpos($match, "s") === false): ?>
+				   				<input type="hidden" name="t2<?php echo $match; ?>p2" value="<?php echo $_POST['t2'.$match.'p2']; ?>">
+				   			<?php endif; ?>
+				   			<?php echo find_player_name_by_id($_POST['t2'.$match.'p1'], $players); ?>
+				   			<?php if (strpos($match, "s") === false) echo "<br>" . find_player_name_by_id($_POST['t2'.$match.'p2'], $players); ?>
+			   			</td>
+				   	</tr>
+				<?php endforeach; ?>
 		   	<?php endfor; ?>
 		   	<tr>
 		   		<td>

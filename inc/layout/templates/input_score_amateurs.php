@@ -8,140 +8,40 @@
 			<th colspan="2"><?php echo $team2; ?></th>
 		</thead>
 		<tbody>
-			<tr>
-				<td colspan="4">D1</td>
-			</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1d1p1" value="<?php echo $_POST['t1d1p1']; ?>">
-		   			<input type="hidden" name="t1d1p2" value="<?php echo $_POST['t1d1p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1d1p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d1p2'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t1d1" placeholder="0" tabindex="1">
-		   			<input type="number" class="form-control mt-1" name="g2t1d1" placeholder="0" tabindex="3">
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t2d1" placeholder="0" tabindex="2">
-		   			<input type="number" class="form-control mt-1" name="g2t2d1" placeholder="0" tabindex="4">
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2d1p1" value="<?php echo $_POST['t2d1p1']; ?>">
-		   			<input type="hidden" name="t2d1p2" value="<?php echo $_POST['t2d1p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2d1p1'], $players) . "<br>" . find_player_name_by_id($_POST['t2d1p2'], $players); ?>
-	   			</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">D2</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1d2p1" value="<?php echo $_POST['t1d2p1']; ?>">
-		   			<input type="hidden" name="t1d2p2" value="<?php echo $_POST['t1d2p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1d2p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d2p2'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t1d2" placeholder="0" tabindex="5">
-		   			<input type="number" class="form-control mt-1" name="g2t1d2" placeholder="0" tabindex="7">
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t2d2" placeholder="0" tabindex="6">
-		   			<input type="number" class="form-control mt-1" name="g2t2d2" placeholder="0" tabindex="8">
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2d2p1" value="<?php echo $_POST['t2d2p1']; ?>">
-		   			<input type="hidden" name="t2d2p2" value="<?php echo $_POST['t2d2p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2d2p1'], $players) . "<br>" . find_player_name_by_id($_POST['t2d2p2'], $players); ?>
-		   		</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">S1</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1s1p1" value="<?php echo $_POST['t1s1p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1s1p1'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t1s1" placeholder="0" tabindex="9">
-		   			<input type="number" class="form-control mt-1" name="g2t1s1" placeholder="0" tabindex="11">
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t2s1" placeholder="0" tabindex="10">
-		   			<input type="number" class="form-control mt-1" name="g2t2s1" placeholder="0" tabindex="12">
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2s1p1" value="<?php echo $_POST['t2s1p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2s1p1'], $players); ?>
-	   			</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">S2</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1s2p1" value="<?php echo $_POST['t1s2p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1s2p1'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t1s2" placeholder="0" tabindex="13">
-		   			<input type="number" class="form-control mt-1" name="g2t1s2" placeholder="0" tabindex="15">
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t2s2" placeholder="0" tabindex="14">
-		   			<input type="number" class="form-control mt-1" name="g2t2s2" placeholder="0" tabindex="16">
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2s2p1" value="<?php echo $_POST['t2s2p1']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2s2p1'], $players); ?>
-	   			</td>
-		   	</tr>
-		   	<tr>
-		   		<td colspan="4">D3</td>
-		   	</tr>
-		   	<tr>
-		   		<td class="text-left">
-		   			<input type="hidden" name="t1d3p1" value="<?php echo $_POST['t1d3p1']; ?>">
-		   			<input type="hidden" name="t1d3p2" value="<?php echo $_POST['t1d3p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t1d3p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d3p2'], $players); ?>
-	   			</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t1d3" placeholder="0" tabindex="17">
-		   			<input type="number" class="form-control mt-1" name="g2t1d3" placeholder="0" tabindex="19">
-		   		</td>
-		   		<td>
-		   			<input type="number" class="form-control" name="g1t2d3" placeholder="0" tabindex="18">
-		   			<input type="number" class="form-control mt-1" name="g2t2d3" placeholder="0" tabindex="20">
-		   		</td>
-		   		<td class="text-right">
-		   			<input type="hidden" name="t2d3p1" value="<?php echo $_POST['t2d3p1']; ?>">
-		   			<input type="hidden" name="t2d3p2" value="<?php echo $_POST['t2d3p2']; ?>">
-		   			<?php echo find_player_name_by_id($_POST['t2d3p1'], $players) . "<br>" . find_player_name_by_id($_POST['t2d3p2'], $players); ?>
-		   		</td>
-		   	</tr>
-   		   	<tr>
-   		   		<td colspan="4">D4</td>
-   		   	</tr>
-   		   	<tr>
-   		   		<td class="text-left">
-   		   			<input type="hidden" name="t1d4p1" value="<?php echo $_POST['t1d4p1']; ?>">
-   		   			<input type="hidden" name="t1d4p2" value="<?php echo $_POST['t1d4p2']; ?>">
-   		   			<?php echo find_player_name_by_id($_POST['t1d4p1'], $players) . "<br>" . find_player_name_by_id($_POST['t1d4p2'], $players); ?>
-   	   			</td>
-   		   		<td>
-   		   			<input type="number" class="form-control" name="g1t1d4" placeholder="0" tabindex="21">
-   		   			<input type="number" class="form-control mt-1" name="g2t1d4" placeholder="0" tabindex="23">
-   		   		</td>
-   		   		<td>
-   		   			<input type="number" class="form-control" name="g1t2d4" placeholder="0" tabindex="22">
-   		   			<input type="number" class="form-control mt-1" name="g2t2d4" placeholder="0" tabindex="24">
-   		   		</td>
-   		   		<td class="text-right">
-   		   			<input type="hidden" name="t2d4p1" value="<?php echo $_POST['t2d4p1']; ?>">
-   		   			<input type="hidden" name="t2d4p2" value="<?php echo $_POST['t2d4p2']; ?>">
-   		   			<?php echo find_player_name_by_id($_POST['t2d4p1'], $players) . "<br>" . find_player_name_by_id($_POST['t2d4p2'], $players); ?>
-   		   		</td>
-   		   	</tr>
+			<?php $matches = ["d1", "d2", "s1", "s2", "d3", "d4"]; ?>
+			<?php $tabIndex = 1; ?>
+			<?php foreach ($matches as $match): ?>
+				<tr>
+					<td colspan="4"><?php echo strtoupper($match); ?></td>
+				</tr>
+			   	<tr>
+			   		<td class="text-left">
+			   			<input type="hidden" name="t1<?php echo $match; ?>p1" value="<?php echo $_POST['t1'.$match.'p1']; ?>">
+			   			<?php if (strpos($match, "s") === false): ?>
+			   				<input type="hidden" name="t1<?php echo $match; ?>p2" value="<?php echo $_POST['t1'.$match.'p2']; ?>">
+			   			<?php endif; ?>
+			   			<?php echo find_player_name_by_id($_POST['t1'.$match.'p1'], $players); ?>
+			   			<?php if (strpos($match, "s") === false) echo "<br>" . find_player_name_by_id($_POST['t1'.$match.'p2'], $players); ?>
+		   			</td>
+			   		<td>
+			   			<input type="number" class="form-control" name="g1t1<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex; ?>">
+			   			<input type="number" class="form-control mt-1" name="g2t1<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 2; ?>">
+			   		</td>
+			   		<td>
+			   			<input type="number" class="form-control" name="g1t2<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 1; ?>">
+			   			<input type="number" class="form-control mt-1" name="g2t2<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 3; ?>">
+			   		</td>
+			   		<td class="text-right">
+			   			<input type="hidden" name="t2<?php echo $match; ?>p1" value="<?php echo $_POST['t2'.$match.'p1']; ?>">
+			   			<?php if (strpos($match, "s") === false): ?>
+			   				<input type="hidden" name="t2<?php echo $match; ?>p2" value="<?php echo $_POST['t2'.$match.'p2']; ?>">
+			   			<?php endif; ?>
+			   			<?php echo find_player_name_by_id($_POST['t2'.$match.'p1'], $players); ?>
+			   			<?php if (strpos($match, "s") === false) echo "<br>" . find_player_name_by_id($_POST['t2'.$match.'p2'], $players); ?>
+		   			</td>
+			   	</tr>
+			   	<?php $tabIndex += 4; ?>
+			<?php endforeach; ?>
    		   	<tr>
    		   		<td></td>
    		   		<td class="py-4">

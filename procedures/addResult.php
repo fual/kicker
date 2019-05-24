@@ -113,7 +113,7 @@ try {
 		$sth->bindValue(":id", $id, PDO::PARAM_INT);
 		$sth->execute();
 	}
-	//header("Location: /?result=success&code=1");
+	header("Location: /?result=success&code=1");
 } catch (Exception $e) {
-	//header("Location: /?result=error&code=3");
+	header("Location: /?result=error&code=3");
 }
