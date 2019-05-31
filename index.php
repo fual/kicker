@@ -1,6 +1,9 @@
 <?php
 	require_once __DIR__ . "/inc/bootstrap.php";
 	require_once __DIR__ . "/inc/layout/head.php";
+    $sth = $db->prepare("select * from tournaments");
+    $sth->execute();
+    $tournaments = $sth->fetchAll();
 ?>
 <body>
 <main role="main" class="container">
@@ -39,138 +42,41 @@
         <div class="table-responsive">
             <?php include __DIR__ . "/inc/layout/templates/next_games.php"; ?>
         </div>
-    	<div class="d-flex align-items-center mt-4 mb-3">
-	  		<h2 class="text-left">Первый дивизион</h2>
-	  		<a href="input.php?tournament=1" class="btn btn-success ml-auto">+ счет</a>
-	  	</div>
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#firstDivTeamsPane" id="firstDivTeamsTab" data-toggle="tab" role="tab">Команды</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#firstDivPlayersPane" id="firstDivPlayersTab" data-toggle="tab" role="tab">Игроки</a>
-            </li>
-        </ul>
-        <div class="tab-content mt-3">
-            <div class="tab-pane fade show active" id="firstDivTeamsPane">
-                <div class="table-responsive">
-                    <?php print_result_table(1, "2019"); ?>
+        <?php foreach ($tournaments as $tournament): ?>
+            <div class="d-flex align-items-center mt-4 mb-3">
+                <h2 class="text-left"><?php echo $tournament["tournament_description"]; ?></h2>
+                <a href="input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#divTeamsPane<?php echo $tournament["tournament_id"]; ?>" id="firstDivTeamsTab" data-toggle="tab" role="tab">Команды</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#divPlayersPane<?php echo $tournament["tournament_id"]; ?>" id="firstDivPlayersTab" data-toggle="tab" role="tab">Игроки</a>
+                </li>
+            </ul>
+            <div class="tab-content mt-3">
+                <div class="tab-pane fade show active" id="divTeamsPane<?php echo $tournament["tournament_id"]; ?>">
+                    <div class="table-responsive">
+                        <?php print_result_table($tournament["tournament_id"], "2019"); ?>
+                    </div>
+                </div>
+                <div class="tab-pane fade text-left" id="divPlayersPane<?php echo $tournament["tournament_id"]; ?>">
+                    <div class="table-responsive">
+                        <form class="d-flex mb-2 px-1" id="search1">
+                            <input type="text" name="search1" class="form-control w-75 mr-3 my-1" placeholder="Искать">
+                            <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-danger my-1" id="clear1">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </form>
+                        <?php print_ratings($tournament["tournament_id"], $tournament["tournament_type"], 1); ?>
+                    </div>
                 </div>
             </div>
-            <div class="tab-pane fade text-left" id="firstDivPlayersPane">
-                <div class="table-responsive">
-                    <form class="d-flex mb-2 px-1" id="search1">
-                        <input type="text" name="search1" class="form-control w-75 mr-3 my-1" placeholder="Искать">
-                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-danger my-1" id="clear1">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </form>
-                    <?php print_ratings(1, 1); ?>
-                </div>
-            </div>
-        </div>
-  		<div class="d-flex align-items-center mt-4 mb-3">
-	  		<h2 class="text-left">Второй дивизион</h2>
-	  		<a href="input.php?tournament=2" class="btn btn-success ml-auto">+ счет</a>
-	  	</div>
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#secondDivTeamsPane" id="secondDivTeamsTab" data-toggle="tab" role="tab">Команды</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#secondDivPlayersPane" id="secondDivPlayersTab" data-toggle="tab" role="tab">Игроки</a>
-            </li>
-        </ul>
-        <div class="tab-content mt-3">
-            <div class="tab-pane fade show active" id="secondDivTeamsPane">
-          		<div class="table-responsive">
-            		<?php print_result_table(2, "2019"); ?>
-        	    </div>
-            </div>
-            <div class="tab-pane fade text-left" id="secondDivPlayersPane">
-                <div class="table-responsive">
-                    <form class="d-flex mb-2 px-1" id="search2">
-                        <input type="text" name="search2" class="form-control w-75 mr-3 my-1" placeholder="Искать">
-                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-danger my-1" id="clear2">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </form>
-                    <?php print_ratings(2, 1); ?>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex align-items-center mt-4 mb-3">
-            <h2 class="text-left">ЛКЛ</h2>
-            <a href="input.php?tournament=3" class="btn btn-success ml-auto">+ счет</a>
-        </div>
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#lklTeamsPane" id="lklTeamsTab" data-toggle="tab" role="tab">Команды</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#lklPlayersPane" id="lklPlayersTab" data-toggle="tab" role="tab">Игроки</a>
-            </li>
-        </ul>
-        <div class="tab-content mt-3">
-            <div class="tab-pane fade show active" id="lklTeamsPane">
-                <div class="table-responsive">
-                    <?php print_result_table(3, "2019"); ?>
-                </div>
-            </div>
-            <div class="tab-pane fade text-left" id="lklPlayersPane">
-                <div class="table-responsive">
-                    <form class="d-flex mb-2 px-1" id="search2">
-                        <input type="text" name="search2" class="form-control w-75 mr-3 my-1" placeholder="Искать">
-                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-danger my-1" id="clear2">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </form>
-                    <?php print_ratings(3, 1); ?>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex align-items-center mt-4 mb-3">
-            <h2 class="text-left">ЗКЛ</h2>
-            <a href="input.php?tournament=4" class="btn btn-success ml-auto">+ счет</a>
-        </div>
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#zklTeamsPane" id="zklTeamsTab" data-toggle="tab" role="tab">Команды</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#zklPlayersPane" id="zklPlayersTab" data-toggle="tab" role="tab">Игроки</a>
-            </li>
-        </ul>
-        <div class="tab-content mt-3">
-            <div class="tab-pane fade show active" id="zklTeamsPane">
-                <div class="table-responsive">
-                    <?php print_result_table(4, "2019"); ?>
-                </div>
-            </div>
-            <div class="tab-pane fade text-left" id="zklPlayersPane">
-                <div class="table-responsive">
-                    <form class="d-flex mb-2 px-1" id="search2">
-                        <input type="text" name="search2" class="form-control w-75 mr-3 my-1" placeholder="Искать">
-                        <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-danger my-1" id="clear2">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </form>
-                    <?php print_ratings(4, 1); ?>
-                </div>
-            </div>
-        </div>
+        <?php endforeach; ?>
         <p class="small mt-5">Нажмите на счет, чтобы просмотреть счет по сетам. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
     	<p class="small mt-3">Upcoming updates: заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>. Обратная связь и изменения: <a href="https://vk.com/topic-58506517_42583616">vk.com</a></p>

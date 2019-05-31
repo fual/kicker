@@ -255,42 +255,42 @@ function find_player_name_by_id($player_id, $players_query) {
 	return ("Т");
 }
 
-function print_ratings($division, $season) {
+function print_ratings($division, $type, $season) {
 	global $db;
 	$sth = $db->prepare("
 		with player as (
-		select 
-		player_id11 as id,
-		count(*) as played,
-		sum(score1) as scored,
-		sum(score2) as conceded
-		from games
-		group by id
-		union all
-		select
-		player_id12 as id,
-		count(*) as played,
-		sum(score1) as scored,
-		sum(score2) as conceded
-		from games
-		where player_id12 is not null
-		group by id
-		union all
-		select player_id21 as id,
-		count(*) as played,
-		sum(score2) as scored,
-		sum(score1) as conceded
-		from games
-		group by id
-		union all
-		select
-		player_id22 as id,
-		count(*) as played,
-		sum(score2) as scored,
-		sum(score1) as conceded
-		from games
-		where id is not null
-		group by id
+			select 
+			player_id11 as id,
+			count(*) as played,
+			sum(score1) as scored,
+			sum(score2) as conceded
+			from games
+			group by id
+			union all
+			select
+			player_id12 as id,
+			count(*) as played,
+			sum(score1) as scored,
+			sum(score2) as conceded
+			from games
+			where player_id12 is not null
+			group by id
+			union all
+			select player_id21 as id,
+			count(*) as played,
+			sum(score2) as scored,
+			sum(score1) as conceded
+			from games
+			group by id
+			union all
+			select
+			player_id22 as id,
+			count(*) as played,
+			sum(score2) as scored,
+			sum(score1) as conceded
+			from games
+			where id is not null
+			group by id
 		),
 		participation as (
 			with lineups as (
@@ -334,6 +334,123 @@ function print_ratings($division, $season) {
 	$sth->bindValue(":s", $season, PDO::PARAM_INT);
 	$sth->execute();
 	$players = $sth->fetchAll();
+	if ($type == 2) {
+		$sth = $db->prepare("
+			with player as (
+				select 
+				player_id11 as id,
+				count(*) as played,
+				sum(score1) as scored,
+				sum(score2) as conceded
+				from games
+				group by id
+				union all
+				select
+				player_id12 as id,
+				count(*) as played,
+				sum(score1) as scored,
+				sum(score2) as conceded
+				from games
+				where player_id12 is not null
+				group by id
+				union all
+				select player_id21 as id,
+				count(*) as played,
+				sum(score2) as scored,
+				sum(score1) as conceded
+				from games
+				group by id
+				union all
+				select
+				player_id22 as id,
+				count(*) as played,
+				sum(score2) as scored,
+				sum(score1) as conceded
+				from games
+				where id is not null
+				group by id
+			),
+			won as (
+				with amGames as (
+					select games.match_id, player_id11, player_id12, player_id21, player_id22, sum(score1) as score1, sum(score2) as score2 
+					from games
+					inner join matches on matches.match_id = games.match_id
+					inner join tournaments on matches.tournament_id = tournaments.tournament_id
+					where tournament_type = 2 and tournaments.tournament_id = :t
+					group by games.match_id, player_id11, player_id12, player_id21, player_id22
+				)
+				select 
+				player_id11 as id,
+				count(*) as won
+				from amGames
+				where score1 = 10
+				group by id
+				union all
+				select
+				player_id12 as id,
+				count(*) as won
+				from amGames
+				where player_id12 is not null and score1 = 10
+				group by id
+				union all
+				select player_id21 as id,
+				count(*) as won
+				from amGames
+				where score2 = 10
+				group by id
+				union all
+				select
+				player_id22 as id,
+				count(*) as won
+				from amGames
+				where id is not null and score2 = 10
+				group by id
+			),
+			lost as (
+				with amGames as (
+					select games.match_id, player_id11, player_id12, player_id21, player_id22, sum(score1) as score1, sum(score2) as score2 
+					from games
+					inner join matches on matches.match_id = games.match_id
+					inner join tournaments on matches.tournament_id = tournaments.tournament_id
+					where tournament_type = 2 and tournaments.tournament_id = :t
+					group by games.match_id, player_id11, player_id12, player_id21, player_id22
+				)
+				select 
+				player_id11 as id,
+				count(*) as lost
+				from amGames
+				where score2 = 10
+				group by id
+				union all
+				select
+				player_id12 as id,
+				count(*) as lost
+				from amGames
+				where player_id12 is not null and score2 = 10
+				group by id
+				union all
+				select player_id21 as id,
+				count(*) as lost
+				from amGames
+				where score1 = 10
+				group by id
+				union all
+				select
+				player_id22 as id,
+				count(*) as lost
+				from amGames
+				where id is not null and score1 = 10
+				group by id
+			)
+			select * from player
+			inner join won on player.id = won.id
+			inner join lost on player.id = lost.id
+		");
+		$sth->bindValue(":t", $division, PDO::PARAM_INT);
+		$sth->execute();
+		$test = $sth->fetchAll();
+		var_dump($test);
+	}
 	$i = 1;
 	echo "<table class='table table-sm table-striped table-hover table-ratings'>";
 	echo "<thead class='thead-dark'>";
@@ -342,6 +459,11 @@ function print_ratings($division, $season) {
 	echo "<th>Игрок</th>";
 	echo "<th>Команда</th>";
 	echo "<th>Партий</th>";
+	if ($type == 2) {
+		echo "<th>Побед</th>";
+		echo "<th>Поражений</th>";
+		echo "<th>Ничьих</th>";
+	}
 	echo "<th>Забито</th>";
 	echo "<th>Пропущено</th>";
 	echo "<th>Разница</th>";
@@ -369,7 +491,12 @@ function print_ratings($division, $season) {
 		echo "<td>" . $i++ ."</td>";
 		echo "<td class='text-left'>" . $player['name'] . "</td>";
 		echo "<td>" . $player['team'] . "</td>";
-		echo "<td>" . $player['played'] . "</td>";
+		echo "<td>" . ($type == 2 ? $player['played'] / 2 : $player['played']). "</td>";
+		if ($type == 2) {
+			echo "<td>0</td>";
+			echo "<td>0</td>";
+			echo "<td>0</td>";
+		}
 		echo "<td>" . $player['scored'] . "</td>";
 		echo "<td>" . $player['conceded'] . "</td>";
 		echo "<td>" . $player['diff'] . "</td>";

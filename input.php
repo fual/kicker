@@ -16,10 +16,12 @@
 		$sth->bindValue(":id", $tournament_id, PDO::PARAM_INT);
 		$sth->execute();
 		$teams = $sth->fetchAll();
-		$sth = $db->prepare("select tournament_description as name from tournaments where tournament_id = :id");
+		$sth = $db->prepare("select tournament_description as name, tournament_type as type from tournaments where tournament_id = :id");
 		$sth->bindValue(":id", $tournament_id, PDO::PARAM_INT);
 		$sth->execute();
-		$tournament_name = $sth->fetch()["name"];
+		$res = $sth->fetch();
+		$tournament_name = $res["name"];
+		$tournament_type = $res["type"];
 	}
 	if (isset($_GET['team1']) && isset($_GET['team2'])) {
 		$team1_id = $_GET['team1'];
@@ -59,13 +61,13 @@
 		<?php endif; ?>
 		<?php include __DIR__ . "/inc/layout/templates/choose_teams.php"; ?>
 		<?php if ($_SERVER['REQUEST_METHOD'] != "POST" && isset($team1) && isset($team2)): ?>
-			<?php if ($tournament_id == 1 || $tournament_id == 2): ?>
+			<?php if ($tournament_type == 1): ?>
 	   			<?php include __DIR__ . "/inc/layout/templates/fill_lineup.php"; ?>
 	   		<?php else: ?>
 	   			<?php include __DIR__ . "/inc/layout/templates/fill_lineup_amateurs.php"; ?>
 	   		<?php endif; ?>
 		<?php elseif ($_SERVER['REQUEST_METHOD'] == "POST" && isset($team1) && isset($team2)): ?>
-			<?php if ($tournament_id == 1 || $tournament_id == 2): ?>
+			<?php if ($tournament_type == 1): ?>
 	   			<?php include __DIR__ . "/inc/layout/templates/input_score.php"; ?>
 	   		<?php else: ?>
 	   			<?php include __DIR__ . "/inc/layout/templates/input_score_amateurs.php"; ?>
