@@ -1,4 +1,18 @@
-﻿seasons
+﻿create table systems (system_id integer primary key autoincrement, description text);
+insert into systems values (NULL, "Pro - 40 goals");
+insert into systems values (NULL, "Am - 2 to 5, 6 games total");
+alter table tournaments add column tournament_type references systems(system_id);
+update tournaments set tournament_type = 1 where tournament_id in (1, 2);
+update tournaments set tournament_type = 2 where tournament_id in (3, 4);
+
+select games.match_id, player_id11, player_id12, player_id21, player_id22, sum(score1), sum(score2) 
+from games
+inner join matches on matches.match_id = games.match_id
+inner join tournaments on matches.tournament_id = tournaments.tournament_id
+where tournament_type = 2
+group by games.match_id, player_id11, player_id12, player_id21, player_id22;
+
+seasons
 season_id, season_name
 
 create table seasons (season_id integer primary key autoincrement, season_name text);

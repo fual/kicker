@@ -334,123 +334,6 @@ function print_ratings($division, $type, $season) {
 	$sth->bindValue(":s", $season, PDO::PARAM_INT);
 	$sth->execute();
 	$players = $sth->fetchAll();
-	if ($type == 2) {
-		$sth = $db->prepare("
-			with player as (
-				select 
-				player_id11 as id,
-				count(*) as played,
-				sum(score1) as scored,
-				sum(score2) as conceded
-				from games
-				group by id
-				union all
-				select
-				player_id12 as id,
-				count(*) as played,
-				sum(score1) as scored,
-				sum(score2) as conceded
-				from games
-				where player_id12 is not null
-				group by id
-				union all
-				select player_id21 as id,
-				count(*) as played,
-				sum(score2) as scored,
-				sum(score1) as conceded
-				from games
-				group by id
-				union all
-				select
-				player_id22 as id,
-				count(*) as played,
-				sum(score2) as scored,
-				sum(score1) as conceded
-				from games
-				where id is not null
-				group by id
-			),
-			won as (
-				with amGames as (
-					select games.match_id, player_id11, player_id12, player_id21, player_id22, sum(score1) as score1, sum(score2) as score2 
-					from games
-					inner join matches on matches.match_id = games.match_id
-					inner join tournaments on matches.tournament_id = tournaments.tournament_id
-					where tournament_type = 2 and tournaments.tournament_id = :t
-					group by games.match_id, player_id11, player_id12, player_id21, player_id22
-				)
-				select 
-				player_id11 as id,
-				count(*) as won
-				from amGames
-				where score1 = 10
-				group by id
-				union all
-				select
-				player_id12 as id,
-				count(*) as won
-				from amGames
-				where player_id12 is not null and score1 = 10
-				group by id
-				union all
-				select player_id21 as id,
-				count(*) as won
-				from amGames
-				where score2 = 10
-				group by id
-				union all
-				select
-				player_id22 as id,
-				count(*) as won
-				from amGames
-				where id is not null and score2 = 10
-				group by id
-			),
-			lost as (
-				with amGames as (
-					select games.match_id, player_id11, player_id12, player_id21, player_id22, sum(score1) as score1, sum(score2) as score2 
-					from games
-					inner join matches on matches.match_id = games.match_id
-					inner join tournaments on matches.tournament_id = tournaments.tournament_id
-					where tournament_type = 2 and tournaments.tournament_id = :t
-					group by games.match_id, player_id11, player_id12, player_id21, player_id22
-				)
-				select 
-				player_id11 as id,
-				count(*) as lost
-				from amGames
-				where score2 = 10
-				group by id
-				union all
-				select
-				player_id12 as id,
-				count(*) as lost
-				from amGames
-				where player_id12 is not null and score2 = 10
-				group by id
-				union all
-				select player_id21 as id,
-				count(*) as lost
-				from amGames
-				where score1 = 10
-				group by id
-				union all
-				select
-				player_id22 as id,
-				count(*) as lost
-				from amGames
-				where id is not null and score1 = 10
-				group by id
-			)
-			select * from player
-			inner join won on player.id = won.id
-			inner join lost on player.id = lost.id
-		");
-		$sth->bindValue(":t", $division, PDO::PARAM_INT);
-		$sth->execute();
-		$test = $sth->fetchAll();
-		var_dump($test);
-	}
 	$i = 1;
 	echo "<table class='table table-sm table-striped table-hover table-ratings'>";
 	echo "<thead class='thead-dark'>";
@@ -474,6 +357,7 @@ function print_ratings($division, $type, $season) {
 	echo "</thead>";
 	echo "<tbody>";
 	foreach ($players as $player) {
+		$participationPercent = round($player['participated'] / $player['team_matches'] * 100);
 		foreach ($players as $player1) {
 			if (strpos($player['name'], " ") || $player1['id'] == $player['id'])
 				continue ;
@@ -487,22 +371,44 @@ function print_ratings($division, $type, $season) {
 				}
 			}
 		}
-		echo "<tr>";
+		echo "<tr". (($participationPercent < 60) ? " class='transparent'" : "") .">";
 		echo "<td>" . $i++ ."</td>";
 		echo "<td class='text-left'>" . $player['name'] . "</td>";
 		echo "<td>" . $player['team'] . "</td>";
 		echo "<td>" . ($type == 2 ? $player['played'] / 2 : $player['played']). "</td>";
 		if ($type == 2) {
-			echo "<td>0</td>";
-			echo "<td>0</td>";
-			echo "<td>0</td>";
+			/* Get statistics won/forfeit/draw */
+			$sth = $db->prepare("
+				select game_id, match_id, score1 as score from games where :id in (player_id11, player_id12)
+				union all
+				select game_id, match_id, score2 as score from games where :id in (player_id21, player_id22)
+			");
+			$sth->bindValue(":id", $player["id"], PDO::PARAM_INT);
+			$sth->execute();
+			$stats = $sth->fetchAll();
+			$won = 0;
+			$forfeit = 0;
+			$draw = 0;
+			for ($s = 0; $s < sizeof($stats); $s += 2) {
+				$game = $stats[$s];
+				$nextGame = $stats[$s + 1];
+				if ($game["score"] == "5" && $nextGame["score"] == "5")
+						$won++;
+				else if ($game["score"] == "5" || $nextGame["score"] == "5")
+					$draw++;
+				else
+					$forfeit++;
+			}
+			echo "<td>" . $won ."</td>";
+			echo "<td>" . $forfeit . "</td>";
+			echo "<td>" . $draw . "</td>";
 		}
 		echo "<td>" . $player['scored'] . "</td>";
 		echo "<td>" . $player['conceded'] . "</td>";
 		echo "<td>" . $player['diff'] . "</td>";
 		echo "<td>" . $player['participated'] . "</td>";
 		echo "<td>" . $player['rating'] . "</td>";
-		echo "<td>" . round($player['participated'] / $player['team_matches'] * 100) . "%</td>";
+		echo "<td>" . $participationPercent . "%</td>";
 		echo "</tr>";
 	}
 	echo "</tbody>";
