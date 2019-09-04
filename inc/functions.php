@@ -103,7 +103,7 @@ function print_result_table($division, $season) {
 			sum(sets_won2) as conceded
 			from teams as ht
 			inner join matches as m on ht.team_id = m.team_id1
-			where m.tournament_id = :tournament_id and m.season_id = :season_id
+			where m.tournament_id = :tournament_id and m.season_id = :season_id and sets_won1 != 'т' and sets_won2 != 'т'
 			group by name
 			union all
 			select
@@ -114,7 +114,7 @@ function print_result_table($division, $season) {
 			sum(sets_won1) as conceded
 			from teams as at
 			inner join matches as m on at.team_id = m.team_id2
-			where m.tournament_id = :tournament_id and m.season_id = :season_id
+			where m.tournament_id = :tournament_id and m.season_id = :season_id and sets_won1 != 'т' and sets_won2 != 'т'
 			group by name)
 			select name, sum(points) as points, sum(games_played) as games_played, sum(scored) - sum(conceded) as goal_diff, ((:qty - 1) * :r - sum(games_played)) as games_left
 			from points_table
@@ -223,19 +223,19 @@ function find_match_results($home_team, $away_team, $results, $tournament) {
 	foreach ($results as $result)
 		if ($result['home_team'] == $home_team && $result['away_team'] == $away_team)
 		{
-			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+			if ($result['away_score'] != "т" || $result['home_score'] != "т")
 				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['home_score'] . ':' . $result['away_score'];
-			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+			if ($result['away_score'] != "т" || $result['home_score'] != "т")
 				$res .= '</a>';
 			$res .= " ";
 		}
 		else if ($result['away_team'] == $home_team && $result['home_team'] == $away_team)
 		{
-			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+			if ($result['away_score'] != "т" || $result['home_score'] != "т")
 				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['away_score'] . ':' . $result['home_score'];
-			if ($result['away_score'] != "t" || $result['home_score'] != "t")
+			if ($result['away_score'] != "т" || $result['home_score'] != "т")
 				$res .= '</a>';
 			$res .= " ";
 		}
@@ -389,7 +389,7 @@ function print_ratings($division, $type, $season) {
 			$won = 0;
 			$forfeit = 0;
 			$draw = 0;
-			for ($s = 0; $s < sizeof($stats); $s += 2) {
+			for ($s = 0, $size = count($stats); $s < $size; $s += 2) {
 				$game = $stats[$s];
 				$nextGame = $stats[$s + 1];
 				if ($game["score"] == "5" && $nextGame["score"] == "5")
