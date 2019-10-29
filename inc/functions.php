@@ -73,6 +73,9 @@ function print_result_table($tournament_id, $season) {
 	$sth->bindValue(':r', $tournament['rounds'], PDO::PARAM_INT);
 	$sth->execute();
 	$standings = $sth->fetchAll();
+	/* Get tournament_type */
+	$result = $db->query("select tournament_type from tournaments where tournament_id = $tournament_id");
+	$tournament_type = $result->fetch()["tournament_type"];
 	/* Calculating goals scored and goals conceded for standings */
 	foreach ($standings as &$standing) {
 		$goals_scored = $goals_conceded = 0;
@@ -83,8 +86,8 @@ function print_result_table($tournament_id, $season) {
 		while( $match = $sth->fetch() ) {
 			if ($match["sets_won1"] == "т" && $match["sets_won2"] == "т")
 				continue ;
-			$goals_scored += $match["sets_won1"] == "т" ? 10 : $match["sets_won1"];
-			$goals_conceded += $match["sets_won2"] == "т" ? 10 : $match["sets_won2"];
+			$goals_scored += $match["sets_won1"] == "т" ? ($tournament_type == 1 ? 10 : 2) : $match["sets_won1"];
+			$goals_conceded += $match["sets_won2"] == "т" ? ($tournament_type == 1 ? 10 : 2) : $match["sets_won2"];
 		}
 		$sql = "select * from matches where team_id2 = :id";
 		$sth = $db->prepare($sql);
@@ -93,8 +96,8 @@ function print_result_table($tournament_id, $season) {
 		while( $match = $sth->fetch() ) {
 			if ($match["sets_won1"] == "т" && $match["sets_won2"] == "т")
 				continue ;
-			$goals_scored += $match["sets_won2"] == "т" ? 10 : $match["sets_won2"];
-			$goals_conceded += $match["sets_won1"] == "т" ? 10 : $match["sets_won1"];
+			$goals_scored += $match["sets_won2"] == "т" ? ($tournament_type == 1 ? 10 : 2) : $match["sets_won2"];
+			$goals_conceded += $match["sets_won1"] == "т" ? ($tournament_type == 1 ? 10 : 2) : $match["sets_won1"];
 		}
 		$standing["goal_diff"] = $goals_scored - $goals_conceded;
 	}
