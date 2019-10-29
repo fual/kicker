@@ -39,34 +39,31 @@ function print_result_table($tournament_id, $season) {
 		");
 	$sth->execute( array($tournament_id, $season) );
 	$tournament = $sth->fetch();
-	var_dump($tournament);
-	/* teams names ordered by points scored */
+	/* teams names, points, games played and games left ordered by points scored */
 	$sql = "with points_table as
 			(select
+			m.team_id1 as id,
 			ht.team_name_short as name,
 			sum(m.points_1) as points,
-			count(*) as games_played,
-			sum(sets_won1) as scored,
-			sum(sets_won2) as conceded
+			count(*) as games_played
 			from teams as ht
 			inner join matches as m on ht.team_id = m.team_id1
-			where m.tournament_id = :tournament_id and m.season_id = :season_id and sets_won1 != 'т' and sets_won2 != 'т'
+			where m.tournament_id = :tournament_id and m.season_id = :season_id
 			group by name
 			union all
 			select
+			m.team_id2 as id,
 			at.team_name_short as name,
 			sum(m.points_2) as points,
-			count(*) as games_played,
-			sum(sets_won2) as scored,
-			sum(sets_won1) as conceded
+			count(*) as games_played
 			from teams as at
 			inner join matches as m on at.team_id = m.team_id2
-			where m.tournament_id = :tournament_id and m.season_id = :season_id and sets_won1 != 'т' and sets_won2 != 'т'
+			where m.tournament_id = :tournament_id and m.season_id = :season_id
 			group by name)
-			select name, sum(points) as points, sum(games_played) as games_played, sum(scored) - sum(conceded) as goal_diff, ((:qty - 1) * :r - sum(games_played)) as games_left
+			select id, name, sum(points) as points, sum(games_played) as games_played, ((:qty - 1) * :r - sum(games_played)) as games_left
 			from points_table
 			group by name
-			order by points desc, goal_diff desc";
+			order by points desc";
 	$sth = $db->prepare($sql);
 	$sth->bindValue(':tournament_id', $tournament['tournament_id'], PDO::PARAM_INT);
 	$sth->bindValue(':season_id', $tournament['season_id'], PDO::PARAM_INT);
@@ -74,8 +71,35 @@ function print_result_table($tournament_id, $season) {
 	$sth->bindValue(':r', $tournament['rounds'], PDO::PARAM_INT);
 	$sth->execute();
 	$standings = $sth->fetchAll();
-	print("<br>");
-	var_dump($standings[0]);
+	/* Calculating goals scored and goals conceded for standings */
+	foreach ($standings as &$standing) {
+		$goals_scored = $goals_conceded = 0;
+		$sql = "select * from matches where team_id1 = :id";
+		$sth = $db->prepare($sql);
+		$sth->bindValue(":id", $standing["id"], PDO::PARAM_INT);
+		$sth->execute();
+		while( $match = $sth->fetch() ) {
+			if ($match["sets_won1"] == "т" && $match["sets_won2"] == "т")
+				continue ;
+			$goals_scored += $match["sets_won1"] == "т" ? 10 : $match["sets_won1"];
+			$goals_conceded += $match["sets_won2"] == "т" ? 10 : $match["sets_won2"];
+		}
+		$sql = "select * from matches where team_id2 = :id";
+		$sth = $db->prepare($sql);
+		$sth->bindValue(":id", $standing["id"], PDO::PARAM_INT);
+		$sth->execute();
+		while( $match = $sth->fetch() ) {
+			if ($match["sets_won1"] == "т" && $match["sets_won2"] == "т")
+				continue ;
+			$goals_scored += $match["sets_won2"] == "т" ? 10 : $match["sets_won2"];
+			$goals_conceded += $match["sets_won1"] == "т" ? 10 : $match["sets_won1"];
+		}
+		$standing["goal_diff"] = $goals_scored - $goals_conceded;
+	}
+	/* Resort standings by points and then by goal_diff */
+	array_multisort(array_column($standings, "points"), SORT_DESC, SORT_NUMERIC, array_column($standings, "goal_diff"), SORT_DESC, $standings);
+	
+	/* Get match results */
 	$sth = $db->prepare("
 			select
 			m.match_id as match_id,
@@ -94,9 +118,6 @@ function print_result_table($tournament_id, $season) {
 	$sth->bindValue(':season_id', $tournament['season_id'], PDO::PARAM_INT);
 	$sth->execute();
 	$results = $sth->fetchAll();
-	print("<br>");
-	var_dump($results[0]);
-	exit();
 	$cols = $tournament['teams_quantity'] + 5;
 	if (count($standings) < $tournament['teams_quantity'])
 	{
@@ -175,19 +196,19 @@ function find_match_results($home_team, $away_team, $results, $tournament) {
 	foreach ($results as $result)
 		if ($result['home_team'] == $home_team && $result['away_team'] == $away_team)
 		{
-			if ($result['away_score'] != "т" || $result['home_score'] != "т")
+			if ($result['away_score'] != "т" && $result['home_score'] != "т")
 				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['home_score'] . ':' . $result['away_score'];
-			if ($result['away_score'] != "т" || $result['home_score'] != "т")
+			if ($result['away_score'] != "т" && $result['home_score'] != "т")
 				$res .= '</a>';
 			$res .= " ";
 		}
 		else if ($result['away_team'] == $home_team && $result['home_team'] == $away_team)
 		{
-			if ($result['away_score'] != "т" || $result['home_score'] != "т")
+			if ($result['away_score'] != "т" && $result['home_score'] != "т")
 				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['away_score'] . ':' . $result['home_score'];
-			if ($result['away_score'] != "т" || $result['home_score'] != "т")
+			if ($result['away_score'] != "т" && $result['home_score'] != "т")
 				$res .= '</a>';
 			$res .= " ";
 		}
@@ -217,6 +238,8 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score1) as scored,
 			sum(score2) as conceded
 			from games
+			inner join matches on games.match_id = matches.match_id
+			where tournament_id = :t and season_id = :s
 			group by id
 			union all
 			select
@@ -225,7 +248,8 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score1) as scored,
 			sum(score2) as conceded
 			from games
-			where player_id12 is not null
+			inner join matches on games.match_id = matches.match_id
+			where player_id12 is not null and tournament_id = :t and season_id = :s
 			group by id
 			union all
 			select player_id21 as id,
@@ -233,6 +257,8 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score2) as scored,
 			sum(score1) as conceded
 			from games
+			inner join matches on games.match_id = matches.match_id
+			where tournament_id = :t and season_id = :s
 			group by id
 			union all
 			select
@@ -241,7 +267,8 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score2) as scored,
 			sum(score1) as conceded
 			from games
-			where id is not null
+			inner join matches on games.match_id = matches.match_id
+			where id is not null and tournament_id = :t and season_id = :s
 			group by id
 		),
 		participation as (
@@ -260,11 +287,13 @@ function print_ratings($tournament_id, $type, $season) {
 			),
 			team_matches as (
 				with tm as (
-				select team_id1 as team_id, count(*) as count_matches from matches
-				group by team_id1
-				union all
-				select team_id2 as team_id, count(*) as count_matches from matches
-				group by team_id2
+					select team_id1 as team_id, count(*) as count_matches from matches
+					where tournament_id = :t and season_id = :s
+					group by team_id1
+					union all
+					select team_id2 as team_id, count(*) as count_matches from matches
+					where tournament_id = :t and season_id = :s
+					group by team_id2
 				)
 				select team_id, sum(count_matches) as team_matches from tm group by team_id
 			)
@@ -273,7 +302,8 @@ function print_ratings($tournament_id, $type, $season) {
 			where tournament_id = :t and season_id = :s 
 			group by id
 		)
-		select player.id, rosters.tournament_id as tournament, sum(player.played) as played, sum(player.scored) as scored, sum(player.conceded) as conceded, sum(player.scored) - sum(player.conceded) as diff, first_name as first_name, second_name as name, rosters.rating as rating, team_name_short as team, participated, team_matches from player
+		select player.id, rosters.tournament_id as tournament, sum(player.played) as played, sum(player.scored) as scored, sum(player.conceded) as conceded,
+			sum(player.scored) - sum(player.conceded) as diff, first_name as first_name, second_name as name, rosters.rating as rating, team_name_short as team, participated, team_matches from player
 		inner join rosters on rosters.id = player.id
 		inner join players on players.player_id = rosters.player_id
 		inner join teams on rosters.team_id = teams.team_id
