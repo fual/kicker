@@ -64,11 +64,11 @@
 		  						case "2":
 		  							echo "Второй";
 		  							break;
-		  						case "3":
-		  							echo "ЛКЛ";
+								case "5":
+								  echo "ЛКЛ. Группа А";
 		  							break;
-		  						case "4":
-		  							echo "ЗКЛ";
+								case "6":
+		  							echo "ЛКЛ. Группа Б";
 		  							break;
 		  					}
 		  				?>	
@@ -81,11 +81,11 @@
 		  						case "2":
 		  							echo "В";
 		  							break;
-		  						case "3":
-		  							echo "Л";
+		  						case "5":
+		  							echo "ЛА";
 		  							break;
-		  						case "4":
-		  							echo "З";
+		  						case "6":
+		  							echo "ЛБ";
 		  							break;
 		  					}
 		  				?>	
