@@ -297,13 +297,13 @@ function print_ratings($tournament_id, $type, $season) {
 				)
 				select team_id, sum(count_matches) as team_matches from tm group by team_id
 			)
-			select id, team_matches.team_id, count(distinct(lineups.match_id)) as participated, team_matches from lineups
+			select id, team_matches.team_id, team_matches from lineups
 			inner join team_matches on lineups.team_id = team_matches.team_id
 			where tournament_id = :t and season_id = :s 
 			group by id
 		)
 		select player.id, rosters.tournament_id as tournament, sum(player.played) as played, sum(player.scored) as scored, sum(player.conceded) as conceded,
-			sum(player.scored) - sum(player.conceded) as diff, first_name as first_name, second_name as name, rosters.rating as rating, team_name_short as team, participated, team_matches from player
+			sum(player.scored) - sum(player.conceded) as diff, first_name as first_name, second_name as name, rosters.rating as rating, team_name_short as team, teams.team_id as team_id, team_matches from player
 		inner join rosters on rosters.id = player.id
 		inner join players on players.player_id = rosters.player_id
 		inner join teams on rosters.team_id = teams.team_id
@@ -316,6 +316,26 @@ function print_ratings($tournament_id, $type, $season) {
 	$sth->bindValue(":s", $season, PDO::PARAM_INT);
 	$sth->execute();
 	$players = $sth->fetchAll();
+	/* Count participation in current team's matches */
+	foreach ($players as &$player) {
+		$sql = "with participation as (
+				select * from games
+				inner join matches on games.match_id = matches.match_id
+				where (player_id11 = :id or player_id12 = :id) and team_id1 = :tid
+				union all
+				select * from games
+				inner join matches on games.match_id = matches.match_id
+				where (player_id21 = :id or player_id22 = :id) and team_id2 = :tid
+			)
+			select count(distinct(match_id)) as participated from participation
+		";
+		$sth = $db->prepare($sql);
+		$sth->bindValue(":id", $player["id"], PDO::PARAM_INT);
+		$sth->bindValue(":tid", $player["team_id"], PDO::PARAM_INT);
+		$sth->execute();
+		$result = $sth->fetch();
+		$player["participated"] = $result["participated"];
+	}
 	$i = 1;
 	echo "<table class='table table-sm table-striped table-hover table-ratings'>";
 	echo "<thead class='thead-dark'>";
