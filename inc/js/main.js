@@ -23,6 +23,8 @@ $(function() {
 	$("#chooseTeams").submit(function() {
 		var data = $(this).serialize();
 		var tournament = $(this).find("[name='tournament']").val();
+		var season = $(this).find("[name='season']").val();
+
 		$.ajax({
 			type: "POST",
 			url: "procedures/checkTeams.php",
@@ -31,7 +33,7 @@ $(function() {
 			if (res == "success") {
 				window.location = "/input.php?" + data;			}
 			else
-				window.location = "/input.php?tournament=" + tournament + "&result=error&code=2";
+				window.location = "/input.php?tournament=" + tournament + "&result=error&code=2&rounds=" + res;
 		}).fail(function() {
 			window.location = "/input.php?tournament=" + tournament + "&result=error&code=3";
 		});

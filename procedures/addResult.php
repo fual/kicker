@@ -1,16 +1,20 @@
 <?php
 require __DIR__ . '/../inc/bootstrap.php';
 try {	
-	// common part
-	$season = 1;
-	$tournament = filter_var($_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
 	// part 1 matches
+	$tournament = filter_var($_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
 	$team1 = filter_var($_POST['team1_id'], FILTER_SANITIZE_NUMBER_INT);
 	$team2 = filter_var($_POST['team2_id'], FILTER_SANITIZE_NUMBER_INT);
 	$score1 = filter_var($_POST['t1score'], FILTER_SANITIZE_NUMBER_INT);
 	$score2 = filter_var($_POST['t2score'], FILTER_SANITIZE_NUMBER_INT);
 	$points1 = $score1 > $score2 ? 2 : 0;
 	$points2 = 2 - $points1;
+	// get season
+	$sth = $db->prepare("select season_id from teams where team_id = :tid");
+	$sth->bindValue(":tid", $team1, PDO::PARAM_INT);
+	$sth->execute();
+	$season = $sth->fetch()["season_id"];
+	// insert
 	$sth = $db->prepare("insert into matches values (NULL, :season, :tournament, :team1, :team2, :score1, :score2, :points1, :points2)");
 	$sth->bindValue(':season', $season, PDO::PARAM_INT);
 	$sth->bindValue(':tournament', $tournament, PDO::PARAM_INT);

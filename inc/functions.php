@@ -41,25 +41,27 @@ function print_result_table($tournament_id, $season) {
 	$tournament = $sth->fetch();
 	/* teams names, points, games played and games left ordered by points scored */
 	$sql = "with points_table as
-			(select
-			m.team_id1 as id,
-			ht.team_name_short as name,
-			sum(m.points_1) as points,
-			count(*) as games_played
-			from teams as ht
-			inner join matches as m on ht.team_id = m.team_id1
-			where m.tournament_id = :tournament_id and m.season_id = :season_id
-			group by name
-			union all
-			select
-			m.team_id2 as id,
-			at.team_name_short as name,
-			sum(m.points_2) as points,
-			count(*) as games_played
-			from teams as at
-			inner join matches as m on at.team_id = m.team_id2
-			where m.tournament_id = :tournament_id and m.season_id = :season_id
-			group by name)
+			(
+				select
+				m.team_id1 as id,
+				ht.team_name_short as name,
+				sum(m.points_1) as points,
+				count(*) as games_played
+				from teams as ht
+				inner join matches as m on ht.team_id = m.team_id1
+				where m.tournament_id = :tournament_id and m.season_id = :season_id
+				group by name
+				union all
+				select
+				m.team_id2 as id,
+				at.team_name_short as name,
+				sum(m.points_2) as points,
+				count(*) as games_played
+				from teams as at
+				inner join matches as m on at.team_id = m.team_id2
+				where m.tournament_id = :tournament_id and m.season_id = :season_id
+				group by name
+			)
 			select id, name, sum(points) as points, sum(games_played) as games_played, ((:qty - 1) * :r - sum(games_played)) as games_left
 			from points_table
 			group by name
@@ -98,7 +100,6 @@ function print_result_table($tournament_id, $season) {
 	}
 	/* Resort standings by points and then by goal_diff */
 	array_multisort(array_column($standings, "points"), SORT_DESC, SORT_NUMERIC, array_column($standings, "goal_diff"), SORT_DESC, $standings);
-	
 	/* Get match results */
 	$sth = $db->prepare("
 			select
@@ -128,9 +129,11 @@ function print_result_table($tournament_id, $season) {
 		foreach ($teams as $team)
 		{
 			$double = 0;
-			foreach ($standings as $standing)
-				if ($team['name'] == $standing['name'])
+			foreach ($standings as $stndn)
+				if ($team['name'] == $stndn['name']) {
 					$double = 1;
+					break ;
+				}
 			if (!$double)
 			{
 				$team['points'] = '0';
@@ -228,10 +231,10 @@ function find_player_name_by_id($player_id, $players_query) {
 	return ("Т");
 }
 
-function print_ratings($tournament_id, $type, $season) {
+function print_ratings($tournament_id, $type, $season, $tournament_id1 = NULL) {
 	global $db;
-	$sth = $db->prepare("
-		with player as (
+
+	$sql = "with player as (
 			select 
 			player_id11 as id,
 			count(*) as played,
@@ -239,7 +242,7 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score2) as conceded
 			from games
 			inner join matches on games.match_id = matches.match_id
-			where tournament_id = :t and season_id = :s
+			where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
 			group by id
 			union all
 			select
@@ -249,7 +252,7 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score2) as conceded
 			from games
 			inner join matches on games.match_id = matches.match_id
-			where player_id12 is not null and tournament_id = :t and season_id = :s
+			where player_id12 is not null and " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
 			group by id
 			union all
 			select player_id21 as id,
@@ -258,7 +261,7 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score1) as conceded
 			from games
 			inner join matches on games.match_id = matches.match_id
-			where tournament_id = :t and season_id = :s
+			where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
 			group by id
 			union all
 			select
@@ -268,7 +271,7 @@ function print_ratings($tournament_id, $type, $season) {
 			sum(score1) as conceded
 			from games
 			inner join matches on games.match_id = matches.match_id
-			where id is not null and tournament_id = :t and season_id = :s
+			where id is not null and " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
 			group by id
 		),
 		participation as (
@@ -288,18 +291,18 @@ function print_ratings($tournament_id, $type, $season) {
 			team_matches as (
 				with tm as (
 					select team_id1 as team_id, count(*) as count_matches from matches
-					where tournament_id = :t and season_id = :s
+					where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
 					group by team_id1
 					union all
 					select team_id2 as team_id, count(*) as count_matches from matches
-					where tournament_id = :t and season_id = :s
+					where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
 					group by team_id2
 				)
 				select team_id, sum(count_matches) as team_matches from tm group by team_id
 			)
 			select id, team_matches.team_id, team_matches from lineups
 			inner join team_matches on lineups.team_id = team_matches.team_id
-			where tournament_id = :t and season_id = :s 
+			where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
 			group by id
 		)
 		select player.id, rosters.tournament_id as tournament, sum(player.played) as played, sum(player.scored) as scored, sum(player.conceded) as conceded,
@@ -308,11 +311,14 @@ function print_ratings($tournament_id, $type, $season) {
 		inner join players on players.player_id = rosters.player_id
 		inner join teams on rosters.team_id = teams.team_id
 		inner join participation on participation.id = player.id
-		where rosters.tournament_id = :t and rosters.season_id = :s
+		where " . ($tournament_id1 ? "(rosters.tournament_id = :t or rosters.tournament_id = :t1)" : "rosters.tournament_id = :t") . " and rosters.season_id = :s
 		group by player.id
 		order by rating desc, diff desc, played desc;
-	");
+	";
+	$sth = $db->prepare($sql);
 	$sth->bindValue(":t", $tournament_id, PDO::PARAM_INT);
+	if ($tournament_id1)
+		$sth->bindValue(":t1", $tournament_id1, PDO::PARAM_INT);
 	$sth->bindValue(":s", $season, PDO::PARAM_INT);
 	$sth->execute();
 	$players = $sth->fetchAll();

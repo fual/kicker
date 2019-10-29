@@ -25,10 +25,7 @@
 			<select class="custom-select" id="inputTeam<?php echo $j; ?>" name="team<?php echo $j; ?>" required>
 			    <option value="0" selected>Команда <?php echo $j; ?>...</option>
 				<?php foreach ($teams as $team): ?>
-					<?php
-						echo "<option value='" . $team['id'] . "'>" 
-									. $team['name'] . "</option>";
-	    			?>
+					<?php echo "<option value='" . $team['id'] . "'>" . $team['name'] . "</option>"; ?>
 				<?php endforeach; ?>
 			</select>
 		</div>

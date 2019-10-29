@@ -1,14 +1,16 @@
 <?php
-require __DIR__ . '/../inc/bootstrap.php';
+require $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
 try {	
-	// common part
-	$season = 1;
-	$tournament = filter_var($_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
 	// part 1 matches
+	$tournament = filter_var($_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
 	$team1 = filter_var($_POST['team1_id'], FILTER_SANITIZE_NUMBER_INT);
 	$team2 = filter_var($_POST['team2_id'], FILTER_SANITIZE_NUMBER_INT);
 	$score1 = filter_var($_POST['t1score'], FILTER_SANITIZE_NUMBER_INT);
 	$score2 = filter_var($_POST['t2score'], FILTER_SANITIZE_NUMBER_INT);
+	$sth = $db->prepare("select season_id from teams where team_id = :tid");
+	$sth->bindValue(":tid", $team1, PDO::PARAM_INT);
+	$sth->execute();
+	$season = $sth->fetch()["season_id"];
 	if ($score1 > $score2) {
 		$points1 = 2;
 		$points2 = 0;

@@ -4,7 +4,7 @@
     $sth = $db->prepare("select * from tournaments where tournament_type = 1");
     $sth->execute();
     $pro_tournaments = $sth->fetchAll();
-    $sth = $db->prepare("select * from tournaments where tournament_type = 2");
+    $sth = $db->prepare("select * from tournaments where tournament_id = 5 or tournament_id = 6");
     $sth->execute();
     $amateur_tournaments = $sth->fetchAll();
 ?>
@@ -32,10 +32,11 @@
 	    	<?php endif; ?>
     		</div>
     	<?php endif; ?>
-        <?php include $_SERVER["DOCUMENT_ROOT"] . "/widgets/schedule_widget.php"; ?>
-        <?php foreach ($pro_tournaments as $tournament): ?>
-            <?php include $_SERVER["DOCUMENT_ROOT"] . "/widgets/pro_tournament_widget.php"; ?>
-        <?php endforeach; ?>
+        <?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/schedule.php"; ?>
+        <?php foreach ($pro_tournaments as $tournament) {
+            include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/pro_tournament.php";
+		} ?>
+		<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/amateur_tournament.php"; ?>
         <p class="small mt-5">Нажмите на счет, чтобы просмотреть счет по сетам. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
     	<p class="small mt-3">Upcoming updates: заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>
     	<p class="small mt-3">Contribute: <a href="https://github.com/aleksanderantropov/kicker">github</a>. Обратная связь и изменения: <a href="https://vk.com/topic-58506517_42583616">vk.com</a></p>
