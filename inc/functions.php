@@ -367,26 +367,26 @@ function print_ratings($tournament_id, $type, $season, $tournament_id1 = NULL) {
 	echo "</tr>";
 	echo "</thead>";
 	echo "<tbody>";
-	foreach ($players as $player) {
-		$participationPercent = round($player['participated'] / $player['team_matches'] * 100);
+	foreach ($players as $player0) {
+		$participationPercent = round($player0['participated'] / $player0['team_matches'] * 100);
 		foreach ($players as $player1) {
-			if (strpos($player['name'], " ") || $player1['id'] == $player['id'])
+			if (strpos($player0['name'], " ") || $player1['id'] == $player0['id'])
 				continue ;
-			if ($player1['name'] == $player['name']) {
-				if (substr($player['first_name'], 0, 2) != substr($player1['first_name'], 0, 2)) {
-					$player['name'] .= " " . substr($player['first_name'], 0, 2) . ".";
+			if ($player1['name'] == $player0['name']) {
+				if (substr($player0['first_name'], 0, 2) != substr($player1['first_name'], 0, 2)) {
+					$player0['name'] .= " " . substr($player0['first_name'], 0, 2) . ".";
 					$player1['name'] .= " " . substr($player1['first_name'], 0, 2) . ".";
 				} else {
-					$player['name'] .= " " . $player['first_name'];
+					$player0['name'] .= " " . $player0['first_name'];
 					$player1['name'] .= " " . $player1['first_name'];
 				}
 			}
 		}
 		echo "<tr". (($participationPercent < 60) ? " class='transparent'" : "") .">";
 		echo "<td>" . $i++ ."</td>";
-		echo "<td class='text-left'>" . $player['name'] . "</td>";
-		echo "<td>" . $player['team'] . "</td>";
-		echo "<td>" . ($type == 2 ? $player['played'] / 2 : $player['played']). "</td>";
+		echo "<td class='text-left'>" . $player0['name'] . "</td>";
+		echo "<td>" . $player0['team'] . "</td>";
+		echo "<td>" . ($type == 2 ? $player0['played'] / 2 : $player0['played']). "</td>";
 		if ($type == 2) {
 			/* Get statistics won/forfeit/draw */
 			$sth = $db->prepare("
@@ -394,7 +394,7 @@ function print_ratings($tournament_id, $type, $season, $tournament_id1 = NULL) {
 				union all
 				select game_id, match_id, score2 as score from games where :id in (player_id21, player_id22)
 			");
-			$sth->bindValue(":id", $player["id"], PDO::PARAM_INT);
+			$sth->bindValue(":id", $player0["id"], PDO::PARAM_INT);
 			$sth->execute();
 			$stats = $sth->fetchAll();
 			$won = 0;
@@ -414,11 +414,11 @@ function print_ratings($tournament_id, $type, $season, $tournament_id1 = NULL) {
 			echo "<td>" . $forfeit . "</td>";
 			echo "<td>" . $draw . "</td>";
 		}
-		echo "<td>" . $player['scored'] . "</td>";
-		echo "<td>" . $player['conceded'] . "</td>";
-		echo "<td>" . $player['diff'] . "</td>";
-		echo "<td>" . $player['participated'] . "</td>";
-		echo "<td>" . $player['rating'] . "</td>";
+		echo "<td>" . $player0['scored'] . "</td>";
+		echo "<td>" . $player0['conceded'] . "</td>";
+		echo "<td>" . $player0['diff'] . "</td>";
+		echo "<td>" . $player0['participated'] . "</td>";
+		echo "<td>" . $player0['rating'] . "</td>";
 		echo "<td>" . $participationPercent . "%</td>";
 		echo "</tr>";
 	}
