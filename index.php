@@ -1,9 +1,12 @@
 <?php
 	require_once __DIR__ . "/inc/bootstrap.php";
 	require_once __DIR__ . "/inc/layout/head.php";
-    $sth = $db->prepare("select * from tournaments");
+    $sth = $db->prepare("select * from tournaments where tournament_type = 1");
     $sth->execute();
-    $tournaments = $sth->fetchAll();
+    $pro_tournaments = $sth->fetchAll();
+    $sth = $db->prepare("select * from tournaments where tournament_type = 2");
+    $sth->execute();
+    $amateur_tournaments = $sth->fetchAll();
 ?>
 <body>
 <main role="main" class="container">
@@ -29,53 +32,9 @@
 	    	<?php endif; ?>
     		</div>
     	<?php endif; ?>
-        <div>
-            <h2 class="text-left">Ближайшие игры</h2>
-            <div class="d-flex align-items-center my-3 flex-wrap">
-                <p class="mb-0 mr-3 mb-1">Расписание:</p>
-                <div class="d-flex mb-1">
-                    <a href="schedule.php?tournament=pro" class="btn btn-sm btn-light border-secondary">Профи</a>
-                    <a href="schedule.php?tournament=amateur" class="btn btn-sm btn-light border-secondary ml-3">Любители</a>
-                </div>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <?php include __DIR__ . "/inc/layout/templates/next_games.php"; ?>
-        </div>
-        <?php foreach ($tournaments as $tournament): ?>
-            <div class="d-flex align-items-center mt-4 mb-3">
-                <h2 class="text-left"><?php echo $tournament["tournament_description"]; ?></h2>
-                <a href="input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
-            </div>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#divTeamsPane<?php echo $tournament["tournament_id"]; ?>" id="firstDivTeamsTab" data-toggle="tab" role="tab">Команды</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#divPlayersPane<?php echo $tournament["tournament_id"]; ?>" id="firstDivPlayersTab" data-toggle="tab" role="tab">Игроки</a>
-                </li>
-            </ul>
-            <div class="tab-content mt-3">
-                <div class="tab-pane fade show active" id="divTeamsPane<?php echo $tournament["tournament_id"]; ?>">
-                    <div class="table-responsive">
-                        <?php print_result_table($tournament["tournament_id"], "2019"); ?>
-                    </div>
-                </div>
-                <div class="tab-pane fade text-left" id="divPlayersPane<?php echo $tournament["tournament_id"]; ?>">
-                    <div class="table-responsive">
-                        <form class="d-flex mb-2 px-1" id="search1">
-                            <input type="text" name="search1" class="form-control w-75 mr-3 my-1" placeholder="Искать">
-                            <button type="submit" class="btn btn-primary ml-auto mr-2 my-1">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <button class="btn btn-danger my-1" id="clear1">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </form>
-                        <?php print_ratings($tournament["tournament_id"], $tournament["tournament_type"], 1); ?>
-                    </div>
-                </div>
-            </div>
+        <?php include $_SERVER["DOCUMENT_ROOT"] . "/widgets/schedule_widget.php"; ?>
+        <?php foreach ($pro_tournaments as $tournament): ?>
+            <?php include $_SERVER["DOCUMENT_ROOT"] . "/widgets/pro_tournament_widget.php"; ?>
         <?php endforeach; ?>
         <p class="small mt-5">Нажмите на счет, чтобы просмотреть счет по сетам. Свяжитесь с <a href="http://vk.com/aantropov">нами</a> в случае ошибки.</p>
     	<p class="small mt-3">Upcoming updates: заполнение протокола онлайн, личные кабинеты для капитанов, управление ростером.</p>

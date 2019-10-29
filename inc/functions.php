@@ -1,59 +1,5 @@
 <?php
 
-function request() {
-    return \Symfony\Component\HttpFoundation\Request::createFromGlobals();
-}
-
-function findUserByLogin($login) {
-	global $db;
-
-	try {
-		$query = "SELECT * FROM users WHERE login = :login";
-		$stmt = $db->prepare($query);
-		$stmt->bindParam(":login", $login);
-		$stmt->execute();
-		return ($stmt->fetch());
-	} catch (\Exception $e) {
-		throw $e;
-	}
-}
-
-function display_errors() {
-	global $session;
-	if (!$session->getFlashBag()->has("error"))
-		return;
-	$messages = $session->getFlashBag()->get("error");
-	$response = "<div class='alert alert-danger alert-dismissable'>";
-	foreach ($messages as $message)
-		$response .= "{$message}<br>";
-	$response .= "</div>";
-	return ($response);
-}
-
-function display_success() {
-	global $session;
-	if (!$session->getFlashBag()->has("success"))
-		return;
-	$messages = $session->getFlashBag()->get("succes");
-	$response = "<div class='alert alert-success alert-dismissable'>";
-	foreach ($messages as $message)
-		$response .= "{$message}<br>";
-	$response .= "</div>";
-	return ($response);
-}
-
-function redirect($path, $extra = []) {
-	$response = \Symfony\Component\HttpFoundation\Response::create(null ,
-	\Symfony\Component\HttpFoundation\Response::HTTP_FOUND, ['Location' => $path]);
-	if (key_exists('cookies', $extra)) {
-		foreach ($extra['cookies'] as $cookie) {
-			$response->headers->setCookie($cookie);
-		}
-	}
-	$response->send();
-	exit;
-}
-
 /* utility function to display database tables */
 function print_table($sql) {
 	global $db;
@@ -77,9 +23,9 @@ function print_table($sql) {
 	echo '</table>';
 }
 /* print standings */
-function print_result_table($division, $season) {
+function print_result_table($tournament_id, $season) {
 	global $db;
-	/* teams quantity in the given $season and $division */
+	/* teams quantity in the given $season and $tournament_id */
 	$sth = $db->prepare("
 			select
 			count(tms.team_name_short) as teams_quantity,
@@ -91,8 +37,9 @@ function print_result_table($division, $season) {
 			inner join seasons as s on tms.season_id = s.season_id
 			where trn.tournament_id = ? and s.season_name = ?
 		");
-	$sth->execute(array($division, $season));
+	$sth->execute( array($tournament_id, $season) );
 	$tournament = $sth->fetch();
+	var_dump($tournament);
 	/* teams names ordered by points scored */
 	$sql = "with points_table as
 			(select
@@ -127,6 +74,8 @@ function print_result_table($division, $season) {
 	$sth->bindValue(':r', $tournament['rounds'], PDO::PARAM_INT);
 	$sth->execute();
 	$standings = $sth->fetchAll();
+	print("<br>");
+	var_dump($standings[0]);
 	$sth = $db->prepare("
 			select
 			m.match_id as match_id,
@@ -145,6 +94,9 @@ function print_result_table($division, $season) {
 	$sth->bindValue(':season_id', $tournament['season_id'], PDO::PARAM_INT);
 	$sth->execute();
 	$results = $sth->fetchAll();
+	print("<br>");
+	var_dump($results[0]);
+	exit();
 	$cols = $tournament['teams_quantity'] + 5;
 	if (count($standings) < $tournament['teams_quantity'])
 	{
@@ -255,7 +207,7 @@ function find_player_name_by_id($player_id, $players_query) {
 	return ("Т");
 }
 
-function print_ratings($division, $type, $season) {
+function print_ratings($tournament_id, $type, $season) {
 	global $db;
 	$sth = $db->prepare("
 		with player as (
@@ -330,7 +282,7 @@ function print_ratings($division, $type, $season) {
 		group by player.id
 		order by rating desc, diff desc, played desc;
 	");
-	$sth->bindValue(":t", $division, PDO::PARAM_INT);
+	$sth->bindValue(":t", $tournament_id, PDO::PARAM_INT);
 	$sth->bindValue(":s", $season, PDO::PARAM_INT);
 	$sth->execute();
 	$players = $sth->fetchAll();
