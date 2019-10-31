@@ -294,11 +294,11 @@ function print_ratings($tournament_id, $type, $season, $tournament_id1 = NULL) {
 			team_matches as (
 				with tm as (
 					select team_id1 as team_id, count(*) as count_matches from matches
-					where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
+					where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s and (sets_won1 != 'т' and sets_won2 != 'т')
 					group by team_id1
 					union all
 					select team_id2 as team_id, count(*) as count_matches from matches
-					where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s
+					where " . ($tournament_id1 ? "(tournament_id = :t or tournament_id = :t1)" : "tournament_id = :t") . " and season_id = :s and (sets_won1 != 'т' and sets_won2 != 'т')
 					group by team_id2
 				)
 				select team_id, sum(count_matches) as team_matches from tm group by team_id

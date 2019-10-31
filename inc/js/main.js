@@ -110,7 +110,7 @@ $(function() {
 		$(".btn[type='submit']").attr("disabled", true);
 		/* Tech win/lose/draw */
 		if ( !$.isNumeric( $(this).val() ) )
-			return (manageTech( $(this) ) );
+			manageTech( $(this) );
 		var t1d12 = [checkTech( $("[name='t1d1p1']").val() ), checkTech( $("[name='t1d1p2']").val() ),
 			checkTech( $("[name='t1d2p1']").val() ), checkTech( $("[name='t1d2p2']").val() )];
 		var t1d12_valid = unique(t1d12).length == 4 && $.inArray("0", t1d12) < 0;
@@ -184,7 +184,7 @@ $(function() {
 		$(".btn[type='submit']").attr("disabled", true);
 		/* Tech win/lose/draw */
 		if ( !$.isNumeric( $(this).val() ) )
-			return ( manageTech( $(this) ) );
+			manageTech( $(this) );
 		// проверить, что d1 и d2 - разные пары
 		var t1d1 = [checkTech( $("[name='t1d1p1']").val() ), checkTech( $("[name='t1d1p2']").val() )];
 		var t2d1 = [checkTech( $("[name='t2d1p1']").val() ), checkTech( $("[name='t2d1p2']").val() )];
@@ -358,16 +358,7 @@ $(function() {
 			}
 			$(this).closest("tr").find("select").unbindFirst("change", "select", loadValues);
 		}
-		$elem.parents("form").find("select").each(function() {
-			if ( $.isNumeric( $(this).val() ) ) {
-				valid--;
-				return (false);
-			}
-		});
-		if (valid)
-			$(".btn[type='submit']").attr("disabled", false);
 	}
-
 	function check_one(team) {
 		var $team = $("[name^='" + team + "']");
 		var count = {};
@@ -402,21 +393,12 @@ $(function() {
 		return (valid);
 	}
 	// Add Result Pros
-	if ($("#addResult").length) {
-		updateSum();
-		if (isScoreValid())
-			$(".btn[type='submit']").attr("disabled", false);
-		else
-			$(".btn[type='submit']").attr("disabled", true);
-		$("#addResult input[disabled]").each(function(i, v) {
-			if ($(this).val() != 0 || $(this).parents("tr").find(".form-control").not($(this)).val() != 0)
-				$(this).attr("disabled", false);
-		});
-	}
 	$("#addResult .form-control").change(function() {
+		console.log("change");
 		var index = $(this).parents("tr").index("tr");
 		var cap = index * 2;
 		var prevSum1 = prevSum2 = 0;
+
 		$(this).parents("tbody").find("tr").each(function(i, v) {
 			if (i == index - 1)
 				return false ;
@@ -440,22 +422,52 @@ $(function() {
 				filled++;
 		});
 		if (filled == 2) {
-			prevSum1 += +$(this).parents("tr").find(".form-control:eq(0)").val();
-			prevSum2 += +$(this).parents("tr").find(".form-control:eq(1)").val();
-			$(this).parents("tbody").find("tr:eq(" + ($(this).parents("tr").index("tr") + 1) + ") .form-control")
-				.attr("disabled", false).each(function(i) {
-					var max = !i ? prevSum1 : prevSum2;
-					$(this).attr("placeholder", "max " + ($(this).parents("tr").index("tr") * 2 - max));
-				});
+			let $nextNotTechInput1 = $(this).parents("tr").nextAll().find(".form-control:not(.tech)").eq(0);
+			let $nextNotTechInput2 = $(this).parents("tr").nextAll().find(".form-control:not(.tech)").eq(1);
+
+			/* Fill all the tech input between current and next not tech */
+			$(this).parents("tr").nextAll().each(function() {
+				/* Skip match names (they are even rows) */
+				if ($(this).index() % 2 == 0)
+					return (true);
+				prevSum1 += +$(this).prevAll("tr").eq(1).find(".form-control:eq(0)").val();
+				prevSum2 += +$(this).prevAll("tr").eq(1).find(".form-control:eq(1)").val();
+				if ( $(this).find(".tech").length ) {
+					let result1 = result2 = 0;
+
+					switch ( $(this).find("input[type='hidden']").eq(0).val() ) {
+						case "win":
+							result1 = $(this).index("tr") * 2 - prevSum1;
+							result2 = 0;
+							break ;
+						case "lose":
+							result1 = 0;
+							result2 = $(this).index("tr") * 2 - prevSum2;
+							break ;
+						case "draw":
+							result1 = result2 = 4;
+							break;
+						default:
+							break;
+					}
+					$(this).find(".tech").eq(0).val(result1);
+					$(this).find(".tech").eq(1).val(result2);
+				} else
+					return (false);
+			});
+			/* Activate next not tech input */
+			$nextNotTechInput1.attr("disabled", false).attr("placeholder", "max " + ( $nextNotTechInput1.parents("tr").index("tr") * 2 - prevSum1 ));
+			$nextNotTechInput2.attr("disabled", false).attr("placeholder", "max " + ( $nextNotTechInput2.parents("tr").index("tr") * 2 - prevSum2 ));
 		}
 		updateSum();
 		if (isScoreValid())
-			$(".btn").attr("disabled", false);
+			$(".btn[type='submit']").attr("disabled", false);
 		else
-			$(".btn").attr("disabled", true);
+			$(".btn[type='submit']").attr("disabled", true);
 	});
 	function updateSum() {
 		var score1 = score2 = 0;
+
 		$("[name^='r1t1'], [name^='r2t1']").each(function() {
 			score1 += +$(this).val();
 		});
@@ -472,7 +484,24 @@ $(function() {
 			return (0);
 		return (1);
 	}
+	if ($("#addResult").length) {
+		updateSum();
+		if ( $("#addResult .form-control").eq(0).hasClass("tech") ) {
+			$("#addResult .form-control").eq(0).trigger("change");
+		}
+		if (isScoreValid())
+			$(".btn[type='submit']").attr("disabled", false);
+		else
+			$(".btn[type='submit']").attr("disabled", true);
+		$("#addResult input[disabled]").each(function(i, v) {
+			if ( $(this).val() != 0 || $(this).parents("tr").find(".form-control").not($(this)).val() != 0 || $(this).hasClass("tech") )
+				$(this).attr("disabled", false);
+		});
+	}
 	// Add Result Amateurs
+	if ($("#addResultAmateurs").length) {
+		updateSumAmateurs();
+	}
 	$("#addResultAmateurs .form-control").change(function() {
 		if ($(this).val() > 5) $(this).val(5);
 		if ($(this).val() < 0) $(this).val(0);
@@ -497,45 +526,46 @@ $(function() {
 			$(".btn[type='submit']").attr("disabled", false);
 		else
 			$(".btn[type='submit']").attr("disabled", true);
-		function updateSumAmateurs() {
-			var t1score = 0, t2score = 0;
-			var matches = ["d1", "d2", "s1", "s2", "d3", "d4"];
-			matches.forEach(function(entry) {
-				var played = 0;
-				var t1_won = 0;
-				$(".form-control[name$='" + entry + "']").each(function() {
-					if ($(this).val() != 0 || $("[name='"
-						+ (~$(this).attr("name").indexOf("t1") ? 
-							$(this).attr("name").replace("t1", "t2") : $(this).attr("name").replace("t2", "t1")) 
-						+ "']").val() != 0) {
-						played++;
-						if (~$(this).attr("name").indexOf("t1"))
-							if ($(this).val() == 5)
-								t1_won++;
-					}
-				});
-				if (played == 4)
-					if (t1_won == 2)
-						t1score++;
-					else if (t1_won == 0)
-						t2score++;
-			});
-			$("#t1score, [name='t1score']").val(t1score);
-			$("#t2score, [name='t2score']").val(t2score);
-		}
 		function allPlayed() {
 			var played = 0;
 			$(".form-control").each(function() {
+				if ($(this).val() != 0
+					|| $("[name='" + (~$(this).attr("name").indexOf("t1") ? $(this).attr("name").replace("t1", "t2") : $(this).attr("name").replace("t2", "t1")) + "']").val() != 0
+					|| $(this).hasClass("tech"))
+				{
+					played++;
+				}
+			});
+
+			return (played == 24);
+		}
+	});
+	function updateSumAmateurs() {
+		var t1score = 0, t2score = 0;
+		var matches = ["d1", "d2", "s1", "s2", "d3", "d4"];
+		matches.forEach(function(entry) {
+			var played = 0;
+			var t1_won = 0;
+			$(".form-control[name$='" + entry + "']").each(function() {
 				if ($(this).val() != 0 || $("[name='"
 					+ (~$(this).attr("name").indexOf("t1") ? 
 						$(this).attr("name").replace("t1", "t2") : $(this).attr("name").replace("t2", "t1")) 
 					+ "']").val() != 0) {
 					played++;
+					if (~$(this).attr("name").indexOf("t1"))
+						if ($(this).val() == 5)
+							t1_won++;
 				}
 			});
-			return (played == 24);
-		}
-	});
+			if (played == 4)
+				if (t1_won == 2)
+					t1score++;
+				else if (t1_won == 0)
+					t2score++;
+		});
+		$("#t1score, [name='t1score']").val(t1score);
+		$("#t2score, [name='t2score']").val(t2score);
+	}
 	$("#addResult, #addResultAmateurs").submit(function() {
 		$(".btn[type='submit']").attr("disabled", true).find(".spinner-border").removeClass("d-none");
 	});

@@ -9,7 +9,7 @@
 		</thead>
 		<tbody>
 			<?php $matches = ["d1", "d2", "s1", "s2", "d3"]; ?>
-			<?php $tabIndex = 1; ?>
+			<?php $tabIndex = 1; $enabledSet = 0 ?>
 			<?php for ($i = 1; $i < 3; $i++): ?>
 				<?php foreach ($matches as $match): ?>
 					<tr>
@@ -17,18 +17,23 @@
 					</tr>
 				   	<tr>
 				   		<td class="text-left">
-				   			<input type="hidden" name="t1<?php echo $match; ?>p1" value="<?php echo $_POST['t1'.$match.'p1']; ?>">
-				   			<?php if (strpos($match, "s") === false): ?>
-				   				<input type="hidden" name="t1<?php echo $match; ?>p2" value="<?php echo $_POST['t1'.$match.'p2']; ?>">
-				   			<?php endif; ?>
-				   			<?php echo find_player_name_by_id($_POST['t1'.$match.'p1'], $players); ?>
-				   			<?php if (strpos($match, "s") === false) echo "<br>" . find_player_name_by_id($_POST['t1'.$match.'p2'], $players); ?>
+							<input type="hidden" name="t1<?php echo $match; ?>p1" value="<?php echo $_POST['t1'.$match.'p1']; ?>">
+							<?php if (strpos($match, "s") === false): ?>
+								<input type="hidden" name="t1<?php echo $match; ?>p2" value="<?php echo $_POST['t1'.$match.'p2']; ?>">
+							<?php endif; ?>
+							<?php echo find_player_name_by_id($_POST['t1'.$match.'p1'], $players); ?>
+							<?php if (strpos($match, "s") === false) echo "<br>" . find_player_name_by_id($_POST['t1'.$match.'p2'], $players); ?>
 			   			</td>
 				   		<td>
-				   			<input type="number" class="form-control" name="r<?php echo $i; ?>t1<?php echo $match; ?>" placeholder="<?php if ($i == 1 && $match == "d1") echo "max 4"; else echo 0; ?>"<?php if (!($i == 1 && $match == "d1")) echo " disabled";?> tabindex="<?php echo $tabIndex++; ?>">
+						   	<?php $isTech = !is_numeric($_POST["t1".$match."p1"]); ?>
+				   			<input type="number" class="form-control<?php if ($isTech) echo " tech"; ?>" name="r<?php echo $i; ?>t1<?php echo $match; ?>"
+							   	placeholder="<?php if ($i == 1 && $match == "d1") echo "max 4"; else echo 0; ?>"<?php if ($enabledSet) echo " disabled"; if ($isTech) echo " readonly"?>
+								tabindex="<?php echo $tabIndex++; ?>"<?php if ($isTech && $i == 1 && $match == "d1") echo " value='" . ($_POST["t1".$match."p1"] == "win" ? "4" : "0") . "'"; ?>>
 				   		</td>
 				   		<td>
-				   			<input type="number" class="form-control" name="r<?php echo $i; ?>t2<?php echo $match; ?>" placeholder="<?php if ($i == 1 && $match == "d1") echo "max 4"; else echo 0; ?>"<?php if (!($i == 1 && $match == "d1")) echo " disabled";?> tabindex="<?php echo $tabIndex++; ?>">
+				   			<input type="number" class="form-control<?php if ($isTech) echo " tech"; ?>" name="r<?php echo $i; ?>t2<?php echo $match; ?>"
+								placeholder="<?php if ($i == 1 && $match == "d1") echo "max 4"; else echo 0; ?>"<?php if ($enabledSet) echo " disabled"; if ($isTech) echo " readonly"; else $enabledSet++; ?>
+								tabindex="<?php echo $tabIndex++; ?>"<?php if ($isTech && $i == 1 && $match == "d1") echo " value='" . ($_POST["t2".$match."p1"] == "win" ? "4" : "0") . "'"; ?>>
 				   		</td>
 				   		<td class="text-right">
 				   			<input type="hidden" name="t2<?php echo $match; ?>p1" value="<?php echo $_POST['t2'.$match.'p1']; ?>">

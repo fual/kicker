@@ -2,10 +2,11 @@
 require $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
 try {
 	// part 1 matches
-	$tournament = filter_var($_GET["tech"] ? $_GET["tournament_id"] : $_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
-	$team1 = filter_var($_GET["tech"] ? $_GET["team1_id"] : $_POST['team1_id'], FILTER_SANITIZE_NUMBER_INT);
-	$team2 = filter_var($_GET["tech"] ? $_GET["team2_id"] : $_POST['team2_id'], FILTER_SANITIZE_NUMBER_INT);
-	if ($_GET["tech"]) {
+	$isTech = isset($_GET["tech"]);
+	$tournament = filter_var($isTech ? $_GET["tournament_id"] : $_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
+	$team1 = filter_var($isTech ? $_GET["team1_id"] : $_POST['team1_id'], FILTER_SANITIZE_NUMBER_INT);
+	$team2 = filter_var($isTech ? $_GET["team2_id"] : $_POST['team2_id'], FILTER_SANITIZE_NUMBER_INT);
+	if ($isTech) {
 		$score1 = ($_GET["tech"] == "win" ? 6 : "т");
 		$score2 = ($_GET["tech"] == "lose" ? 6 : "т");
 	} else {
@@ -35,7 +36,7 @@ try {
 	$sth->bindValue(':points1', $points1, PDO::PARAM_INT);
 	$sth->bindValue(':points2', $points2, PDO::PARAM_INT);
 	$sth->execute();
-	if ($_GET["tech"]) {
+	if ($isTech) {
 		header("Location: /?result=success&code=1");
 		exit ;
 	}
@@ -45,26 +46,26 @@ try {
 	$match_id = $sth->fetch()['id'];
 	// part 2 players
 	// players
-	$t1d1p1 = filter_var($_POST['t1d1p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t1d1p2 = filter_var($_POST['t1d1p2'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d1p1 = filter_var($_POST['t2d1p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d1p2 = filter_var($_POST['t2d1p2'], FILTER_SANITIZE_NUMBER_INT);
-	$t1d2p1 = filter_var($_POST['t1d2p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t1d2p2 = filter_var($_POST['t1d2p2'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d2p1 = filter_var($_POST['t2d2p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d2p2 = filter_var($_POST['t2d2p2'], FILTER_SANITIZE_NUMBER_INT);
-	$t1s1p1 = filter_var($_POST['t1s1p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t2s1p1 = filter_var($_POST['t2s1p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t1s2p1 = filter_var($_POST['t1s2p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t2s2p1 = filter_var($_POST['t2s2p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t1d3p1 = filter_var($_POST['t1d3p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t1d3p2 = filter_var($_POST['t1d3p2'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d3p1 = filter_var($_POST['t2d3p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d3p2 = filter_var($_POST['t2d3p2'], FILTER_SANITIZE_NUMBER_INT);
-	$t1d4p1 = filter_var($_POST['t1d4p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t1d4p2 = filter_var($_POST['t1d4p2'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d4p1 = filter_var($_POST['t2d4p1'], FILTER_SANITIZE_NUMBER_INT);
-	$t2d4p2 = filter_var($_POST['t2d4p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d1p1 = filter_var($_POST['t1d1p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d1p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d1p2 = filter_var($_POST['t1d1p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d1p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d1p1 = filter_var($_POST['t2d1p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d1p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d1p2 = filter_var($_POST['t2d1p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d1p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d2p1 = filter_var($_POST['t1d2p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d2p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d2p2 = filter_var($_POST['t1d2p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d2p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d2p1 = filter_var($_POST['t2d2p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d2p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d2p2 = filter_var($_POST['t2d2p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d2p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t1s1p1 = filter_var($_POST['t1s1p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1s1p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t2s1p1 = filter_var($_POST['t2s1p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2s1p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t1s2p1 = filter_var($_POST['t1s2p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1s2p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t2s2p1 = filter_var($_POST['t2s2p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2s2p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d3p1 = filter_var($_POST['t1d3p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d3p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d3p2 = filter_var($_POST['t1d3p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d3p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d3p1 = filter_var($_POST['t2d3p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d3p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d3p2 = filter_var($_POST['t2d3p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d3p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d4p1 = filter_var($_POST['t1d4p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d4p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t1d4p2 = filter_var($_POST['t1d4p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t1d4p2'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d4p1 = filter_var($_POST['t2d4p1'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d4p1'], FILTER_SANITIZE_NUMBER_INT);
+	$t2d4p2 = filter_var($_POST['t2d4p2'], FILTER_SANITIZE_NUMBER_INT) === "" ? NULL : filter_var($_POST['t2d4p2'], FILTER_SANITIZE_NUMBER_INT);
 	// rating
 	$sth = $db->prepare("select id, rating from rosters where id in (:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10, :p11, :p12, :p13, :p14, :p15, :p16, :p17, :p18, :p19, :p20)");
 	$sth->bindValue(':p1', $t1d1p1, PDO::PARAM_INT);
@@ -90,15 +91,14 @@ try {
 	$sth->execute();
 	$results = $sth->fetchAll();
 	$ratings = [];
-	foreach ($results as $result) {
+	foreach ($results as $result)
 		$ratings[$result['id']] = +$result['rating'];
-	}
 	$matches = ["d1", "d2", "s1", "s2", "d3", "d4"];
 	foreach ($matches as $match) {
 		for ($g = 1; $g < 3; $g++) {
 			${"g".$g."t1".$match} = filter_var($_POST["g".$g."t1".$match], FILTER_SANITIZE_NUMBER_INT);
-			${"g".$g."t1".$match} = ${"g".$g."t1".$match} ? ${"g".$g."t1".$match} : "0";
 			${"g".$g."t2".$match} = filter_var($_POST["g".$g."t2".$match], FILTER_SANITIZE_NUMBER_INT);
+			${"g".$g."t1".$match} = ${"g".$g."t1".$match} ? ${"g".$g."t1".$match} : "0";
 			${"g".$g."t2".$match} = ${"g".$g."t2".$match} ? ${"g".$g."t2".$match} : "0";
 			$query = "insert into games values (NULL, :match_id, :t1p1, " . (strpos($match, "s") === false ? ":t1p2" : "NULL") . ", :t2p1, " . (strpos($match, "s") === false ? ":t2p2" : "NULL") . ", :score1, :score2)";
 			$sth = $db->prepare($query);
@@ -112,6 +112,9 @@ try {
 			$sth->bindValue(':score1', ${"g".$g."t1".$match}, PDO::PARAM_INT);
 			$sth->bindValue(':score2', ${"g".$g."t2".$match}, PDO::PARAM_INT);
 			$sth->execute();
+			/* ratings is not set for tech */
+			if (!isset($ratings[${"t1".$match."p1"}]))
+				continue ;
 			if (strpos($match, "s") === false) {
 				$r1 = $ratings[${"t1".$match."p1"}] > $ratings[${"t1".$match."p2"}] 
 					? (2 * $ratings[${"t1".$match."p1"}] + $ratings[${"t1".$match."p2"}]) / 3

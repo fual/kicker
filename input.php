@@ -1,6 +1,5 @@
 <?php
 	require_once __DIR__ . "/inc/bootstrap.php";
-	require_once __DIR__ . "/inc/layout/head.php";
 	if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$tournament_id = $_GET['tournament'];
 		$team1 = $_GET['team1'];
@@ -65,6 +64,7 @@
 			exit ;
 		}
 	}
+	require_once __DIR__ . "/inc/layout/head.php";
 ?>
 <body class="pt-5">
 <main role="main" class="container">

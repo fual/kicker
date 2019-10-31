@@ -24,12 +24,17 @@
 			   			<?php if (strpos($match, "s") === false) echo "<br>" . find_player_name_by_id($_POST['t1'.$match.'p2'], $players); ?>
 		   			</td>
 			   		<td>
-			   			<input type="number" class="form-control" name="g1t1<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex; ?>">
-			   			<input type="number" class="form-control mt-1" name="g2t1<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 2; ?>">
+						<?php $isTech = !is_numeric($_POST["t1".$match."p1"]); ?>
+			   			<input type="number" class="form-control<?php if ($isTech) echo " tech"; ?>"
+						   	name="g1t1<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex; ?>"<?php if ($isTech) echo " value='" . ($_POST["t1".$match."p1"] == "win" ? "5" : "0") . "' readonly"; ?>>
+			   			<input type="number" class="form-control mt-1<?php if ($isTech) echo " tech"; ?>"
+						   	name="g2t1<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 2; ?>"<?php if ($isTech) echo " value='" . ($_POST["t1".$match."p1"] == "win" ? "5" : "0") . "' readonly"; ?>>
 			   		</td>
 			   		<td>
-			   			<input type="number" class="form-control" name="g1t2<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 1; ?>">
-			   			<input type="number" class="form-control mt-1" name="g2t2<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 3; ?>">
+			   			<input type="number" class="form-control<?php if ($isTech) echo " tech"; ?>"
+						   	name="g1t2<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 1; ?>"<?php if ($isTech) echo " value='" . ($_POST["t2".$match."p1"] == "win" ? "5" : "0") . "' readonly"; ?>>
+			   			<input type="number" class="form-control mt-1<?php if ($isTech) echo " tech"; ?>"
+						   	name="g2t2<?php echo $match; ?>" placeholder="0" tabindex="<?php echo $tabIndex + 3; ?>"<?php if ($isTech) echo " value='" . ($_POST["t2".$match."p1"] == "win" ? "5" : "0") . "' readonly"; ?>>
 			   		</td>
 			   		<td class="text-right">
 			   			<input type="hidden" name="t2<?php echo $match; ?>p1" value="<?php echo $_POST['t2'.$match.'p1']; ?>">
