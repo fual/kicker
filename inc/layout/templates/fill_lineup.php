@@ -1,3 +1,8 @@
+<div class="d-flex flex-wrap justify-content-between flex-column flex-lg-row mt-4">
+	<button class="btn btn-light mr-lg-2 my-2" id="techTeam1">Техническая победа <?php echo $team1_short; ?></button>
+	<button class="btn btn-light mx-lg-2 my-2" id="techDraw">Техническая ничья</button>
+	<button class="btn btn-light ml-lg-2 my-2" id="techTeam2">Техническая победа <?php echo $team2_short; ?></button>
+</div>
 <form method="post" action="" id="fillLineup" class="mt-4">
 	<table class="table table-striped table-sm">
 		<thead class="thead-dark">
@@ -28,6 +33,9 @@
 	    					</option>
 		    				<?php endif; ?>
 		    			<?php endforeach; ?>
+						<option value="win" class="text-black-50">Техническая победа</option>
+		    			<option value="draw" class="text-black-50">Техническая ничья</option>
+		    			<option value="lose" class="text-black-50">Техническое поражение</option>
 		    		</select>
 			    	<?php endfor; ?>
 		    	</td>
@@ -36,10 +44,10 @@
 			<?php endforeach; ?>
 			<tr id="hideRow">
 				<td>
-					<button class="btn btn-light border-secondary" id="hide1"><i class="fas fa-eye-slash"></i></button>
+					<button type="button" class="btn btn-light border-secondary" id="hide1"><i class="fas fa-eye-slash"></i></button>
 				</td>
 				<td>
-					<button class="btn btn-light border-secondary" id="hide2"><i class="fas fa-eye-slash"></i></button>
+					<button type="button" class="btn btn-light border-secondary" id="hide2"><i class="fas fa-eye-slash"></i></button>
 				</td>
 			</tr>
 		</tbody>
@@ -58,6 +66,9 @@
 				</ol>
 			</li>
 		</ul>
-		<button type="submit" class="btn btn-success mt-3" disabled="true">Подтвердить</button>
+		<div class="d-flex justify-content-between">
+			<button type="submit" class="btn btn-success mt-3" disabled="true">Подтвердить</button>
+			<button type="button" class="btn btn-light mt-3" id="clear">Очистить</button>
+		</div>
 	</div>
 </form>

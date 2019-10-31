@@ -1,14 +1,19 @@
 <?php
 require __DIR__ . '/../inc/bootstrap.php';
-try {	
+try {
 	// part 1 matches
-	$tournament = filter_var($_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
-	$team1 = filter_var($_POST['team1_id'], FILTER_SANITIZE_NUMBER_INT);
-	$team2 = filter_var($_POST['team2_id'], FILTER_SANITIZE_NUMBER_INT);
-	$score1 = filter_var($_POST['t1score'], FILTER_SANITIZE_NUMBER_INT);
-	$score2 = filter_var($_POST['t2score'], FILTER_SANITIZE_NUMBER_INT);
-	$points1 = $score1 > $score2 ? 2 : 0;
-	$points2 = 2 - $points1;
+	$tournament = filter_var($_GET["tech"] ? $_GET["tournament_id"] : $_POST['tournament_id'], FILTER_SANITIZE_NUMBER_INT);
+	$team1 = filter_var($_GET["tech"] ? $_GET["team1_id"] : $_POST['team1_id'], FILTER_SANITIZE_NUMBER_INT);
+	$team2 = filter_var($_GET["tech"] ? $_GET["team2_id"] : $_POST['team2_id'], FILTER_SANITIZE_NUMBER_INT);
+	if ($_GET["tech"]) {
+		$score1 = ($_GET["tech"] == "win" ? 40 : "т");
+		$score2 = ($_GET["tech"] == "lose" ? 40 : "т");
+	} else {
+		$score1 = filter_var($_POST['t1score'], FILTER_SANITIZE_NUMBER_INT);
+		$score2 = filter_var($_POST['t2score'], FILTER_SANITIZE_NUMBER_INT);
+	}
+	$points1 = $score1 == "т" ? 0 : $score1 > $score2 ? 2 : 0;
+	$points2 = $score2 == "т" ? 0 : 2 - $points1;
 	// get season
 	$sth = $db->prepare("select season_id from teams where team_id = :tid");
 	$sth->bindValue(":tid", $team1, PDO::PARAM_INT);
@@ -20,11 +25,15 @@ try {
 	$sth->bindValue(':tournament', $tournament, PDO::PARAM_INT);
 	$sth->bindValue(':team1', $team1, PDO::PARAM_INT);
 	$sth->bindValue(':team2', $team2, PDO::PARAM_INT);
-	$sth->bindValue(':score1', $score1, PDO::PARAM_INT);
-	$sth->bindValue(':score2', $score2, PDO::PARAM_INT);
+	$sth->bindValue(':score1', $score1, $score1 == "т" ? PDO::PARAM_STR : PDO::PARAM_INT);
+	$sth->bindValue(':score2', $score2, $score2 == "т" ? PDO::PARAM_STR : PDO::PARAM_INT);
 	$sth->bindValue(':points1', $points1, PDO::PARAM_INT);
 	$sth->bindValue(':points2', $points2, PDO::PARAM_INT);
 	$sth->execute();
+	if ($_GET["tech"]) {
+		header("Location: /?result=success&code=1");
+		exit ;
+	}
 	// get match_id
 	$sth = $db->prepare("select max(match_id) as id from matches");
 	$sth->execute();

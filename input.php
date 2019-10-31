@@ -12,7 +12,7 @@
 		$tournaments = $sth->fetchAll();
 	} else {
 		$tournament_id = $_GET['tournament'];
-		$sth = $db->prepare("select tournament_id, team_name_long as name, team_id as id from teams where tournament_id = :id order by name");
+		$sth = $db->prepare("select tournament_id, team_name_long as name, team_name_short as short_name, team_id as id from teams where tournament_id = :id order by name");
 		$sth->bindValue(":id", $tournament_id, PDO::PARAM_INT);
 		$sth->execute();
 		$teams = $sth->fetchAll();
@@ -23,14 +23,19 @@
 		$tournament_name = $res["name"];
 		$tournament_type = $res["type"];
 	}
+	/* When teams are chosen */
 	if (isset($_GET['team1']) && isset($_GET['team2'])) {
 		$team1_id = $_GET['team1'];
 		$team2_id = $_GET['team2'];
 		foreach ($teams as $team) {
-			if ($team['id'] == $team1_id)
+			if ($team['id'] == $team1_id) {
 				$team1 = $team['name'];
-			if ($team['id'] == $team2_id)
-				$team2 = $team['name']; 
+				$team1_short = $team["short_name"];
+			}
+			if ($team['id'] == $team2_id) {
+				$team2 = $team['name'];
+				$team2_short = $team["short_name"];
+			}
 		}
 		$sth = $db->prepare("
 			select id, team_id, first_name, second_name from rosters inner join players on rosters.player_id = players.player_id
@@ -41,6 +46,24 @@
 		$sth->bindValue(":team2", $team2_id, PDO::PARAM_INT);
 		$sth->execute();
 		$players = $sth->fetchAll();
+	}
+	/* When line-ups are filled */
+	if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($team1) && isset($team2)) {
+		/* Check if the submitted result is a tech */
+		$isTech = 1;
+		foreach ($_POST as $id) {
+			if ( is_numeric($id) ) {
+				$isTech--;
+				break;
+			}
+		}
+		if ($isTech) {
+			$resultTeam1 = $_POST["t1d1p1"];
+			$resultPage = ($tournament_type == 1 ? "addResult" : "addResultAmateurs");
+			$url = "/procedures/" .$resultPage. ".php?tech=" . $resultTeam1 . "&tournament_id=" . $tournament_id . "&team1_id=" . $team1_id . "&team2_id=" . $team2_id;
+			header("Location: $url");
+			exit ;
+		}
 	}
 ?>
 <body class="pt-5">

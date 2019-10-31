@@ -23,15 +23,14 @@ $(function() {
 	$("#chooseTeams").submit(function() {
 		var data = $(this).serialize();
 		var tournament = $(this).find("[name='tournament']").val();
-		var season = $(this).find("[name='season']").val();
 
 		$.ajax({
 			type: "POST",
 			url: "procedures/checkTeams.php",
 			data: data
 		}).done(function(res) {
-			if (res == "success") {
-				window.location = "/input.php?" + data;			}
+			if (res == "success")
+				window.location = "/input.php?" + data;
 			else
 				window.location = "/input.php?tournament=" + tournament + "&result=error&code=2&rounds=" + res;
 		}).fail(function() {
@@ -39,25 +38,101 @@ $(function() {
 		});
 		return false;
 	});
+	// Technical win/lose
+	$("#techTeam1, #techTeam2").click(function() {
+		var $btn = $(this);
+		var isTech = 1;
+		var sameValue = $btn[0] == $("#techTeam1")[0] ? $("[name='t1d1p1']").val() == "win" : $("[name='t2d1p1']").val() == "win";
+		var $selects = $("#fillLineupAmateurs select, #fillLineup select");
+
+		/* Check if already is set tech */
+		$selects.each(function() {
+			if ( $.isNumeric( $(this).val() ) && isTech )
+				isTech--;
+			$(this).removeAttr("style");
+		});
+		if (isTech && sameValue)
+			$selects.each(function() {
+				if ($(this).data("saved-value"))
+					$(this).val( $(this).data("saved-value") ).removeData("saved-value");
+				else
+					$(this).val(0);
+				if ( !$.isNumeric( $(this).val() ) && $(this).index() % 2 )
+					$(this).trigger("change");
+			});
+		else {
+			$selects.each(function() {
+				$(this).data( "saved-value", $(this).val() );
+			});
+			$("#fillLineupAmateurs td, #fillLineup td").each(function() {
+				if ( ($btn[0] == $("#techTeam1")[0] ? $(this).index() % 2 == 0 : $(this).index() % 2) )
+					$(this).find("select").eq(0).val("win").trigger("change");
+			});
+		}
+	});
+	// Technical draw
+	$("#techDraw").click(function() {
+		var isTech = 1;
+		var sameValue = $("[name='t1d1p1']").val() == "draw";
+		var $selects = $("#fillLineupAmateurs select, #fillLineup select");
+
+		/* Check if already is set tech */
+		$selects.each(function() {
+			if ( $.isNumeric( $(this).val() ) && isTech )
+				isTech--;
+			$(this).removeAttr("style");
+		});
+		if (isTech && sameValue) {
+			$selects.each(function() {
+				$(this).val( $(this).data("saved-value") ).removeData("saved-value");
+				if ( !$.isNumeric( $(this).val() ) && $(this).index() % 2 )
+					$(this).trigger("change");
+			});
+		} else {
+			$selects.each(function() {
+				$(this).data( "saved-value", $(this).val() );
+			});
+			$("#fillLineupAmateurs td, #fillLineup td").each(function() {
+				$(this).find("select").eq(0).val("draw").trigger("change");
+			});
+		}
+	});
+	// Clear fillLineup
+	$("#clear").click(function() {
+		$(this).parents("form").find("select").each(function() {
+			$(this).val(0).trigger("change");
+		});
+	});
 	// Lineup Pros
 	$("#fillLineup select").change(function() {
 		$("#fillLineup select").removeClass("border-danger");
 		$("#min, #max, #d12, #sd3").removeClass("text-danger");
-		var t1d12 = [$("[name='t1d1p1']").val(), $("[name='t1d1p2']").val(), $("[name='t1d2p1']").val(), $("[name='t1d2p2']").val()];
+		$(".btn[type='submit']").attr("disabled", true);
+		/* Tech win/lose/draw */
+		if ( !$.isNumeric( $(this).val() ) )
+			return (manageTech( $(this) ) );
+		var t1d12 = [checkTech( $("[name='t1d1p1']").val() ), checkTech( $("[name='t1d1p2']").val() ),
+			checkTech( $("[name='t1d2p1']").val() ), checkTech( $("[name='t1d2p2']").val() )];
 		var t1d12_valid = unique(t1d12).length == 4 && $.inArray("0", t1d12) < 0;
-		var t2d12 = [$("[name='t2d1p1']").val(), $("[name='t2d1p2']").val(), $("[name='t2d2p1']").val(), $("[name='t2d2p2']").val()];
+		var t2d12 = [checkTech( $("[name='t2d1p1']").val() ), checkTech( $("[name='t2d1p2']").val() ),
+			checkTech( $("[name='t2d2p1']").val() ), checkTech( $("[name='t2d2p2']").val() )];
 		var t2d12_valid = unique(t2d12).length == 4 && $.inArray("0", t2d12) < 0;
-		var t1sd3 = [$("[name='t1s1p1']").val(), $("[name='t1s2p1']").val(), $("[name='t1d3p1']").val(), $("[name='t1d3p2']").val()];
+		var t1sd3 = [checkTech( $("[name='t1s1p1']").val() ), checkTech( $("[name='t1s2p1']").val() ),
+			checkTech( $("[name='t1d3p1']").val() ), checkTech( $("[name='t1d3p2']").val() )];
 		var t1sd3_valid = unique(t1sd3).length == 4 && $.inArray("0", t1sd3) < 0;
-		var t2sd3 = [$("[name='t2s1p1']").val(), $("[name='t2s2p1']").val(), $("[name='t2d3p1']").val(), $("[name='t2d3p2']").val()];
+		var t2sd3 = [checkTech( $("[name='t2s1p1']").val() ), checkTech( $("[name='t2s2p1']").val() ),
+			checkTech( $("[name='t2d3p1']").val() ), checkTech( $("[name='t2d3p2']").val() )];
 		var t2sd3_valid = unique(t2sd3).length == 4 && $.inArray("0", t2sd3) < 0;
 		var t1_cl = unique(t1d12.concat(t1sd3)).length;
 		var t2_cl = unique(t2d12.concat(t2sd3)).length;
-		var t1_valid = t1_cl <= 7 && t1_cl >= 4;
-		var t2_valid = t2_cl <= 7 && t2_cl >= 4;
+		/* Negative represents tech */
+		var t1_tech = t1d12.concat(t1sd3).filter(function(n) { return n < 0; }).length;
+		var t2_tech = t2d12.concat(t2sd3).filter(function(n) { return n < 0; }).length;
+		var t1_valid = t1_cl - t1_tech <= 7 && t1_cl >= 4;
+		var t2_valid = t2_cl - t2_tech <= 7 && t2_cl >= 4;
 		if ((t1_cl <= 3 && t1_cl > 0) || (t2_cl <= 3 && t2_cl > 0))
 			$("#min").addClass("text-danger");
-		if ((t1_cl >= 8 && t1_cl > 0) || (t2_cl >= 8 && t2_cl > 0))
+		if ((t1_cl - t1_tech >= 8) || (t2_cl - t2_tech >= 8))
 			$("#max").addClass("text-danger");
 		if (t1d12_valid && t1sd3_valid && t2d12_valid && t2sd3_valid && t1_valid && t2_valid)
 			$(".btn[type='submit']").attr("disabled", false);
@@ -92,64 +167,6 @@ $(function() {
 			$("#hide2").attr("disabled", false);
 		}
 	});
-	function unique(arr) {
-		var obj = {};
-		for (var i = 0; i < arr.length; i++) {
-			var str = arr[i];
-			obj[str] = true;
-		}
-		return Object.keys(obj);
-	}
-	function checkDoubles($obj) {
-		var $i1, $i2, $i3, $i4;
-		var result = 0;
-		$obj.each(function(i, v) {
-			switch (i) {
-				case 0:
-					$i1 = $(v);
-					break ;
-				case 1:
-					$i2 = $(v);
-					if ($i1.val() == $i2.val()) {
-						$i1.addClass("border-danger");
-						$i2.addClass("border-danger");
-						result = 1;
-					}
-					break ;
-				case 2:
-					$i3 = $(v);
-					if ($i1.val() == $i3.val()) {
-						$i1.addClass("border-danger");
-						$i3.addClass("border-danger");
-					}
-					if ($i2.val() == $i3.val()) {
-						$i2.addClass("border-danger");
-						$i3.addClass("border-danger");
-					}
-					if ($i1.val() == $i3.val() || $i2.val() == $i3.val())
-						result = 1;
-					break ;
-				case 3:
-					$i4 = $(v);
-					if ($i1.val() == $i4.val()) {
-						$i1.addClass("border-danger");
-						$i4.addClass("border-danger");
-					}
-					if ($i2.val() == $i4.val()) {
-						$i2.addClass("border-danger");
-						$i4.addClass("border-danger");
-					}
-					if ($i3.val() == $i4.val()) {
-						$i3.addClass("border-danger");
-						$i4.addClass("border-danger");
-					}
-					if ($i1.val() == $i4.val() || $i2.val() == $i4.val() || $i3.val() == $i4.val())
-						result = 1;
-					break ;
-			}
-		});
-		return (result);
-	}
 	$("#hide1, #hide2").click(function() {
 		var $elemsToHide = $(this).attr("id") == "hide1" ? $("[name^='t1']") : $("[name^='t2']");
 		$elemsToHide.css("visibility", "hidden");
@@ -164,13 +181,19 @@ $(function() {
 	$("#fillLineupAmateurs select").change(function() {
 		$("#fillLineupAmateurs select").removeClass("border-danger");
 		$("#d12, #d34, #s12, #one").removeClass("text-danger");
+		$(".btn[type='submit']").attr("disabled", true);
+		/* Tech win/lose/draw */
+		if ( !$.isNumeric( $(this).val() ) )
+			return ( manageTech( $(this) ) );
 		// проверить, что d1 и d2 - разные пары
-		var t1d1 = [$("[name='t1d1p1']").val(), $("[name='t1d1p2']").val()];
-		var t2d1 = [$("[name='t2d1p1']").val(), $("[name='t2d1p2']").val()];
-		var t1d2 = [$("[name='t1d2p1']").val(), $("[name='t1d2p2']").val()];
-		var t2d2 = [$("[name='t2d2p1']").val(), $("[name='t2d2p2']").val()];
-		var t1d12 = [$("[name='t1d1p1']").val(), $("[name='t1d1p2']").val(), $("[name='t1d2p1']").val(), $("[name='t1d2p2']").val()];
-		var t2d12 = [$("[name='t2d1p1']").val(), $("[name='t2d1p2']").val(), $("[name='t2d2p1']").val(), $("[name='t2d2p2']").val()];
+		var t1d1 = [checkTech( $("[name='t1d1p1']").val() ), checkTech( $("[name='t1d1p2']").val() )];
+		var t2d1 = [checkTech( $("[name='t2d1p1']").val() ), checkTech( $("[name='t2d1p2']").val() )];
+		var t1d2 = [checkTech( $("[name='t1d2p1']").val() ), checkTech( $("[name='t1d2p2']").val() )];
+		var t2d2 = [checkTech( $("[name='t2d2p1']").val() ), checkTech( $("[name='t2d2p2']").val() )];
+		var t1d12 = [checkTech( $("[name='t1d1p1']").val() ), checkTech( $("[name='t1d1p2']").val() ),
+			checkTech( $("[name='t1d2p1']").val() ), checkTech( $("[name='t1d2p2']").val() )];
+		var t2d12 = [checkTech( $("[name='t2d1p1']").val() ), checkTech( $("[name='t2d1p2']").val() ),
+			checkTech( $("[name='t2d2p1']").val() ), checkTech( $("[name='t2d2p2']").val() )];
 		var t1d12_valid = unique(t1d1).length == 2 && unique(t1d2).length == 2 && unique(t1d12).length >= 3 && $.inArray("0", t1d12) < 0;
 		var t2d12_valid = unique(t2d1).length == 2 && unique(t2d2).length == 2 && unique(t2d12).length >= 3 && $.inArray("0", t2d12) < 0;
 		if (!t1d12_valid && $.inArray("0", t1d12) < 0) {
@@ -183,12 +206,14 @@ $(function() {
 		}
 		var d12_valid = t1d12_valid && t2d12_valid;
 		// проверить, что d3 и d4 - разные пары
-		var t1d3 = [$("[name='t1d3p1']").val(), $("[name='t1d3p2']").val()];
-		var t2d3 = [$("[name='t2d3p1']").val(), $("[name='t2d3p2']").val()];
-		var t1d4 = [$("[name='t1d4p1']").val(), $("[name='t1d4p2']").val()];
-		var t2d4 = [$("[name='t2d4p1']").val(), $("[name='t2d4p2']").val()];
-		var t1d34 = [$("[name='t1d3p1']").val(), $("[name='t1d3p2']").val(), $("[name='t1d4p1']").val(), $("[name='t1d4p2']").val()];
-		var t2d34 = [$("[name='t2d3p1']").val(), $("[name='t2d3p2']").val(), $("[name='t2d4p1']").val(), $("[name='t2d4p2']").val()];
+		var t1d3 = [checkTech( $("[name='t1d3p1']").val() ), checkTech( $("[name='t1d3p2']").val() )];
+		var t2d3 = [checkTech( $("[name='t2d3p1']").val() ), checkTech( $("[name='t2d3p2']").val() )];
+		var t1d4 = [checkTech( $("[name='t1d4p1']").val() ), checkTech( $("[name='t1d4p2']").val() )];
+		var t2d4 = [checkTech( $("[name='t2d4p1']").val() ), checkTech( $("[name='t2d4p2']").val() )];
+		var t1d34 = [checkTech( $("[name='t1d3p1']").val() ), checkTech( $("[name='t1d3p2']").val() ),
+			checkTech( $("[name='t1d4p1']").val() ), checkTech( $("[name='t1d4p2']").val() )];
+		var t2d34 = [checkTech( $("[name='t2d3p1']").val() ), checkTech( $("[name='t2d3p2']").val() ),
+			checkTech( $("[name='t2d4p1']").val() ), checkTech( $("[name='t2d4p2']").val() )];
 		var t1d34_valid = unique(t1d3).length == 2 && unique(t1d4).length == 2 && unique(t1d34).length >= 3 && $.inArray("0", t1d34) < 0;
 		var t2d34_valid = unique(t2d3).length == 2 && unique(t2d4).length == 2 && unique(t2d34).length >= 3 && $.inArray("0", t2d34) < 0;
 		if (!t1d34_valid && $.inArray("0", t1d34) < 0) {
@@ -201,8 +226,8 @@ $(function() {
 		}
 		var d34_valid = t1d34_valid && t2d34_valid;
 		// проверить, чтобы одиночки разные
-		var t1s12 = [$("[name='t1s1p1']").val(), $("[name='t1s2p1']").val()];
-		var t2s12 = [$("[name='t2s1p1']").val(), $("[name='t2s2p1']").val()];
+		var t1s12 = [checkTech( $("[name='t1s1p1']").val() ), checkTech( $("[name='t1s2p1']").val() )];
+		var t2s12 = [checkTech( $("[name='t2s1p1']").val() ), checkTech( $("[name='t2s2p1']").val() )];
 		var t1s12_valid = unique(t1s12).length == 2 && $.inArray("0", t1s12) < 0;
 		var t2s12_valid = unique(t2s12).length == 2 && $.inArray("0", t2s12) < 0;
 		if (!t1s12_valid && $.inArray("0", t1s12) < 0) {
@@ -225,20 +250,132 @@ $(function() {
 		if (t2d12_valid && t2d34_valid && t2s12_valid && t1one_valid && !$("#hide1").is(":visible") && !$("#hideRow").hasClass("hidden")) {
 			$("#hideRow, #hide2").show();
 			$("#hide2").attr("disabled", false);
-			console.log(1);
 		}
 		if (one_valid && d12_valid && d34_valid && s12_valid)
 			$(".btn[type='submit']").attr("disabled", false);
-		else
-			$(".btn[type='submit']").attr("disabled", true);
 	});
+	function unique(arr) {
+		var obj = {};
+		for (var i = 0; i < arr.length; i++) {
+			var str = arr[i];
+			obj[str] = true;
+		}
+		return Object.keys(obj);
+	}
+	function checkDoubles($obj) {
+		var $i1, $i2, $i3, $i4;
+		var i1val, i2val, i3val, i4val;
+		var result = 0;
+		$obj.each(function(i, v) {
+			switch (i) {
+				case 0:
+					$i1 = $(v);
+					i1val = checkTech( $i1.val() );
+					break ;
+				case 1:
+					$i2 = $(v);
+					i2val = checkTech( $i2.val() );
+					if (i1val == i2val) {
+						$i1.addClass("border-danger");
+						$i2.addClass("border-danger");
+						result = 1;
+					}
+					break ;
+				case 2:
+					$i3 = $(v);
+					i3val = checkTech( $i3.val() );
+					if (i1val == i3val) {
+						$i1.addClass("border-danger");
+						$i3.addClass("border-danger");
+					}
+					if (i2val == i3val) {
+						$i2.addClass("border-danger");
+						$i3.addClass("border-danger");
+					}
+					if (i1val == i3val || i2val == i3val)
+						result = 1;
+					break ;
+				case 3:
+					$i4 = $(v);
+					i4val = checkTech( $i4.val() );
+					if (i1val == i4val) {
+						$i1.addClass("border-danger");
+						$i4.addClass("border-danger");
+					}
+					if (i2val == i4val) {
+						$i2.addClass("border-danger");
+						$i4.addClass("border-danger");
+					}
+					if (i3val == i4val) {
+						$i3.addClass("border-danger");
+						$i4.addClass("border-danger");
+					}
+					if (i1val == i4val || i2val == i4val || i3val == i4val)
+						result = 1;
+					break ;
+			}
+		});
+		return (result);
+	}
+	/* checkTech(): returns a unique value if argument is tech win/lose/draw, it helps to maintain correct validation */
+	var i = -1;
+	function checkTech( value ) {
+		return ( $.isNumeric(value) ? value : i--);
+	}
+	/* Save values before tech */
+	$("#fillLineupAmateurs select, #fillLineup select").click(saveValues);
+	function saveValues() {
+		$(this).closest("tr").find("select").each(function() {
+			if ( $.isNumeric( $(this).val() ) )
+				$(this).data( "previous-value", $(this).val() );
+		});
+	}
+	/* Manage tech cases */
+	function manageTech( $elem ) {
+		var thisValue = $elem.val();
+		var opponentNewValue = thisValue == "win" ? "lose" : thisValue == "draw" ? "draw" : "win";
+		var valid = 1;
+
+		/* Set sibling select and hide it */
+		$elem.siblings().val(thisValue).css("visibility", "hidden").css("position", "absolute");
+		/* Set opponent select values and hide corresponding opponent select */
+		$elem.closest("td").siblings().find("select").val(opponentNewValue)
+			.eq( 1 - $elem.index() ).css("visibility", "hidden").css("position", "absolute");
+		/* Load back old values when a value changed to a player */
+		$elem.closest("tr").find("select").bindFirst("change", loadValues);
+		function loadValues() {
+			var elem = $(this)[0];
+
+			if ( $.isNumeric( $(this).val() ) ) {
+				/* Load values */
+				$(this).closest("tr").find("select").each(function() {
+					if ( $(this).data("previous-value") && elem != $(this)[0] )
+						$(this).val( $(this).data("previous-value") ).removeData("previous-value");
+					else if ( !$(this).data("previous-value") && elem != $(this)[0] )
+						$(this).val(0);
+					$(this).removeAttr("style");
+				});
+			}
+			$(this).closest("tr").find("select").unbindFirst("change", "select", loadValues);
+		}
+		$elem.parents("form").find("select").each(function() {
+			if ( $.isNumeric( $(this).val() ) ) {
+				valid--;
+				return (false);
+			}
+		});
+		if (valid)
+			$(".btn[type='submit']").attr("disabled", false);
+	}
+
 	function check_one(team) {
 		var $team = $("[name^='" + team + "']");
 		var count = {};
 		$team.each(function() {
 			var changed = 0;
 			for (key in count) {
-				if ($(this).val() == key) {
+				/* Tech win/lose/draw aren't numeric, they're strings */
+				if ($.isNumeric( $(this).val() ) && $(this).val() == key) {
 					count[key]++;
 					changed = 1;
 					break ;
@@ -308,7 +445,6 @@ $(function() {
 			$(this).parents("tbody").find("tr:eq(" + ($(this).parents("tr").index("tr") + 1) + ") .form-control")
 				.attr("disabled", false).each(function(i) {
 					var max = !i ? prevSum1 : prevSum2;
-					console.log(max);
 					$(this).attr("placeholder", "max " + ($(this).parents("tr").index("tr") * 2 - max));
 				});
 		}
@@ -422,7 +558,6 @@ $(function() {
 	});
 	$("[data-action='scheduleSubmit']").click(function() {
 		var data = $(this).parents("tr").find(".form-control, .custom-select:not(#teamFilter)").serialize();
-		console.log(data);
 		$.ajax({
 			type: "POST",
 			url: "procedures/updateSchedule.php",
@@ -480,5 +615,21 @@ $(function() {
 	$("#clear1, #clear2").click(function() {
 		$(this).parent().find(".form-control").val("");
 		$(this).parent().submit();
-	});	
+	});
+
+	/* Utility method to prepend an event handler */
+	$.fn.bindFirst = function(name, fn) {
+        this.on(name, fn);
+        this.each(function() {
+            var handlers = $._data(this, 'events')[name];
+            var handler = handlers.pop();
+            handlers.splice(0, 0, handler);
+        });
+	};
+	$.fn.unbindFirst = function(name, selector, handler) {
+		this.each(function() {
+			var handlers = $._data(this, 'events')[name];
+			handlers.shift();
+		});
+	}
 });
