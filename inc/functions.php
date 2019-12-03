@@ -198,12 +198,13 @@ function print_result_table($tournament_id, $season) {
 }
 /* find match results in 2-dimensional array */
 function find_match_results($home_team, $away_team, $results, $tournament) {
+	global $subfolder;
 	$res = " ";
 	foreach ($results as $result)
 		if ($result['home_team'] == $home_team && $result['away_team'] == $away_team)
 		{
 			if ($result['away_score'] != "т" && $result['home_score'] != "т")
-				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
+				$res .= '<a href="' .$subfolder. '/match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['home_score'] . ':' . $result['away_score'];
 			if ($result['away_score'] != "т" && $result['home_score'] != "т")
 				$res .= '</a>';
@@ -212,7 +213,7 @@ function find_match_results($home_team, $away_team, $results, $tournament) {
 		else if ($result['away_team'] == $home_team && $result['home_team'] == $away_team)
 		{
 			if ($result['away_score'] != "т" && $result['home_score'] != "т")
-				$res .= '<a href="match.php?id=' . $result['match_id'] . '">';
+				$res .= '<a href="' .$subfolder. '/match.php?id=' . $result['match_id'] . '">';
 			$res .= $result['away_score'] . ':' . $result['home_score'];
 			if ($result['away_score'] != "т" && $result['home_score'] != "т")
 				$res .= '</a>';

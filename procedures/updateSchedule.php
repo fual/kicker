@@ -1,5 +1,6 @@
 <?php
-require __DIR__ . '/../inc/bootstrap.php';
+$subfolder = isset($_POST["subfolder"]) ? "/" . $_POST["subfolder"] : "";
+require $_SERVER["DOCUMENT_ROOT"] . '/inc/bootstrap.php';
 try {
 	$sth = $db->prepare("update schedule set place_id = :p, date = :d, time = :t where id = :id");
 	$id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);

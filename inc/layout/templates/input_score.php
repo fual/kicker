@@ -1,4 +1,5 @@
-<form method="post" action="procedures/addResult.php" id="addResult" class="mt-4">
+<form method="post" action="/procedures/addResult.php" id="addResult" class="mt-4">
+	<input type="hidden" name="subfolder" value="<?php echo $subfolder;?>">
 	<input type="hidden" name="tournament_id" value="<?php echo $tournament_id;?>">
 	<input type="hidden" name="team1_id" value="<?php echo $team1_id;?>">
 	<input type="hidden" name="team2_id" value="<?php echo $team2_id;?>">

@@ -1,6 +1,6 @@
 <?php
-	require_once __DIR__ . "/inc/bootstrap.php";
-	require_once __DIR__ . "/inc/layout/head.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
     $sth = $db->prepare("select * from players");
     $sth->execute();
     $players = $sth->fetchAll();
@@ -57,6 +57,6 @@
         </table>
     </div>
 </main>
-<?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/footer.php"; ?>
 </body>
 </html>

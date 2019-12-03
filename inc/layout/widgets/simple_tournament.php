@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center mt-4 mb-3">
     <h2 class="text-left"><?php echo $tournament["tournament_description"]; ?></h2>
-    <a href="input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
+    <a href="<?php echo $subfolder; ?>/input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
 </div>
 <ul class="nav nav-tabs">
     <li class="nav-item">

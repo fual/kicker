@@ -1,4 +1,6 @@
 $(function() {
+	var subfolder = window.location.pathname.split("/")[1];
+
 	if ($("#result").is(":visible")) {
 		setTimeout(function() {
 			$("#result").slideToggle();
@@ -26,15 +28,15 @@ $(function() {
 
 		$.ajax({
 			type: "POST",
-			url: "procedures/checkTeams.php",
-			data: data
+			url: "/procedures/checkTeams.php",
+			data: data + "&subfolder=" + subfolder
 		}).done(function(res) {
 			if (res == "success")
-				window.location = "/input.php?" + data;
+				window.location = "/" + subfolder + "/input.php?" + data;
 			else
-				window.location = "/input.php?tournament=" + tournament + "&result=error&code=2&rounds=" + res;
+				window.location = "/" + subfolder + "/input.php?tournament=" + tournament + "&result=error&code=2&rounds=" + res;
 		}).fail(function() {
-			window.location = "/input.php?tournament=" + tournament + "&result=error&code=3";
+			window.location = "/" + subfolder + "/input.php?tournament=" + tournament + "&result=error&code=3";
 		});
 		return false;
 	});
@@ -394,7 +396,6 @@ $(function() {
 	}
 	// Add Result Pros
 	$("#addResult .form-control").change(function() {
-		console.log("change");
 		var index = $(this).parents("tr").index("tr");
 		var cap = index * 2;
 		var prevSum1 = prevSum2 = 0;
@@ -587,10 +588,10 @@ $(function() {
 		$(this).parents("tr").find("select").val("0");
 	});
 	$("[data-action='scheduleSubmit']").click(function() {
-		var data = $(this).parents("tr").find(".form-control, .custom-select:not(#teamFilter)").serialize();
+		var data = $(this).parents("tr").find(".form-control, .custom-select:not(#teamFilter)").serialize() + "&subfolder=" + subfolder;
 		$.ajax({
 			type: "POST",
-			url: "procedures/updateSchedule.php",
+			url: "/procedures/updateSchedule.php",
 			data: data
 		}).done(function(data) {
 			if (data == "success")
@@ -617,7 +618,7 @@ $(function() {
 					tournament = $_GET[i];
 		} else
 			tournament="tournament=pro"
-		window.location = "/schedule.php?" + tournament + "&" + data;
+		window.location = "/" + subfolder + "/schedule.php?" + tournament + "&" + data;
 	});
 	$("#clearTeamFilter").click(function() {
 		if ($("#teamFilter").val() == "0")

@@ -1,6 +1,6 @@
 <?php
-	require_once __DIR__ . "/inc/bootstrap.php";
-	require_once __DIR__ . "/inc/layout/head.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
 	if (!isset($_GET['tournament']) || $_GET['tournament'] != "amateur")
 		$tournament_id = "(1, 2)";
 	else
@@ -60,12 +60,11 @@
 	");
 	$sth->execute();
 	$teams = $sth->fetchAll();
-	// var_dump($schedule);
 ?>
 <body>
 <main role="main" class="container">
   	<div class="starter-template text-left">
-  		<a href="/" class="btn btn-primary mt-4">Назад</a>
+  		<a href="<?php echo $subfolder; ?>" class="btn btn-primary mt-4">Назад</a>
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
 			<div class="alert alert-success mt-3 result" id="result">
@@ -77,10 +76,10 @@
     		</div>
     	<?php endif; ?>
 		<h2 class="text-center mt-3 mb-3">Расписание</h2>
-    	<?php include __DIR__ . "/inc/layout/templates/schedule_table.php"; ?>
+    	<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/templates/schedule_table.php"; ?>
     	<p class="small mt-4">Заполните все поля, чтобы игра появилась на главной странице. Игры доступны для редактирования 1 день со дня указанного в столбце "Дата".</p>
   	</div>
 </main>
-<?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/footer.php"; ?>
 </body>
 </html>

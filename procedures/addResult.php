@@ -1,5 +1,6 @@
 <?php
-require __DIR__ . '/../inc/bootstrap.php';
+$subfolder = isset($_POST["subfolder"]) ? $_POST["subfolder"] : (isset($_GET["subfolder"]) ? $_GET["subfolder"] : "");
+require $_SERVER["DOCUMENT_ROOT"] . '/inc/bootstrap.php';
 try {
 	// part 1 matches
 	$isTech = isset($_GET["tech"]);
@@ -32,7 +33,7 @@ try {
 	$sth->bindValue(':points2', $points2, PDO::PARAM_INT);
 	$sth->execute();
 	if ($isTech) {
-		header("Location: /?result=success&code=1");
+		header("Location: " .$subfolder. "/?result=success&code=1");
 		exit ;
 	}
 	// get match_id
@@ -131,7 +132,7 @@ try {
 		$sth->bindValue(":id", $id, PDO::PARAM_INT);
 		$sth->execute();
 	}
-	header("Location: /?result=success&code=1");
+	header("Location: " .$subfolder. "/?result=success&code=1");
 } catch (Exception $e) {
-	header("Location: /?result=error&code=3");
+	header("Location: " .$subfolder. "/?result=error&code=3");
 }

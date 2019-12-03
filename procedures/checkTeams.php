@@ -1,5 +1,6 @@
 <?php
-require __DIR__ . '/../inc/bootstrap.php';
+$subfolder = isset($_POST["subfolder"]) ? "/" . $_POST["subfolder"] : "";
+require $_SERVER["DOCUMENT_ROOT"] . '/inc/bootstrap.php';
 $team1 = filter_var($_POST['team1'], FILTER_SANITIZE_NUMBER_INT);
 $team2 = filter_var($_POST['team2'], FILTER_SANITIZE_NUMBER_INT);
 $tournament_id = filter_var($_POST["tournament"], FILTER_SANITIZE_NUMBER_INT);

@@ -1,5 +1,4 @@
 <?php
-	require_once __DIR__ . "/../../bootstrap.php";
 	$sth = $db->prepare("select
 		s.id as id,
 		s.tournament_id,
@@ -20,7 +19,6 @@
 	);
 	$sth->execute();
 	$next_games = $sth->fetchAll();
-	// var_dump($next_games);
 ?>
 <?php if (sizeof($next_games)): ?>
 <table class="table table-sm table-striped table-hover text-center">

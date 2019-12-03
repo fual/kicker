@@ -1,6 +1,6 @@
 <?php
-	require_once __DIR__ . "/inc/bootstrap.php";
-	require_once __DIR__ . "/inc/layout/head.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
 	$match_id = isset($_GET['id']) ? $_GET['id'] : NULL;
 	if ($match_id) {
 		$sth = $db->prepare("select
@@ -114,10 +114,10 @@
     	</table>
 	    <?php endif; ?>
     	<div class="text-left">
-			<a href="/" class="btn btn-primary">Назад</a>
+			<a href="<?php echo $subfolder;?>" class="btn btn-primary">Назад</a>
 		</div>
   	</div>
 </main>
-<?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/footer.php"; ?>
 </body>
 </html>

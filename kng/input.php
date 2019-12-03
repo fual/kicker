@@ -1,5 +1,5 @@
 <?php
-	require_once __DIR__ . "/inc/bootstrap.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
 	if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$tournament_id = $_GET['tournament'];
 		$team1 = $_GET['team1'];
@@ -59,12 +59,12 @@
 		if ($isTech) {
 			$resultTeam1 = $_POST["t1d1p1"];
 			$resultPage = ($tournament_type == 1 ? "addResult" : "addResultAmateurs");
-			$url = "/procedures/" .$resultPage. ".php?tech=" . $resultTeam1 . "&tournament_id=" . $tournament_id . "&team1_id=" . $team1_id . "&team2_id=" . $team2_id;
+			$url = "/procedures/" .$resultPage. ".php?tech=" . $resultTeam1 . "&tournament_id=" . $tournament_id . "&team1_id=" . $team1_id . "&team2_id=" . $team2_id . "&subfolder=" . $subfolder;
 			header("Location: $url");
 			exit ;
 		}
 	}
-	require_once __DIR__ . "/inc/layout/head.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
 ?>
 <body class="pt-5">
 <main role="main" class="container">
@@ -82,27 +82,27 @@
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
-		<?php include __DIR__ . "/inc/layout/templates/choose_teams.php"; ?>
+		<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/templates/choose_teams.php"; ?>
 		<?php if ($_SERVER['REQUEST_METHOD'] != "POST" && isset($team1) && isset($team2)): ?>
 			<?php if ($tournament_type == 1): ?>
-	   			<?php include __DIR__ . "/inc/layout/templates/fill_lineup.php"; ?>
+	   			<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/templates/fill_lineup.php"; ?>
 	   		<?php else: ?>
-	   			<?php include __DIR__ . "/inc/layout/templates/fill_lineup_amateurs.php"; ?>
+	   			<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/templates/fill_lineup_amateurs.php"; ?>
 	   		<?php endif; ?>
 		<?php elseif ($_SERVER['REQUEST_METHOD'] == "POST" && isset($team1) && isset($team2)): ?>
 			<?php if ($tournament_type == 1): ?>
-	   			<?php include __DIR__ . "/inc/layout/templates/input_score.php"; ?>
+	   			<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/templates/input_score.php"; ?>
 	   		<?php else: ?>
-	   			<?php include __DIR__ . "/inc/layout/templates/input_score_amateurs.php"; ?>
+	   			<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/templates/input_score_amateurs.php"; ?>
 	   		<?php endif; ?>
 	   	<?php elseif ($_SERVER['REQUEST_METHOD'] == "POST"): ?>
 	   		<p>К сожалению, возникла ошибка. Свяжитесь с администратором.</p>
    		<?php endif; ?>
 		<div class="text-left mt-5">
-			<a href="/" class="btn btn-primary">Назад</a>
+			<a href="<?php echo $subfolder; ?>" class="btn btn-primary">Назад</a>
 		</div>
 	</div>
 </main>
-<?php require_once __DIR__ . "/inc/layout/footer.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/footer.php"; ?>
 </body>
 </html>

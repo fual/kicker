@@ -15,7 +15,7 @@
             <?php foreach ($amateur_tournaments as $tournament): ?>
                 <div class="d-flex align-items-center mt-4 mb-3">
                     <h5 class="text-left"><?php echo $tournament["tournament_description"]; ?></h5>
-                    <a href="input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
+                    <a href="<?php echo $subfolder; ?>/input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
                 </div>
                 <?php print_result_table($tournament["tournament_id"], "2020"); ?>
             <?php endforeach; ?>
