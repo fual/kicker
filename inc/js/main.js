@@ -28,7 +28,7 @@ $(function() {
 
 		$.ajax({
 			type: "POST",
-			url: "/procedures/checkTeams.php",
+			url: "/inc/procedures/checkTeams.php",
 			data: data + "&subfolder=" + subfolder
 		}).done(function(res) {
 			if (res == "success")
@@ -591,7 +591,7 @@ $(function() {
 		var data = $(this).parents("tr").find(".form-control, .custom-select:not(#teamFilter)").serialize() + "&subfolder=" + subfolder;
 		$.ajax({
 			type: "POST",
-			url: "/procedures/updateSchedule.php",
+			url: "/inc/procedures/updateSchedule.php",
 			data: data
 		}).done(function(data) {
 			if (data == "success")

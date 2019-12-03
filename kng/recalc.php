@@ -1,6 +1,6 @@
 <?php
 	/* This page recalculates all ratings. Service purposes. */
-	require_once __DIR__ . "/inc/bootstrap.php";
+	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
 	$db->query("update rosters set rating = 1000");
 	$sth = $db->prepare("select * from games");
 	$sth->execute();

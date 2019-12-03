@@ -59,7 +59,7 @@
 		if ($isTech) {
 			$resultTeam1 = $_POST["t1d1p1"];
 			$resultPage = ($tournament_type == 1 ? "addResult" : "addResultAmateurs");
-			$url = "/procedures/" .$resultPage. ".php?tech=" . $resultTeam1 . "&tournament_id=" . $tournament_id . "&team1_id=" . $team1_id . "&team2_id=" . $team2_id . "&subfolder=" . $subfolder;
+			$url = "/inc/procedures/" .$resultPage. ".php?tech=" . $resultTeam1 . "&tournament_id=" . $tournament_id . "&team1_id=" . $team1_id . "&team2_id=" . $team2_id . "&subfolder=" . $subfolder;
 			header("Location: $url");
 			exit ;
 		}
