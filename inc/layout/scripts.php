@@ -2,4 +2,4 @@
 <script src="/inc/libs/bootstrap/js/bootstrap.min.js" defer></script>
 <script src="/inc/libs/jquery-ui/jquery-ui.min.js" defer></script>
 <script src="/inc/libs/jquery-ui/jquery.ui.datepicker-ru.js" defer></script>
-<script src="/inc/js/main.js?v=16" defer></script>
+<script src="/inc/js/main.js?v=17" defer></script>

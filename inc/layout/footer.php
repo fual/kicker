@@ -16,7 +16,7 @@
 			<li class="list-inline-item">Лиги в других городах: </li>
 			<li class="list-inline-item"><a href="/msk">Москва</a></li>
 			<li class="list-inline-item"><a href="/spb">Санкт-Петербург</a></li>
-			<li class="list-inline-item"><a href="/kng">Калининград</a></li>
+			<li class="list-inline-item"><a href="/kld">Калининград</a></li>
 		</ul>
 	</p>
 </div>
