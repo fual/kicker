@@ -1,5 +1,5 @@
 <?php
 $file = "kld.db";
-$newfile = "bu/kld_" . date("D", time()) . ".db";
-fopen($newfile, "w");
+$newfile = "back_up/kld_" . strtolower(date("D", time())) . ".db";
+fopen($newfile, "w+");
 copy($file, $newfile);
