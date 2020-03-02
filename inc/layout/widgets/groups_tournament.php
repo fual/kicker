@@ -17,7 +17,7 @@
                     <h5 class="text-left"><?php echo $tournament["tournament_description"]; ?></h5>
                     <a href="<?php echo $subfolder; ?>/input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
                 </div>
-                <?php print_result_table($tournament["tournament_id"], "2020"); ?>
+                <?php print_result_table($tournament["tournament_id"]); ?>
             <?php endforeach; ?>
         </div>
     </div>

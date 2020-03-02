@@ -23,8 +23,9 @@ function print_table($sql) {
 	echo '</table>';
 }
 /* print standings */
-function print_result_table($tournament_id, $season) {
+function print_result_table($tournament_id) {
 	global $db;
+	$season = get_latest_season_id($tournament_id);
 	/* teams quantity in the given $season and $tournament_id */
 	$sth = $db->prepare("
 			select
@@ -35,7 +36,7 @@ function print_result_table($tournament_id, $season) {
 			from teams as tms
 			inner join tournaments as trn on trn.tournament_id = tms.tournament_id
 			inner join seasons as s on tms.season_id = s.season_id
-			where trn.tournament_id = ? and s.season_name = ?
+			where trn.tournament_id = ? and s.season_id = ?
 		");
 	$sth->execute( array($tournament_id, $season) );
 	$tournament = $sth->fetch();
@@ -125,8 +126,9 @@ function print_result_table($tournament_id, $season) {
 	$cols = $tournament['teams_quantity'] + 5;
 	if (count($standings) < $tournament['teams_quantity'])
 	{
-		$sth = $db->prepare("select team_name_short as name from teams where tournament_id = :tournament_id order by name");
+		$sth = $db->prepare("select team_name_short as name from teams where tournament_id = :tournament_id and season_id = :season_id order by name");
 		$sth->bindValue(':tournament_id', $tournament['tournament_id'], PDO::PARAM_INT);
+		$sth->bindValue(':season_id', $tournament['season_id'], PDO::PARAM_INT);
 		$sth->execute();
 		$teams = $sth->fetchAll();
 		foreach ($teams as $team)
@@ -425,4 +427,13 @@ function print_ratings($tournament_id, $type, $season, $tournament_id1 = NULL) {
 	}
 	echo "</tbody>";
 	echo "</table>";
+}
+
+function get_latest_season_id($tournament_id) {
+	global $db;
+	
+	$sth = $db->prepare("select max(season_id) as season from teams where tournament_id = :tournament_id");
+	$sth->bindValue(':tournament_id', $tournament_id, PDO::PARAM_INT);
+	$sth->execute();
+	return ($sth->fetch()["season"]);
 }

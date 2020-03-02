@@ -1,10 +1,13 @@
 <?php
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
-	if (!isset($_GET['tournament']) || $_GET['tournament'] != "amateur")
+	if (!isset($_GET['tournament']) || $_GET['tournament'] != "amateur") {
 		$tournament_id = "(1, 2)";
-	else
+		$season_id = 2;
+	} else {
 		$tournament_id = "(5, 6)";
+		$season_id = 2;
+	}
 	if (isset($_GET['search']) && $_GET['search'] != "0") {
 		$team = filter_var($_GET['search'], FILTER_SANITIZE_STRING);
 		$sth = $db->prepare("select
@@ -23,10 +26,11 @@
 			from schedule as s
 			inner join teams as ht on ht.team_id = s.team_id1
 			inner join teams as at on at.team_id = s.team_id2
-			where s.tournament_id in " . $tournament_id . " and (date is NULL or date >= date(datetime('now', '-1 day'), 'localtime') or place_id is NULL or time is NULL) and (team_name1 == :team or team_name2 == :team)
+			where s.tournament_id in " . $tournament_id . " and s.season_id = :season and (date is NULL or date >= date(datetime('now', '-1 day'), 'localtime') or place_id is NULL or time is NULL) and (team_name1 == :team or team_name2 == :team)
 			order by tour"
 		);
 		$sth->bindValue(":team", $team, PDO::PARAM_STR);
+		$sth->bindValue(":season", $season_id, PDO::PARAM_INT);
 	} else {
 		$sth = $db->prepare("select
 			s.id as id,
@@ -44,10 +48,11 @@
 			from schedule as s
 			inner join teams as ht on ht.team_id = s.team_id1
 			inner join teams as at on at.team_id = s.team_id2
-			where s.tournament_id in " . $tournament_id . " and (date is NULL or date >= date(datetime('now', '-1 day'), 'localtime') or place_id is NULL or time is NULL)
+			where s.tournament_id in " . $tournament_id . " and s.season_id = :season and (date is NULL or date >= date(datetime('now', '-1 day'), 'localtime') or place_id is NULL or time is NULL)
 			order by tour"
 		);
 	}
+	$sth->bindValue(":season", $season_id, PDO::PARAM_INT);
 	$sth->execute();
 	$schedule = $sth->fetchAll();
 	$sth = $db->prepare("select * from places order by name");
@@ -55,9 +60,10 @@
 	$places = $sth->fetchAll();
 	$sth = $db->prepare("
 		select team_name_short as name from teams
-		where tournament_id in " . $tournament_id . "
+		where tournament_id in " . $tournament_id . " and season_id = :season
 		order by team_name_short
 	");
+	$sth->bindValue(":season", $season_id, PDO::PARAM_INT);
 	$sth->execute();
 	$teams = $sth->fetchAll();
 ?>

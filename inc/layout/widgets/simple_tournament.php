@@ -13,7 +13,7 @@
 <div class="tab-content mt-3">
     <div class="tab-pane fade show active" id="divTeamsPane<?php echo $tournament["tournament_id"]; ?>">
         <div class="table-responsive">
-            <?php print_result_table($tournament["tournament_id"], "2019"); ?>
+            <?php print_result_table($tournament["tournament_id"]); ?>
         </div>
     </div>
     <div class="tab-pane fade text-left" id="divPlayersPane<?php echo $tournament["tournament_id"]; ?>">
