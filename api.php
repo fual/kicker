@@ -3,18 +3,20 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/api/functions.php";
 
 $result = "";
 
-$city = isset($_GET["city"]) ? filter_var($_GET["city"], FILTER_SANITIZE_STRING) : "";
-if ( !empty($city) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $city) ) {
-    $subfolder = "/" . $city;
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
-} else
-    $result .= "City is not selected, can't access database<br>";
+if (!empty($_GET)) {
+    $city = isset($_GET["city"]) ? filter_var($_GET["city"], FILTER_SANITIZE_STRING) : "";
+    if ( !empty($city) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $city) ) {
+        $subfolder = "/" . $city;
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+    } else
+        $result .= "City is not selected, can't access database.<br>";
 
-$action = isset($_GET["action"]) ? filter_var($_GET["action"], FILTER_SANITIZE_STRING) : "";
-if ($action == "schedule") {
-   include_once $_SERVER["DOCUMENT_ROOT"] . "/api/actions/schedule.php";
-} else
-    $result .= "Invalid action.<br>";
+    $action = isset($_GET["action"]) ? filter_var($_GET["action"], FILTER_SANITIZE_STRING) : "";
+    if ($action == "schedule") {
+    include_once $_SERVER["DOCUMENT_ROOT"] . "/api/actions/schedule.php";
+    } else
+        $result .= "Invalid action.<br>";
+}
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
 ?>

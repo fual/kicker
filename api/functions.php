@@ -103,7 +103,9 @@ function generate_tour_pairs($round, $matches_per_tour) {
     
     for ($tour = 1; count($round_pairs[$round - 1]) > 0; $tour++) {
         $tour_pairs[$tour] = [];
-        $max_iterations = array_key_last($round_pairs[$round - 1]);
+        end($round_pairs[$round - 1]);
+        $max_iterations = key($round_pairs[$round - 1]);
+        reset($round_pairs[$round - 1]);
         /* Add to pairs if there is no such team already playing in this tour. Otherwise get next */
         for ($i = 0; count($tour_pairs[$tour]) < $matches_per_tour && $i <= $max_iterations; $i++) {
             if (!array_key_exists($i, $round_pairs[$round - 1]))
