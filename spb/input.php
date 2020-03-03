@@ -11,8 +11,10 @@
 		$tournaments = $sth->fetchAll();
 	} else {
 		$tournament_id = $_GET['tournament'];
-		$sth = $db->prepare("select tournament_id, team_name_long as name, team_name_short as short_name, team_id as id from teams where tournament_id = :id order by name");
+		$season_id = get_latest_season_id($tournament_id);
+		$sth = $db->prepare("select tournament_id, team_name_long as name, team_name_short as short_name, team_id as id from teams where tournament_id = :id and season_id = :season_id order by name");
 		$sth->bindValue(":id", $tournament_id, PDO::PARAM_INT);
+		$sth->bindValue(":season_id", $season_id, PDO::PARAM_INT);
 		$sth->execute();
 		$teams = $sth->fetchAll();
 		$sth = $db->prepare("select tournament_description as name, tournament_type as type from tournaments where tournament_id = :id");
