@@ -3,8 +3,11 @@
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
     $sth = $db->prepare("select * from tournaments where tournament_type = 1");
     $sth->execute();
-    $pro_tournaments = $sth->fetchAll();
+	$pro_tournaments = $sth->fetchAll();
     $sth = $db->prepare("select * from tournaments where tournament_id = 5 or tournament_id = 6");
+    $sth->execute();
+	$group_tournaments = $sth->fetchAll();
+	$sth = $db->prepare("select * from tournaments where tournament_id = 4");
     $sth->execute();
 	$amateur_tournaments = $sth->fetchAll();
 ?>
@@ -37,6 +40,9 @@
             include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/simple_tournament.php";
 		} ?>
 		<?php include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/groups_tournament.php"; ?>
+		<?php foreach ($amateur_tournaments as $tournament) {
+            include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/simple_tournament.php";
+		} ?>
   	</div>
 </main>
 <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/footer.php"; ?>
