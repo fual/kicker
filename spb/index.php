@@ -3,7 +3,7 @@
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
     $sth = $db->prepare("select * from tournaments");
     $sth->execute();
-    $tournaments = $sth->fetchAll();
+	$tournaments = $sth->fetchAll();
 ?>
 <body>
 <main role="main" class="container">

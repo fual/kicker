@@ -63,7 +63,10 @@
 		  							break;
 		  						case "2":
 		  							echo "Второй";
-		  							break;
+									break;
+								case "4":
+									echo "ЗКЛ";
+									break;
 								case "5":
 								  echo "ЛКЛ. Группа А";
 		  							break;
@@ -80,7 +83,10 @@
 		  							break;
 		  						case "2":
 		  							echo "В";
-		  							break;
+									break;
+								case "4":
+									echo "З";
+									break;
 		  						case "5":
 		  							echo "ЛА";
 		  							break;

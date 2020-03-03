@@ -5,7 +5,7 @@
 		$tournament_id = "(1, 2)";
 		$season_id = 2;
 	} else {
-		$tournament_id = "(5, 6)";
+		$tournament_id = "(4, 5, 6)";
 		$season_id = 2;
 	}
 	if (isset($_GET['search']) && $_GET['search'] != "0") {

@@ -1,3 +1,4 @@
+<?php $season_id = get_latest_season_id($tournament["tournament_id"]); ?>
 <div class="d-flex align-items-center mt-4 mb-3">
     <h2 class="text-left"><?php echo $tournament["tournament_description"]; ?></h2>
     <a href="<?php echo $subfolder; ?>/input.php?tournament=<?php echo $tournament["tournament_id"]; ?>" class="btn btn-success ml-auto">+ счет</a>
@@ -27,7 +28,7 @@
                     <i class="fas fa-times"></i>
                 </button>
             </form>
-            <?php print_ratings($tournament["tournament_id"], $tournament["tournament_type"], 1); ?>
+            <?php print_ratings($tournament["tournament_id"], $tournament["tournament_type"], $season_id); ?>
         </div>
     </div>
 </div>
