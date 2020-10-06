@@ -1,9 +1,17 @@
 <?php
-	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
-	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
-    $sth = $db->prepare("select * from tournaments");
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
+        $selectTournamentsQuery2020 = "select * from tournaments where tournament_id = 5 or tournament_id = 6 or tournament_id = 4";
+        $selectTournamentsQuery2019 = "select * from tournaments where tournament_id = 1 or tournament_id = 2 or tournament_id = 3";
+
+        $selectTournamentsQuery = $selectTournamentsQuery2020;
+        $currentSeason = $_GET['season'] && '2020';
+        if($currentSeason == '2019') {
+                $selectTournamentsQuery = $selectTournamentsQuery2019;
+        }
+    $sth = $db->prepare($selectTournamentsQuery);
     $sth->execute();
-	$tournaments = $sth->fetchAll();
+    $tournaments = $sth->fetchAll();
 ?>
 <body>
 <main role="main" class="container">
@@ -11,6 +19,20 @@
         <!--<div class="alert alert-warning small">
             Добавляем сыгранные матчи и рейтинг для любителей. Не вводите сыгранные матчи любителей самостоятельно - мы добавляем их по-очереди, чтобы правильно рассчитать рейтинг. Остальные функции сайта доступны без ограничений
         </div>-->
+		<form method="GET" action="" class="needs-validation" novalidate="">
+			<div class="row">
+				<div class="col-md-2 mb-3">
+					<select class="custom-select d-block" id="season" name="season" required>
+					<option value="2019" <?php if($currentSeason == '2019') {echo 'selected';} ?>>2019</option>
+					<option value="2020" <?php if($currentSeason == '2020') {echo 'selected';} ?>>2020</option>
+					</select>
+				</div>
+				<div class="col-md-2 mb-3">
+					<button class="btn btn-primary btn-block" type="submit">Сменить сезон</button>
+				</div>
+			</div>
+		</form>
+
     	<?php if (isset($_GET['result'])): ?>
     		<?php if ($_GET['result'] == "success"): ?>
     			<div class="alert alert-success mt-3 result" id="result">
