@@ -1,5 +1,6 @@
 <?php
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+	$pageTitle = "Московская лига кикера";
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
     $sth = $db->prepare("select * from tournaments where tournament_type = 1");
     $sth->execute();

@@ -1,17 +1,22 @@
 <?php
-        require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+		require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
+		$pageTitle = "Санкт-Петербургская лига кикера";
         require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
-        $selectTournamentsQuery2020 = "select * from tournaments where tournament_id = 5 or tournament_id = 6 or tournament_id = 4";
-        $selectTournamentsQuery2019 = "select * from tournaments where tournament_id = 1 or tournament_id = 2 or tournament_id = 3";
+        $seasons = array(
+            "2019" => array(
+                "query" => "select * from tournaments where tournament_id = 1 or tournament_id = 2 or tournament_id = 3"
+            ),
+            "2020" => array(
+                "query" => "select * from tournaments where tournament_id = 5 or tournament_id = 6 or tournament_id = 4"
+            )
+        );
 
-        $selectTournamentsQuery = $selectTournamentsQuery2020;
-        $currentSeason = $_GET['season'] && '2020';
-        if($currentSeason == '2019') {
-                $selectTournamentsQuery = $selectTournamentsQuery2019;
-        }
-    $sth = $db->prepare($selectTournamentsQuery);
-    $sth->execute();
-    $tournaments = $sth->fetchAll();
+        $currentSeason = isset($_GET['season']) ? $_GET['season'] : '2020';
+
+        $selectTournamentsQuery = $seasons[$currentSeason]["query"];
+        $sth = $db->prepare($selectTournamentsQuery);
+        $sth->execute();
+        $tournaments = $sth->fetchAll();
 ?>
 <body>
 <main role="main" class="container">
