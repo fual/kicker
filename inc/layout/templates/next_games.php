@@ -33,43 +33,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($next_games as $next): ?>
+		<?php foreach ($next_games as $next):
+			$tournamentKey = array_search($next['tournament_id'], array_column($tournaments, 'tournament_id'));
+			$tournamentName = $tournaments[$tournamentKey]['tournament_description'];
+		?>
 			<tr<?php if (date_format(date_create($next['date']), "j.m") == date_format(date_create("now"), "j.m")) echo " class='bg-warning font-italic'"; ?>>
-				<td title="
-					<?php 
-						switch ($next['tournament_id']) {
-							case "1":
-								echo "Первый";
-								break;
-							case "2":
-								echo "Второй";
-								break;
-							case "5":
-								echo "ЛКЛ. Группа А";
-									break;
-							case "6":
-								echo "ЛКЛ. Группа Б";
-								break;
-						}
-					?>
-				">
-					<?php 
-						switch ($next['tournament_id']) {
-							case "1":
-								echo "П";
-								break;
-							case "2":
-								echo "В";
-								break;
-							case "5":
-								echo "ЛА";
-								break;
-							case "6":
-								echo "ЛБ";
-								break;
-						}
-					?>
-					
+				<td title="<?=$tournamentName?>">
+					<?=$tournamentName?>
 				</td>
 				<td><?php echo $next['tour']; ?></td>
 				<td><?php echo $next['team_name1'] . " - " . $next['team_name2']; ?></td>

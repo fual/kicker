@@ -11,6 +11,7 @@
 	$sth = $db->prepare("select * from tournaments where tournament_id = 4");
     $sth->execute();
 	$amateur_tournaments = $sth->fetchAll();
+	$tournaments = array_merge($pro_tournaments, $group_tournaments, $amateur_tournaments);
 ?>
 <body>
 <main role="main" class="container">

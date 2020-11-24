@@ -21,9 +21,6 @@
 <body>
 <main role="main" class="container">
   	<div class="starter-template text-center">
-        <!--<div class="alert alert-warning small">
-            Добавляем сыгранные матчи и рейтинг для любителей. Не вводите сыгранные матчи любителей самостоятельно - мы добавляем их по-очереди, чтобы правильно рассчитать рейтинг. Остальные функции сайта доступны без ограничений
-        </div>-->
 		<form method="GET" action="" class="needs-validation" novalidate="">
 			<div class="row">
 				<div class="col-md-2 mb-3">
@@ -56,7 +53,7 @@
 	    	<?php endif; ?>
     		</div>
     	<?php endif; ?>
-        <?php /*include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/schedule.php";*/ ?>
+        <?php $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/schedule.php"; ?>
         <?php foreach ($tournaments as $tournament) {
             include $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/widgets/simple_tournament.php";
 		} ?>
