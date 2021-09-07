@@ -3,10 +3,10 @@
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
 	if (!isset($_GET['tournament']) || $_GET['tournament'] != "amateur") {
 		$tournament_id = "(1, 2)";
-		$season_id = 2;
+		$season_id = 3;
 	} else {
 		$tournament_id = "(4, 5, 6)";
-		$season_id = 2;
+		$season_id = 3;
 	}
 	if (isset($_GET['search']) && $_GET['search'] != "0") {
 		$team = filter_var($_GET['search'], FILTER_SANITIZE_STRING);
