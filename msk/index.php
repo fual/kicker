@@ -5,9 +5,11 @@
     $sth = $db->prepare("select * from tournaments where tournament_type = 1");
     $sth->execute();
 	$pro_tournaments = $sth->fetchAll();
-    $sth = $db->prepare("select * from tournaments where tournament_id = 5 or tournament_id = 6");
+    
+	$sth = $db->prepare("select * from tournaments where tournament_id in (7, 8)");
     $sth->execute();
 	$group_tournaments = $sth->fetchAll();
+
 	$sth = $db->prepare("select * from tournaments where tournament_id = 4");
     $sth->execute();
 	$amateur_tournaments = $sth->fetchAll();
