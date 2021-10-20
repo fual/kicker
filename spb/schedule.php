@@ -2,9 +2,9 @@
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
 	if (!isset($_GET['tournament']) || $_GET['tournament'] != "amateur")
-		$tournament_id = "(4, 5)";
+		$tournament_id = "(8, 9)";
 	else
-		$tournament_id = "(6)";
+		$tournament_id = "(7)";
 	if (isset($_GET['search']) && $_GET['search'] != "0") {
 		$team = filter_var($_GET['search'], FILTER_SANITIZE_STRING);
 		$sth = $db->prepare("select
