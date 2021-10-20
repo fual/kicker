@@ -24,10 +24,12 @@
 		$sth = $db->prepare("select id, first_name, second_name from rosters inner join players on rosters.player_id = players.player_id");
 		$sth->execute();
 		$players = $sth->fetchAll();
-		$sth = $db->prepare("select tournament_description as name from tournaments where tournament_id = :id");
+		$sth = $db->prepare("select tournament_description as name, tournament_type as type from tournaments where tournament_id = :id");
 		$sth->bindValue(":id", $match['tournament_id'], PDO::PARAM_INT);
 		$sth->execute();
-		$tournament_name = $sth->fetch()["name"];
+		$tournament = $sth->fetch();
+		$tournament_name = $tournament['name'];
+		$tournament_type = $tournament['type'];
 	}
 ?>
 <body class="pt-5">
@@ -47,7 +49,8 @@
     		<tbody>
     			<?php /* Amateurs */ ?>
     			<?php if (sizeof($games) == 12): ?>
-    				<?php for ($i = 0; $i < 12; $i += 2): ?>
+					<?php $limit = $tournament_type == 3 ? 10 : 12; ?>
+    				<?php for ($i = 0; $i < $limit; $i += 2): ?>
     					<tr>
 					   		<td class="text-left">
 					   			<?php
