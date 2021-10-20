@@ -9,13 +9,15 @@
 			<th colspan="2"><?php echo $team2; ?></th>
 		</thead>
 		<tbody>
-			<?php $matches = ["d1", "d2", "s1", "s2", "d3", "d4"]; ?>
+			<?php
+				$m = ["d1", "d2", "s1", "s2", "d3", "d4"];
+			?>
 			<?php $tabIndex = 1; ?>
-			<?php foreach ($matches as $match): ?>
-				<tr>
+			<?php foreach ($m as $match): ?>
+				<tr<?php echo ($match === "d4" && $tournament_type == 3 ? " class='d-none'" : ''); ?>>
 					<td colspan="4"><?php echo strtoupper($match); ?></td>
 				</tr>
-			   	<tr>
+			   	<tr<?php echo ($match === "d4" && $tournament_type == 3 ? " class='d-none'" : ''); ?>>
 			   		<td class="text-left">
 			   			<input type="hidden" name="t1<?php echo $match; ?>p1" value="<?php echo $_POST['t1'.$match.'p1']; ?>">
 			   			<?php if (strpos($match, "s") === false): ?>

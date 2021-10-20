@@ -50,12 +50,9 @@ $selectTournamentsQuery = "select * from tournaments";
 		  		</table>
   			<?php else: ?>
 		  	<?php $i = -1; $j = 1; ?>
-			<?php foreach ($schedule as $game):
-				$tournamentKey = array_search($game['tournament_id'], array_column($tournaments, 'tournament_id'));
-				$tournamentName = $tournaments[$tournamentKey]['tournament_description'];
-			?>
+		  	<?php foreach ($schedule as $game): ?>
 		  		<?php if ($i != $game['tour']): ?>
-					<?php $i = $game['tour']; ?>
+		  			<?php $i = $game['tour']; ?>
 		  			<tr>
 		  				<td colspan="5" class="font-italic text-left text-md-center">
 		  					<?php echo $game['tour']; ?> тур <span class="px-3">-</span> <?php echo $game['date_start']
@@ -64,8 +61,52 @@ $selectTournamentsQuery = "select * from tournaments";
 		  			</tr>
 		  		<?php endif; ?>
 		  		<tr>
-					<td title="<?=$tournamentName?>">
-						<?=$tournamentName?>
+		  			<td title="
+		  				<?php
+		  					switch ($game['tournament_id']) {
+		  						case "1":
+		  							echo "Первый";
+		  							break;
+		  						case "2":
+		  							echo "Второй";
+									break;
+								case "4":
+									echo "ЗКЛ";
+									break;
+								case "5":
+								  echo "ЛКЛ. Группа А";
+		  							break;
+								case "6":
+		  							echo "ЛКЛ. Группа Б";
+		  							break;
+		  					}
+		  				?>	
+		  			">
+
+				<?php
+					$tournamentKey = array_search($game['tournament_id'], array_column($tournaments, 'tournament_id'));
+					echo $tournaments[$tournamentKey]['tournament_description'];
+				?>
+					<!--
+		  				<?php
+		  					switch ($game['tournament_id']) {
+		  						case "1":
+		  							echo "П";
+		  							break;
+		  						case "2":
+		  							echo "В";
+									break;
+								case "4":
+									echo "З";
+									break;
+		  						case "5":
+		  							echo "ЛА";
+		  							break;
+		  						case "6":
+		  							echo "ЛБ";
+		  							break;
+		  					}
+		  				?>-->	
 	  				</td>
 		  			<td><?php echo $game['team_name1']; ?> - <?php echo $game['team_name2']; ?></td>
 		  			<td>

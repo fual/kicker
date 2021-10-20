@@ -21,6 +21,9 @@
 	$next_games = $sth->fetchAll();
 ?>
 <?php if (sizeof($next_games)): ?>
+<!-- 
+	<?php print_r($tournaments); ?>
+	--->
 <table class="table table-sm table-striped table-hover text-center">
 	<thead class="thead-dark">
 		<tr>
@@ -33,13 +36,30 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($next_games as $next):
-			$tournamentKey = array_search($next['tournament_id'], array_column($tournaments, 'tournament_id'));
-			$tournamentName = $tournaments[$tournamentKey]['tournament_description'];
-		?>
+		<?php foreach ($next_games as $next): ?>
 			<tr<?php if (date_format(date_create($next['date']), "j.m") == date_format(date_create("now"), "j.m")) echo " class='bg-warning font-italic'"; ?>>
-				<td title="<?=$tournamentName?>">
-					<?=$tournamentName?>
+				<td title="
+					<?php 
+						switch ($next['tournament_id']) {
+							case "1":
+								echo "Первый";
+								break;
+							case "2":
+								echo "Второй";
+								break;
+							case "5":
+								echo "ЛКЛ. Группа А";
+									break;
+							case "6":
+								echo "ЛКЛ. Группа Б";
+								break;
+						}
+					?>
+				">
+					<?php 
+					$tournamentKey = array_search($next['tournament_id'], array_column($tournaments, 'tournament_id'));
+					echo $tournaments[$tournamentKey]['tournament_description']; 
+					?>
 				</td>
 				<td><?php echo $next['tour']; ?></td>
 				<td><?php echo $next['team_name1'] . " - " . $next['team_name2']; ?></td>
