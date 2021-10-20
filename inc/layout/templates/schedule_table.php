@@ -1,5 +1,5 @@
-<?
-$selectTournamentsQuery = "select * from tournaments";
+<?php
+	$selectTournamentsQuery = "select * from tournaments";
     $sth = $db->prepare($selectTournamentsQuery);
     $sth->execute();
     $tournaments = $sth->fetchAll();
