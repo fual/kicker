@@ -11,7 +11,10 @@
 		</thead>
 		<tbody>
 		    <?php
-		    	$m = ["D1", "D2", "S1", "S2", "D3", "D4"];
+		    	$m = ["D1", "D2", "S1", "S2", "D3"];
+				if ( ! $tournament_type === 3 ) {
+					$m[] = "D4";
+				}
 		    	$j = 1;
 		    	$z = 11;
 	    		foreach ($m as $game):
@@ -53,7 +56,9 @@
 	<div class="text-left">
 		<ul class="list-unstyled small lineup-rules">
 			<li id="d12">D1, D2 - разные пары</li>
-			<li id="d34">D3, D4 - разные пары</li>
+			<?php if ( ! $tournament_type === 3 ): ?>
+				<li id="d34">D3, D4 - разные пары</li>
+			<?php endif; ?>
 			<li id="s12">S1, S2 - 2 разных игрока</li>
 			<li id="one">один игрок участвует максимум в двух играх</li>
 			<li>гости заполняют первыми</li>
