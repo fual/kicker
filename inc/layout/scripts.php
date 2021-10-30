@@ -3,4 +3,4 @@
 <script src="/inc/libs/jquery-ui/jquery-ui.min.js" defer></script>
 <script src="/inc/libs/jquery-ui/jquery.ui.datepicker-ru.js" defer></script>
 <script src="/<?php echo $config['city']; ?>/config.js" defer></script>
-<script src="/inc/js/main.js?v=17" defer></script>
+<script src="/inc/js/main.js?v=18" defer></script>
