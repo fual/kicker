@@ -1,5 +1,7 @@
 $(function() {
 	var subfolder = window.location.pathname.split("/")[1];
+	// external config.js
+	var proConfig = pro;
 
 	if ($("#result").is(":visible")) {
 		setTimeout(function() {
@@ -130,11 +132,11 @@ $(function() {
 		/* Negative represents tech */
 		var t1_tech = t1d12.concat(t1sd3).filter(function(n) { return n < 0; }).length;
 		var t2_tech = t2d12.concat(t2sd3).filter(function(n) { return n < 0; }).length;
-		var t1_valid = t1_cl - t1_tech <= 7 && t1_cl >= 4;
-		var t2_valid = t2_cl - t2_tech <= 7 && t2_cl >= 4;
-		if ((t1_cl <= 3 && t1_cl > 0) || (t2_cl <= 3 && t2_cl > 0))
+		var t1_valid = t1_cl - t1_tech <= proConfig.lineup.max && t1_cl >= proConfig.lineup.min;
+		var t2_valid = t2_cl - t2_tech <= proConfig.lineup.max && t2_cl >= proConfig.lineup.min;
+		if ((t1_cl < proConfig.lineup.min && t1_cl > 0) || (t2_cl < proConfig.lineup.min && t2_cl > 0))
 			$("#min").addClass("text-danger");
-		if ((t1_cl - t1_tech >= 8) || (t2_cl - t2_tech >= 8))
+		if ((t1_cl - t1_tech > proConfig.lineup.max) || (t2_cl - t2_tech > proConfig.lineup.max))
 			$("#max").addClass("text-danger");
 		if (t1d12_valid && t1sd3_valid && t2d12_valid && t2sd3_valid && t1_valid && t2_valid)
 			$(".btn[type='submit']").attr("disabled", false);

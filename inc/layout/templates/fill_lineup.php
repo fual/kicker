@@ -56,8 +56,8 @@
 		<ul class="list-unstyled small lineup-rules">
 			<li id="d12">D1, D2 - 4 разных игрока</li>
 			<li id="sd3">S1, S2, D3 - 4 разных игрока</li>
-			<li id="min">минимум - 4 игрока</li>
-			<li id="max">максимум - 7 игроков</li>
+			<li id="min">минимум - <?php echo $config['pro']['lineup']['min']; ?> игрока</li>
+			<li id="max">максимум - <?php echo $config['pro']['lineup']['max']; ?> игроков</li>
 			<li>заполняется вслепую</li>
 			<li>2 монетки:
 				<ol>

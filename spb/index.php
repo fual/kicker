@@ -1,8 +1,5 @@
 <?php
-	global $liga;
-	$liga = 'spb';
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/bootstrap.php";
-	$pageTitle = 'Санкт-Петербургская лига кикера';
 	require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/layout/head.php";
 	$seasons = array(
 	    "2019" => array(
