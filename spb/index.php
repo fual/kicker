@@ -10,10 +10,13 @@
 	    ),
 	    "2021" => array(
 	   	"query" => "select * from tournaments where tournament_id = 8 or tournament_id = 9 or tournament_id = 7"
+	    ),
+	    "2022" => array(
+	   		"query" => "select * from tournaments where tournament_id = 10 or tournament_id = 11"
 	    )
 	);
 
-	$currentSeason = isset($_GET['season']) ? $_GET['season'] : '2021';
+	$currentSeason = isset($_GET['season']) ? $_GET['season'] : '2022';
 	
   	$selectTournamentsQuery = $seasons[$currentSeason]["query"];
 	$sth = $db->prepare($selectTournamentsQuery);
@@ -30,6 +33,7 @@
               <option value="2019" <?php if($currentSeason == '2019') {echo 'selected';} ?>>2019</option>
               <option value="2020" <?php if($currentSeason == '2020') {echo 'selected';} ?>>2020</option>
               <option value="2021" <?php if($currentSeason == '2021') {echo 'selected';} ?>>2021</option>
+              <option value="2022" <?php if($currentSeason == '2022') {echo 'selected';} ?>>2022</option>
             </select>
           </div>
           <div class="col-auto mb-3">
